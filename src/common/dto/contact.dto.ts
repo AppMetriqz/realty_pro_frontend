@@ -1,0 +1,53 @@
+export type CreateContactDto = {
+  type: string;
+  spouse_id?: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone_number_1: string;
+  phone_number_2?: string;
+  national_id: string;
+  nationality: string;
+  contact_method: string;
+  date_of_birth: string;
+  marital_status: string;
+  notes?: string;
+};
+export type UpdateContactDto = {
+  contact_id: number;
+  type: string;
+  spouse_id?: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone_number_1: string;
+  phone_number_2: string;
+  national_id: string;
+  nationality: string;
+  contact_method: string;
+  date_of_birth: string;
+  marital_status: string;
+  notes?: string;
+};
+
+export type GetContactDto = {
+  contact_id: number;
+  spouse_id?: number;
+  type: string;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone_number_1: string;
+  phone_number_2?: string;
+  national_id: string;
+  nationality: string;
+  contact_method: string;
+  date_of_birth: string;
+  marital_status: string;
+  notes?: string;
+  is_active: boolean;
+  create_by: number;
+  update_by?: number;
+  created_at: string;
+  updated_at: string;
+};

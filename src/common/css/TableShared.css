@@ -1,0 +1,85 @@
+.dataGridStyles {
+    font-size: 16px !important;
+    text-align: center;
+    border-radius: 8px;
+    vertical-align: middle !important;
+    background-color: transparent;
+
+    .dx-datagrid > .dx-datagrid-headers, .dx-datagrid > .dx-datagrid-rowsview, .dx-datagrid > .dx-datagrid-total-footer {
+        background-color: transparent;
+    }
+
+    .dx-row {
+        height: 60px !important;
+    }
+
+    .dx-datagrid-header-panel {
+        border-bottom: none !important;
+    }
+
+    .dx-datagrid-content .dx-datagrid-table .dx-row > td, .dx-datagrid-content .dx-datagrid-table .dx-row > tr > td {
+        vertical-align: middle !important;
+    }
+
+    .dx-datagrid-headers .dx-datagrid-table .dx-row > td {
+        border-bottom: none;
+    }
+
+    .dx-datagrid-content .dx-header-row {
+        font-size: 14px;
+        font-weight: 700;
+        color: #17181C !important;
+        background: #F5F6F7;
+        border-bottom-width: 0 !important;
+    }
+
+    .dx-datagrid-borders .dx-datagrid-rowsview, .dx-datagrid-headers + .dx-datagrid-rowsview, .dx-datagrid-rowsview.dx-datagrid-after-headers {
+        border-top: none;
+    }
+
+    .dx-datagrid-content {
+        background-color: #fff;
+        border-radius: 8px;
+        border: 1px solid #D6D6D6;
+        border-bottom: none;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    .dx-datagrid-rowsview .dx-datagrid-content:not(.dx-datagrid-content-fixed) {
+        border-radius: 8px;
+        border: 1px solid #D6D6D6;
+        border-top: none;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+    }
+
+}
+
+.dx-texteditor-input {
+    height: 56px !important;
+}
+
+.dx-toolbar-items-container {
+    height: 56px !important;
+    margin-bottom: 24px !important;
+}
+
+.dx-toolbar-text-auto-hide .dx-button .dx-button-content {
+    height: 56px !important;
+    width: 56px !important;
+}
+
+.dx-datagrid-search-panel {
+    margin: 0 0 0 5px !important;
+}
+
+.dx-icon-column-chooser::before{
+    content: "\f04d";
+    font-size: 25px;
+    color: #9E0B0F;
+}
+
+.dx-widget{
+    font-size: 16px;
+}
