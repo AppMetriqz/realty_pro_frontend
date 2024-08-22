@@ -42,7 +42,7 @@ export const createContactValidationSchema = yup.object({
     .string()
     .length(17, ErrorMsg.phone)
     .required(ErrorMsg.required),
-  phone_number_2: yup.string().length(12, ErrorMsg.phone),
+  phone_number_2: yup.string().length(17, ErrorMsg.phone),
   national_id: yup.string().required(ErrorMsg.required),
   nationality: yup.string().required(ErrorMsg.required),
   contact_method: yup.string().required(ErrorMsg.required),

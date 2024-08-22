@@ -38,8 +38,8 @@ const Project = () => {
               <Grid justifyContent={'center'} item xs={12}>
                 <CircularProgress sx={{ color: '#000' }} />
               </Grid>
-            ) : (
-              usePageProps.listProps.findAllProject.isSuccess &&
+            ) : usePageProps.listProps.findAllProject.isSuccess &&
+              usePageProps.listProps.findAllProject.data.rows.length ? (
               _.map(
                 usePageProps.listProps.findAllProject.data.rows,
                 (project: ProjectDto) => (
@@ -51,6 +51,8 @@ const Project = () => {
                   </Grid>
                 )
               )
+            ) : (
+              <>Sin Resultados.</>
             )}
           </Grid>
         </Box>

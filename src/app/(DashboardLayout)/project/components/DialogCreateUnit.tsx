@@ -55,6 +55,8 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
     );
   };
 
+  console.log(hookForm.watch('status'));
+
   return (
     <Dialog
       fullWidth={true}
@@ -169,6 +171,7 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
               options={UnitStatus}
               hookForm={hookForm}
               labelStyle={{ mb: '15px' }}
+              disabled={hookForm.watch('status') === 'sold' && isEdit}
             />
           </Grid>
           {isPlot ? null : (

@@ -36,6 +36,7 @@ import { DialogCreateUnit } from '../DialogCreateUnit';
 import { UnitFormInput } from '../../[slug]/core';
 import { DialogEditMultipleUnit } from '../DialogEditMultipleUnit';
 import { UseProjectPageProps } from '../../[slug]/usePage';
+import DoDisturbOffIcon from '@mui/icons-material/DoDisturbOff';
 
 export interface AvailableTableData {
   id: string | number;
@@ -156,39 +157,53 @@ const ProjectAvailable: FC<{
       numeric: false,
       disablePadding: false,
       label: 'Acciones',
-      render: (_, record: AvailableTableData) => (
-        <div>
-          <MenuShared
-            actions={[
-              {
-                id: record.id,
-                icon: <VisibilityIcon fontSize="small" />,
-                label: 'Ver',
-                onClick: () => usePageProps.handleClickView(record.id),
-              },
-              {
-                id: record.id,
-                icon: <SellIcon fontSize="small" />,
-                label: 'Vender',
-                onClick: () => usePageProps.handleClickSell(record.id),
-              },
-              {
-                id: record.id,
-                icon: <EditIcon fontSize="small" />,
-                label: 'Editar',
-                onClick: () => usePageProps.handleClickEdit(record.id),
-              },
-              {
-                id: record.id,
-                icon: <DeleteIcon fontSize="small" />,
-                label: 'Borrar',
-                onClick: () => usePageProps.handleClickDelete(record.id),
-              },
-            ]}
-            isDisabled={usePageProps.selectedUnits.length > 1}
-          />
-        </div>
-      ),
+      render: (_, record: AvailableTableData) => {
+        const isSold = record.status === 'Vendido';
+
+        return (
+          <div>
+            <MenuShared
+              actions={[
+                {
+                  id: record.id,
+                  icon: <VisibilityIcon fontSize="small" />,
+                  label: 'Ver',
+                  onClick: () => usePageProps.handleClickView(record.id),
+                },
+                {
+                  id: record.id,
+                  icon: isSold ? (
+                    <DoDisturbOffIcon fontSize="small" />
+                  ) : (
+                    <SellIcon fontSize="small" />
+                  ),
+                  label: isSold ? 'Cancelar Venta' : 'Vender',
+                  onClick: isSold
+                    ? () => {}
+                    : () => usePageProps.handleClickSell(record.id),
+                },
+                !isSold
+                  ? {
+                      id: record.id,
+                      icon: <EditIcon fontSize="small" />,
+                      label: 'Editar',
+                      onClick: () => usePageProps.handleClickEdit(record.id),
+                    }
+                  : null,
+                !isSold
+                  ? {
+                      id: record.id,
+                      icon: <DeleteIcon fontSize="small" />,
+                      label: 'Borrar',
+                      onClick: () => usePageProps.handleClickDelete(record.id),
+                    }
+                  : null,
+              ].filter((x) => !!x)}
+              isDisabled={usePageProps.selectedUnits.length > 1}
+            />
+          </div>
+        );
+      },
     },
   ];
 
@@ -203,7 +218,11 @@ const ProjectAvailable: FC<{
             <Grid container columnSpacing={'40px'}>
               <UnitDetails
                 typeOfUnit={usePageProps.unitDetails.data.type}
-                editLabel="Editar Unidad"
+                editLabel={
+                  usePageProps.unitDetails.data.status !== 'sold'
+                    ? 'Editar Unidad'
+                    : undefined
+                }
                 onClickDelete={() =>
                   usePageProps.handleClickDelete(
                     usePageProps.unitDetails.data.unit_id
@@ -302,6 +321,11 @@ const ProjectAvailable: FC<{
                 changePageSize={usePageProps.changePageSize}
                 multiSelectActions={
                   <>
+                    <Tooltip title="Vender">
+                      <IconButton onClick={() => {}}>
+                        <SellIcon fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
                     <Tooltip title="Editar">
                       <IconButton
                         onClick={() =>

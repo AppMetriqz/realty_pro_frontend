@@ -59,6 +59,7 @@ export const useCreate = () => {
         headers: { 'Content-Type': 'multipart/form-data' },
       }),
     onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [`${units}FindAll`] });
       queryClient.invalidateQueries({ queryKey: [projects] });
       queryClient.invalidateQueries({ queryKey: [`${projects}-summary`] });
     },
@@ -72,7 +73,7 @@ export const useUpdate = () => {
     mutationFn: (
       data: Omit<UnitDto, 'created_at' | 'updated_at' | 'cover_path'>
     ) =>
-      axiosInstance.put(`/${units}/${data.project_id}`, data, {
+      axiosInstance.put(`/${units}/${data.unit_id}`, data, {
         headers: { 'Content-Type': 'multipart/form-data' },
       }),
     onSuccess: () => {

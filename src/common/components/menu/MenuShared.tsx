@@ -14,6 +14,7 @@ type ActionType = {
   onClick: () => void;
   icon: ReactElement;
   label: string;
+  isDisabled?: boolean;
 };
 
 type MenuSharedType = {
@@ -57,6 +58,7 @@ const MenuShared: FC<MenuSharedType> = ({ actions, isDisabled = false }) => {
         {actions.map((action, index) => (
           <MenuItem
             key={`${action.id}-${index}`}
+            disabled={action.isDisabled || false}
             onClick={() => {
               action.onClick();
               handleClose();

@@ -2,7 +2,7 @@ import { PropertyTypeDto } from './api.dto';
 import { CreateContactDto } from './contact.dto';
 
 export interface UnitDto {
-  unit_id?: string | number;
+  unit_id?: string | number | string[] | null;
   project_id?: string | number | string[];
   name: string;
   description: string;

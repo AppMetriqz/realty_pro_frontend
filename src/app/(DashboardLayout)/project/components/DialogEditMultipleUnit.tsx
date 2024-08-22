@@ -6,7 +6,7 @@ import { Grid } from '@mui/material';
 import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
 
-import { UnitCondicionType, UnitStatus } from '@/common/constants/app-config';
+import { MultipleUnitStatus, UnitStatus } from '@/common/constants/app-config';
 import { TextFieldSharedController } from '@/common/components/textField/TextFieldShared';
 import { SelectSharedController } from '@/common/components/textField/SelectShared';
 import { UsePageProjectAvailableProps } from './ProjectAvailable/usePage';
@@ -98,7 +98,7 @@ export const DialogEditMultipleUnit = ({
           <Grid item xs={12} md={6}>
             <SelectSharedController
               label={'Condición:'}
-              options={UnitCondicionType}
+              options={MultipleUnitStatus}
               name={'condition'}
               hookForm={multipleUnitHookForm}
               labelStyle={{ mb: '15px' }}

@@ -27,6 +27,7 @@ import {
 import { ResultFindAllProjectFeatures } from '@/api/project-features';
 import { SellFormType } from '@/common/types/SellTypes';
 import { apiSales } from '@/api/sales';
+import { AvailableTableData } from './ProjectAvailable';
 
 export type UpdateUnitProjectProps = {
   hookForm: UseFormReturn<UnitFormInput>;
@@ -198,6 +199,7 @@ export default function usePage(): UsePageProjectAvailableProps {
     try {
       const project = await updateUnit.mutateAsync({
         ...data,
+        unit_id: selectedUnitId,
         price: Number(data.price.replace(/[^0-9.-]+/g, '')),
         property_feature_ids: data.property_feature_ids.join(','),
       });
@@ -241,7 +243,7 @@ export default function usePage(): UsePageProjectAvailableProps {
       setSelectedUnitId(null);
     }
     setOpenEditOneUnitModal(false);
-    unitHookForm.reset()
+    unitHookForm.reset();
   };
 
   const onCloseEditMultipleUnitModal = () => {
@@ -328,7 +330,7 @@ export default function usePage(): UsePageProjectAvailableProps {
           progress: undefined,
           theme: 'colored',
         });
-        unitHookForm.reset();
+        sellHookForm.reset();
         setOpenSellModal(false);
       }
     } catch (error: Error | unknown) {
@@ -341,7 +343,7 @@ export default function usePage(): UsePageProjectAvailableProps {
     setShowView(true);
   };
 
-  const handleClickSell = (id: string | number) => {
+  const handleClickSell = async (id: string | number) => {
     setSelectedUnitId(id);
     setOpenSellModal(true);
   };

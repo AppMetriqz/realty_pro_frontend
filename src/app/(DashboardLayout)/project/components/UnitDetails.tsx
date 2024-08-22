@@ -267,7 +267,9 @@ const UnitDetails: FC<UnitDetailType> = ({
                 {deleteLabel}
               </DeleteButtonShared>
             ) : null}
-            <ButtonShared onClick={onClickEdit}>{editLabel}</ButtonShared>
+            {editLabel ? (
+              <ButtonShared onClick={onClickEdit}>{editLabel}</ButtonShared>
+            ) : null}
           </Box>
         </Box>
       </Grid>

@@ -39,6 +39,11 @@ export const UnitStatus = [
   { label: 'Reservado', value: 'reserved' },
 ];
 
+export const MultipleUnitStatus = [
+  { label: 'Disponible', value: 'available' },
+  { label: 'Reservado', value: 'reserved' },
+];
+
 export const CurrencyType = [
   { label: 'US$ Dollar', value: 'US' },
   { label: 'RD$ Peso', value: 'RD' },

@@ -22,6 +22,7 @@ export interface SelectSharedControllerProps {
   hookForm: UseFormReturn<any>;
   textFieldProps?: TextFieldProps;
   labelStyle?: AliasesCSSProperties;
+  disabled?: boolean;
 }
 
 export const SelectShared = styled(Select)({});
@@ -43,6 +44,7 @@ export const SelectSharedController: FC<SelectSharedControllerProps> = (
             {...field}
             {...getHelperText(fieldState.error)}
             fullWidth
+            disabled={props.disabled}
           >
             {props.options.map((option) => (
               <MenuItem key={_.uniqueId(props.name)} value={option.value}>

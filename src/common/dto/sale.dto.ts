@@ -1,6 +1,6 @@
 export type CreateSellDto = {
   project_id: string | string[];
-  unit_id: string | number | string[] | null;
+  unit_id?: string | number | string[] | null;
   client_id: number;
   seller_id: number;
   commission: number;
