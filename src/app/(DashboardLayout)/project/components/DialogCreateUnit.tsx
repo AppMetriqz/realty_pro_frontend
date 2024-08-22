@@ -37,6 +37,8 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
     'price_per_meter',
   ]);
 
+  console.log('getvalues', hookForm.getValues());
+
   if (isPlot) {
     hookForm.setValue(
       'price',
@@ -45,6 +47,7 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
       )
     );
   }
+
   const onBlurPrice = () => {
     const price = hookForm.watch('price');
     hookForm.setValue(
@@ -54,8 +57,6 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
       )
     );
   };
-
-  console.log(hookForm.watch('status'));
 
   return (
     <Dialog
@@ -117,7 +118,10 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
               label={'Metros del Terreno:'}
               name={'meters_of_land'}
               hookForm={hookForm}
-              textFieldProps={{ type: 'number' }}
+              textFieldProps={{
+                type: 'number',
+                InputProps: { endAdornment: 'mts2' },
+              }}
               labelStyle={{ mb: '15px' }}
             />
           </Grid>
@@ -137,7 +141,10 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
                 label={'Metros de Construcción:'}
                 name={'meters_of_building'}
                 hookForm={hookForm}
-                textFieldProps={{ type: 'number' }}
+                textFieldProps={{
+                  type: 'number',
+                  InputProps: { endAdornment: 'mts2' },
+                }}
                 labelStyle={{ mb: '15px' }}
               />
             </Grid>

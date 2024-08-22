@@ -9,8 +9,11 @@ import ProjectSummary from '../components/ProjectSummary/ProjectSummary';
 import ProjectSells from '../components/ProjectSells/ProjectSells';
 import ProjectFinance from '../components/ProjectFinance';
 import ProjectAvailable from '../components/ProjectAvailable/ProjectAvailable';
+import { useRouter } from 'next/navigation';
+import routers from '@/common/constants/routes';
 
 const ProjectResumen = () => {
+  const router = useRouter();
   const usePageProps = usePage();
 
   useEffect(() => {
@@ -27,7 +30,15 @@ const ProjectResumen = () => {
         usePageProps.findProject.data.project_id
       );
     }
-  }, [usePageProps.findProject.isLoading, usePageProps.showCreateUnit]);
+
+    if (usePageProps.findProject.isError) {
+      router.push(routers.project);
+    }
+  }, [
+    usePageProps.findProject.isLoading,
+    usePageProps.findProject.isError,
+    usePageProps.showCreateUnit,
+  ]);
 
   const projectSections = [
     {
