@@ -380,9 +380,9 @@ export default function usePage(): UsePageProjectAvailableProps {
           progress: undefined,
           theme: 'colored',
         });
-        deleteHookForm.reset();
+        cancelSellHookForm.reset();
         setSelectedUnitId(null);
-        setOpenDeleteModal(false);
+        setOpenCancelSellModal(false);
       }
     } catch (error: Error | unknown) {
       ExceptionCatchResponse(error);

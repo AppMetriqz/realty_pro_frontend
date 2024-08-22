@@ -150,7 +150,8 @@ const TableShared = <T extends { id: string | number }>({
     setPage(0);
   };
 
-  const isSelected = (id: number | string) => selected?.indexOf(id) !== -1;
+  const isSelected = (id: number | string) =>
+    selected ? selected.indexOf(id) !== -1 : false;
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -199,6 +200,7 @@ const TableShared = <T extends { id: string | number }>({
             <TableBody>
               {visibleRows.map((row, index) => {
                 const isItemSelected = isSelected(row.id);
+                console.log({ isItemSelected });
                 const labelId = `enhanced-table-checkbox`;
                 return (
                   <TableRow
