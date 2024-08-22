@@ -1,7 +1,12 @@
-interface salesStatDto {
+interface SalesStatDto {
   year: number;
   month: number;
   total: number;
+}
+
+interface StatusDto {
+  amount: string | null,
+  qty: number
 }
 
 export interface FinancesDto {
@@ -15,9 +20,9 @@ export interface FinancesDto {
     financed: number;
   },
   status: {
-    available_unit: number | null;
-    sold_unit: number | null;
-    reserved_unit: number | null;
+    available_unit: StatusDto;
+    sold_unit: StatusDto;
+    reserved_unit: StatusDto;
   },
-  sales: salesStatDto[],
+  sales: SalesStatDto[],
 }

@@ -5,7 +5,7 @@ import PageContainer from '@/app/(DashboardLayout)/components/container/PageCont
 import React from 'react';
 import HeaderPage from "@/app/(DashboardLayout)/components/shared/HeaderPage";
 import {Filters} from "@/app/(DashboardLayout)/finance/components/Filters";
-import usePage from "@/app/(DashboardLayout)/finance/usePage";
+import usePage, {UsePageProps} from "@/app/(DashboardLayout)/finance/usePage";
 import {LineChart} from "@/app/(DashboardLayout)/components/chart/LineChart";
 import {StageChart} from "@/app/(DashboardLayout)/components/chart/StageChart";
 import {LineBarChart} from "@/app/(DashboardLayout)/components/chart/LineBarChart";
@@ -14,7 +14,7 @@ import {TableChart} from "@/app/(DashboardLayout)/components/chart/TableChart";
 
 
 const Finance = () => {
-    const usePageProps = usePage();
+    const usePageProps: UsePageProps = usePage();
 
     return (
         <PageContainer title="Finanzas" description="este es fianzas">

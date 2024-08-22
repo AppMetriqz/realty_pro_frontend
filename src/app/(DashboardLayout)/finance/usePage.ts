@@ -1,7 +1,6 @@
 import React, {Dispatch, SetStateAction, useState} from "react";
 import {apiFinances, apiProjects} from '@/api';
 import {CurrencyTypeDto, FinancesDto, ProjectDto} from '@/common/dto';
-import {SelectChangeEvent} from "@mui/material";
 import {UseQueryResult} from "@tanstack/react-query";
 import {useDebouncedCallback} from "use-debounce";
 import _ from "lodash";
@@ -24,22 +23,22 @@ type LineBarOptionsDto = {
     payments_received:number
 }
 
-export type UsePageProps = {
+export interface UsePageProps {
     handleRemoveProjects: (value:ProjectDto) => void;
     onSetSelectedProjects: Dispatch<SetStateAction<any>>
     projectText: string
     currency: string
     selectedProject: ProjectDto | null
     selectedProjects: ProjectDto[]
-    projects: UseQueryResult<any, ProjectDto>;
-    finances: UseQueryResult<any, FinancesDto>;
+    projects: UseQueryResult<ProjectDto[], Error>;
+    finances: UseQueryResult<FinancesDto, Error>;
     debouncedProjectText: Dispatch<SetStateAction<string>>;
-    handleChangeCurrency: (e: SelectChangeEvent) => void;
+    handleChangeCurrency: (e: React.ChangeEvent<HTMLInputElement>) => void;
     lineOptions: any;
     pieOptions: any;
     stageOptions: LineOptionsDto;
     lineBarOptions: LineBarOptionsDto;
-};
+}
 
 export default function usePage() {
 

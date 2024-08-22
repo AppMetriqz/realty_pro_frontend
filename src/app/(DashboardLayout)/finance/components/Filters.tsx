@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC, ReactNode } from 'react';
 import {Box, Chip,} from "@mui/material";
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';

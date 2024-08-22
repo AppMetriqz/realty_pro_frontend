@@ -11,7 +11,7 @@ interface FindAllDto {
 }
 
 export const useFindAll = (params: FindAllDto) => {
-  return useQuery<any, FinancesDto>({
+  return useQuery<FinancesDto, Error>({
     queryKey: [`${finances}`, params],
     queryFn: () => axiosInstance.get(`/${finances}`, { params }),
     ...QueriesOptions,

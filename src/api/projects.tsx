@@ -22,7 +22,7 @@ export interface FindAllAutocompleteDto {
 }
 
 export const useFindAll = (params: FindAllDto) => {
-  return useQuery<any, ProjectDto[]>({
+  return useQuery<ProjectDto[], Error>({
     queryKey: [`${projects}FindAll`, params],
     queryFn: () => axiosInstance.get(`/${projects}`, { params }),
     ...QueriesOptions,
@@ -30,7 +30,7 @@ export const useFindAll = (params: FindAllDto) => {
 };
 
 export const useFindAllAutocomplete = (params: FindAllAutocompleteDto) => {
-  return useQuery<any, ProjectDto[]>({
+  return useQuery<ProjectDto[], Error>({
     queryKey: [`${projects}FindAllAutocomplete`, params],
     queryFn: () => axiosInstance.get(`/${projects}/autocomplete`, { params }),
     ...QueriesOptions,
@@ -39,7 +39,7 @@ export const useFindAllAutocomplete = (params: FindAllAutocompleteDto) => {
 };
 
 export const useFindOne = (id: string | string[]) => {
-  return useQuery<any, ProjectDto>({
+  return useQuery<ProjectDto, Error>({
     queryKey: [projects, id],
     queryFn: () => axiosInstance.get(`/${projects}/${id}`),
     enabled: !!id,
