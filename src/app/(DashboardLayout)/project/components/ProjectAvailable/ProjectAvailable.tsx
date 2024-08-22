@@ -53,7 +53,9 @@ const ProjectAvailable: FC<{
   useProjectPageProps: UseProjectPageProps;
 }> = ({ useProjectPageProps }) => {
   const usePageProps = usePage();
-  const isPlot = useProjectPageProps.findProject.data.type === 'plot';
+  const isPlot =
+    useProjectPageProps.findProject.data &&
+    useProjectPageProps.findProject.data.type === 'plot';
 
   useEffect(() => {
     if (
@@ -76,6 +78,7 @@ const ProjectAvailable: FC<{
   useEffect(() => {
     if (
       !usePageProps.unitDetails.isLoading &&
+      usePageProps.unitDetails.data &&
       usePageProps.unitDetails.isSuccess
     ) {
       Object.keys(usePageProps.unitDetails.data).map((key) => {
@@ -85,7 +88,11 @@ const ProjectAvailable: FC<{
         );
       });
     }
-  }, [usePageProps.unitDetails.isLoading, usePageProps.openEditOneUnitModal]);
+  }, [
+    usePageProps.unitDetails.isLoading,
+    usePageProps.unitDetails.data,
+    usePageProps.openEditOneUnitModal,
+  ]);
 
   const headCells: Array<ColumnProps<AvailableTableData>> = [
     {

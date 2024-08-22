@@ -10,7 +10,7 @@ import {
   sellValidationSchema,
 } from './core';
 import { UnitStatus } from '@/common/constants';
-import { apiContacts, apiPropertyFeatures, apiUnits } from '@/api';
+import { apiContacts, apiPropertyFeatures, apiSales, apiUnits } from '@/api';
 import { UseQueryResult } from '@tanstack/react-query';
 import { GetContactDto, GetUnitDto } from '@/common/dto';
 import { useParams } from 'next/navigation';
@@ -26,8 +26,6 @@ import {
 } from '../../[slug]/core';
 import { ResultFindAllProjectFeatures } from '@/api/project-features';
 import { SellFormType } from '@/common/types/SellTypes';
-import { apiSales } from '@/api/sales';
-import { AvailableTableData } from './ProjectAvailable';
 
 export type UpdateUnitProjectProps = {
   hookForm: UseFormReturn<UnitFormInput>;
