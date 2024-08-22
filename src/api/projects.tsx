@@ -34,7 +34,6 @@ export const useFindAllAutocomplete = (params: FindAllAutocompleteDto) => {
     queryKey: [`${projects}FindAllAutocomplete`, params],
     queryFn: () => axiosInstance.get(`/${projects}/autocomplete`, { params }),
     ...QueriesOptions,
-    enabled: _.size(params.description) > 1,
   });
 };
 
