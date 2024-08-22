@@ -3,6 +3,7 @@ import {Box, Typography,} from "@mui/material";
 import {UsePageProps} from "@/app/(DashboardLayout)/finance/usePage";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
+import {formatter} from "@/common/constants";
 
 interface FiltersProps {
     usePageProps: UsePageProps
@@ -26,76 +27,39 @@ export const PieChart = ({usePageProps}: FiltersProps) => {
                     options={usePageProps.pieOptions}
                 />
                 <Box width={'295px'} display={'flex'} flexDirection={'column'} ml={"20px"} gap={'20px'} alignItems="flex-start">
-
-                    <Box width={'100%'}  display={'flex'} alignItems="center" >
-                        <Box sx={{width: 30, height: 30, borderRadius: '100%', backgroundColor: "#E7E7E7"}} mr={"10px"}></Box>
-                        <Box width={'100%'} display={'flex'} alignItems="center" justifyContent="space-between">
-                            <Typography
-                                color="#505050"
-                                fontSize="16px"
-                                fontWeight={400}
-                                letterSpacing={'0.5px'}
-                            >
-                                Disponible:
-                            </Typography>
-                            <Typography
-                                color="#505050"
-                                fontSize="16px"
-                                fontWeight={600}
-                                letterSpacing={'0.5px'}
-                            >
-                                US${available_unit}
-                            </Typography>
-                        </Box>
-                    </Box>
-
-                    <Box width={'100%'}  display={'flex'} alignItems="center" >
-                        <Box sx={{width: 30, height: 30, borderRadius: '100%', backgroundColor: "#81E7AC"}} mr={"10px"}></Box>
-                        <Box width={'100%'} display={'flex'} alignItems="center" justifyContent="space-between">
-                            <Typography
-                                color="#505050"
-                                fontSize="16px"
-                                fontWeight={400}
-                                letterSpacing={'0.5px'}
-                            >
-                                Vendido:
-                            </Typography>
-                            <Typography
-                                color="#505050"
-                                fontSize="16px"
-                                fontWeight={600}
-                                letterSpacing={'0.5px'}
-                            >
-                                US${sold_unit}
-                            </Typography>
-                        </Box>
-                    </Box>
-
-                    <Box width={'100%'}  display={'flex'} alignItems="center" >
-                        <Box sx={{width: 30, height: 30, borderRadius: '100%', backgroundColor: "#FFE4CF"}} mr={"10px"}></Box>
-                        <Box width={'100%'} display={'flex'} alignItems="center" justifyContent="space-between">
-                            <Typography
-                                color="#505050"
-                                fontSize="16px"
-                                fontWeight={400}
-                                letterSpacing={'0.5px'}
-                            >
-                                Reservado:
-                            </Typography>
-                            <Typography
-                                color="#505050"
-                                fontSize="16px"
-                                fontWeight={600}
-                                letterSpacing={'0.5px'}
-                            >
-                                US${reserved_unit}
-                            </Typography>
-                        </Box>
-                    </Box>
-
+                    <TextAmount name={"Disponible"} amount={available_unit} currency={usePageProps.currency} color={"#E7E7E7"} />
+                    <TextAmount name={"Vendido"} amount={sold_unit} currency={usePageProps.currency} color={"#81E7AC"} />
+                    <TextAmount name={"Reservado"} amount={reserved_unit} currency={usePageProps.currency} color={"#FFE4CF"} />
                 </Box>
             </Box>
         </>
 
     );
 };
+
+
+const TextAmount =({name, currency, amount, color}:{name:string, currency:string, amount:number, color:string})=>{
+    return (
+        <Box width={'100%'}  display={'flex'} alignItems="center" >
+            <Box sx={{width: 30, height: 30, borderRadius: '100%', backgroundColor: color}} mr={"10px"}></Box>
+            <Box width={'100%'} display={'flex'} alignItems="center" justifyContent="space-between">
+                <Typography
+                    color="#505050"
+                    fontSize="16px"
+                    fontWeight={400}
+                    letterSpacing={'0.5px'}
+                >
+                    {name}:
+                </Typography>
+                <Typography
+                    color="#505050"
+                    fontSize="16px"
+                    fontWeight={600}
+                    letterSpacing={'0.5px'}
+                >
+                    {currency}${formatter.format(amount)}
+                </Typography>
+            </Box>
+        </Box>
+    )
+}

@@ -14,8 +14,6 @@ import {TableChart} from "@/app/(DashboardLayout)/components/chart/TableChart";
 
 
 const Finance = () => {
-
-
     const usePageProps = usePage();
 
     return (

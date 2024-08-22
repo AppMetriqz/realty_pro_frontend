@@ -23,6 +23,6 @@ export enum PropertyTypeDto {
 }
 
 export enum CurrencyTypeDto {
-  USD = 'US',
-  DOP = 'RD',
+  US = 'US',
+  RD = 'RD',
 }

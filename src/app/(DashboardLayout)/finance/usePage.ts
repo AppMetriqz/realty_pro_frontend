@@ -1,31 +1,44 @@
 import React, {Dispatch, SetStateAction, useState} from "react";
 import {apiFinances, apiProjects} from '@/api';
-import {FinancesDto, ProjectDto} from '@/common/dto';
+import {CurrencyTypeDto, FinancesDto, ProjectDto} from '@/common/dto';
 import {SelectChangeEvent} from "@mui/material";
 import {UseQueryResult} from "@tanstack/react-query";
 import {useDebouncedCallback} from "use-debounce";
 import _ from "lodash";
 import {
-    LineBarOptions,
     LineOptions,
     PieOptions,
-    StageOptions
 } from "@/app/(DashboardLayout)/components/chart/chartsOptions";
 import {DateTime} from "luxon";
 
+
+type LineOptionsDto = {
+    color: string
+    name: string
+    value: number
+}[]
+
+type LineBarOptionsDto = {
+    total_capacity:number
+    pending_payments:number
+    payments_received:number
+}
+
 export type UsePageProps = {
-    handleRemoveProjects?: (e: SelectChangeEvent) => void;
-    onSetSelectedProjects?: Dispatch<SetStateAction<any>>
-    projectText?: string
-    selectedProject?: ProjectDto | null
-    selectedProjects?: ProjectDto[]
-    projects?: UseQueryResult<any, ProjectDto>;
-    finances?: UseQueryResult<any, FinancesDto>;
-    debouncedProjectText?: Dispatch<SetStateAction<string>>;
+    handleRemoveProjects: (value:ProjectDto) => void;
+    onSetSelectedProjects: Dispatch<SetStateAction<any>>
+    projectText: string
+    currency: string
+    selectedProject: ProjectDto | null
+    selectedProjects: ProjectDto[]
+    projects: UseQueryResult<any, ProjectDto>;
+    finances: UseQueryResult<any, FinancesDto>;
+    debouncedProjectText: Dispatch<SetStateAction<string>>;
+    handleChangeCurrency: (e: SelectChangeEvent) => void;
     lineOptions: any;
-    stageOptions: any;
-    lineBarOptions: any;
     pieOptions: any;
+    stageOptions: LineOptionsDto;
+    lineBarOptions: LineBarOptionsDto;
 };
 
 export default function usePage() {
@@ -33,12 +46,17 @@ export default function usePage() {
     const [selectedProjects, setSelectedProjects] = useState<ProjectDto[]>([]);
     const [selectedProject, setSelectedProject] = useState<ProjectDto | null>(null);
     const [projectText, setProjectText] = useState<string>("");
-    const [lineOptions, setLineOptions] = React.useState(LineOptions);
-    const [stageOptions, setStageOptions] = React.useState(StageOptions);
-    const [lineBarOptions, setLineBarOptions] = React.useState(LineBarOptions);
-    const [pieOptions, setPieOptions] = React.useState(PieOptions);
+    const [lineOptions, setLineOptions] = React.useState<any>(LineOptions);
+    const [stageOptions, setStageOptions] = React.useState<LineOptionsDto | never[]>([]);
+    const [lineBarOptions, setLineBarOptions] = React.useState<LineBarOptionsDto>({
+        total_capacity:0,
+        pending_payments:0,
+        payments_received :0,
+    });
+    const [pieOptions, setPieOptions] = React.useState<any>(PieOptions);
+    const [currency, setCurrency] = React.useState<keyof typeof CurrencyTypeDto>("US");
 
-    const projects = apiProjects.useFindAllAutocomplete({description: projectText});
+    const projects = apiProjects.useFindAllAutocomplete({description: projectText, currencyType:currency});
     const finances = apiFinances.useFindAll({projectIds: _.join(_.map(selectedProjects, 'project_id'), ',')});
 
 
@@ -60,56 +78,18 @@ export default function usePage() {
             }
 
             const seriesStage = [
+                { color: '#FFF1E6', name: 'Separaciones', value:financesData.stages.separations },
+                { color: '#C2E6FA', name: 'Planes de Pago en Proceso', value:financesData.stages.payment_plans_in_progress },
+                { color: '#E0F5E7', name: 'Planes de Pago Finalizado', value:financesData.stages.payment_plans_completed },
+                { color: '#81E7AC', name: 'Financiado', value:financesData.stages.financed },
+            ];
+
+            const seriesLineBar =
                 {
-                    lineWidth: 0,
-                    name: 'Separaciones',
-                    color: "#FFF1E6",
-                    data: [financesData.stages.separations]
-                },
-                {
-                    lineWidth: 0,
-                    name: 'Planes de Pago en Proceso',
-                    color: "#C2E6FA",
-                    data: [financesData.stages.payment_plans_in_progress]
-                },
-                {
-                    lineWidth: 0,
-                    name: 'Planes de Pago Finalizado',
-                    color: "#E0F5E7",
-                    data: [financesData.stages.payment_plans_completed]
-                },
-                {
-                    lineWidth: 0,
-                    name: 'Financiado',
-                    color: "#81E7AC",
-                    data: [financesData.stages.financed]
+                    total_capacity:financesData.total_capacity,
+                    pending_payments:financesData.pending_payments,
+                    payments_received:financesData.payments_received,
                 }
-            ]
-
-            const seriesLineBar = [
-                {
-                    showInLegend: false,
-                    name: 'Capacidad Total',
-                    data: [financesData.total_capacity],
-                    color: "#E8E8E8",
-                    zIndex: 3
-                },
-                {
-                    showInLegend: false,
-                    name: 'Pagos Pendiente',
-                    data: [financesData.pending_payments],
-                    color: "#C2E6FA",
-                    zIndex: 2
-                },
-                {
-                    showInLegend: false,
-                    name: 'Pagos Recibidos',
-                    data: [financesData.payments_received],
-                    color: "#70E798",
-                    zIndex: 1
-                },
-            ]
-
 
             const available_unit = financesData.status.available_unit?.amount ?? 0
             const sold_unit = financesData.status.sold_unit?.amount ?? 0
@@ -124,16 +104,25 @@ export default function usePage() {
                 ]
             }]
 
-            setLineOptions(prevState => ({...prevState, series: seriesLine, xAxis: xAxisLine}))
-            setStageOptions(prevState => ({...prevState, series: seriesStage}))
-            setLineBarOptions(prevState => ({...prevState, series: seriesLineBar}))
-            setPieOptions(prevState => ({...prevState, series: seriesPie}))
+            setLineBarOptions(seriesLineBar)
+            setStageOptions(seriesStage)
+            setLineOptions((prevState: any) => ({...prevState, series: seriesLine, xAxis: xAxisLine}))
+            setPieOptions((prevState:any) => ({...prevState, series: seriesPie}))
         }
     }, [finances.isSuccess, finances.data])
 
 
     const handleRemoveProjects = (value: ProjectDto) => {
         setSelectedProjects(_.filter(selectedProjects, (item) => item.project_id !== value.project_id));
+    };
+
+
+    const handleChangeCurrency = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const target = event.target as HTMLInputElement
+        const value = target.value as keyof typeof CurrencyTypeDto
+
+        setSelectedProjects([])
+        setCurrency(value);
     };
 
     const onSetSelectedProjects = (value: ProjectDto) => {
@@ -158,5 +147,7 @@ export default function usePage() {
         onSetSelectedProjects,
         debouncedProjectText,
         selectedProject,
+        currency,
+        handleChangeCurrency,
     };
 }

@@ -1,6 +1,6 @@
 'use client';
 import axiosInstance from '@/config/api/api.config';
-import { ProjectDto, ProjectSummaryDto, SortByDto } from '@/common/dto';
+import {CurrencyTypeDto, ProjectDto, ProjectSummaryDto, SortByDto} from '@/common/dto';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { QueriesOptions } from '@/common/constants/react-query';
 import _ from 'lodash';
@@ -18,6 +18,7 @@ interface FindAllDto {
 
 export interface FindAllAutocompleteDto {
   description: string;
+  currencyType: keyof typeof CurrencyTypeDto;
 }
 
 export const useFindAll = (params: FindAllDto) => {
