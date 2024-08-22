@@ -12,6 +12,7 @@ import { Cover } from '@/app/(DashboardLayout)/project/components/Cover';
 import { TextFieldSharedController } from '@/common/components/textField/TextFieldShared';
 import { SelectSharedController } from '@/common/components/textField/SelectShared';
 import { AutoCompleteSharedController } from '@/common/components/textField/AutoCompleteShared';
+import { handleOnClose } from '@/common/utils/dialog';
 
 type Props = {
   open: boolean;
@@ -33,7 +34,7 @@ export const DialogCreate = ({
       fullWidth={true}
       maxWidth={'md'}
       open={open}
-      onClose={() => onClose(false)}
+      onClose={(e, reason) => handleOnClose(e, reason, onClose)}
       component="form"
       onSubmit={hookForm.handleSubmit(usePageProps.onSubmit)}
     >

@@ -8,6 +8,13 @@ export const deleteValidationSchema = yup.object({
     .required(ErrorMsg.required),
   notes: yup.string().required(ErrorMsg.required),
 });
+export const cancelSaleValidationSchema = yup.object({
+  notes: yup.string().required(ErrorMsg.required),
+});
+
+export const cancelSaleFormDefaultValues = {
+  notes: '',
+};
 
 export const deleteFormDefaultValues = {
   deleteInput: '',

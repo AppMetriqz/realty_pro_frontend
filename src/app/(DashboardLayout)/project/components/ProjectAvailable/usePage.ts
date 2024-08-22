@@ -4,6 +4,8 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { useYupValidationResolver } from '@/common/utils/formHook';
 import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
 import {
+  cancelSaleFormDefaultValues,
+  cancelSaleValidationSchema,
   deleteFormDefaultValues,
   deleteValidationSchema,
   sellFormDefaultValues,
@@ -25,7 +27,7 @@ import {
   updateUnitValidationSchema,
 } from '../../[slug]/core';
 import { ResultFindAllProjectFeatures } from '@/api/project-features';
-import { SellFormType } from '@/common/types/SellTypes';
+import { CancelUnitSaleType, SellFormType } from '@/common/types/SellTypes';
 
 export type UpdateUnitProjectProps = {
   hookForm: UseFormReturn<UnitFormInput>;
@@ -77,6 +79,11 @@ export type UsePageProjectAvailableProps = {
   sellerAutocompleteContacts: UseQueryResult<any, GetContactDto[]>;
   setClientDescription: Dispatch<SetStateAction<string>>;
   clientAutocompleteContacts: UseQueryResult<any, GetContactDto[]>;
+  handleClickCancelSale: (id: string | number) => void;
+  onSubmitCancelSale: SubmitHandler<CancelUnitSaleType>;
+  openCancelSellModal: boolean;
+  onCloseCancelSellModal: () => void;
+  cancelSellHookForm: UseFormReturn<CancelUnitSaleType>;
 } & UpdateUnitProjectProps;
 
 export default function usePage(): UsePageProjectAvailableProps {
@@ -87,6 +94,7 @@ export default function usePage(): UsePageProjectAvailableProps {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openSellModal, setOpenSellModal] = useState(false);
+  const [openCancelSellModal, setOpenCancelSellModal] = useState(false);
   const [openEditOneUnitModal, setOpenEditOneUnitModal] = useState(false);
   const [openEditMultipleUnitModal, setOpenEditMultipleUnitModal] =
     useState(false);
@@ -104,6 +112,9 @@ export default function usePage(): UsePageProjectAvailableProps {
   const [clientDescription, setClientDescription] = useState('');
 
   const deleteResolver = useYupValidationResolver(deleteValidationSchema);
+  const caancelSellResolver = useYupValidationResolver(
+    cancelSaleValidationSchema
+  );
   const sellResolver = useYupValidationResolver(sellValidationSchema);
   const unitResolver = useYupValidationResolver(updateUnitValidationSchema);
   const multipleUnitResolver = useYupValidationResolver(
@@ -113,6 +124,10 @@ export default function usePage(): UsePageProjectAvailableProps {
   const deleteHookForm = useForm<DeleteFormType>({
     resolver: deleteResolver,
     defaultValues: deleteFormDefaultValues,
+  });
+  const cancelSellHookForm = useForm<CancelUnitSaleType>({
+    resolver: caancelSellResolver,
+    defaultValues: cancelSaleFormDefaultValues,
   });
   const sellHookForm = useForm<SellFormType>({
     resolver: sellResolver,
@@ -191,6 +206,7 @@ export default function usePage(): UsePageProjectAvailableProps {
   const deleteUnit = apiUnits.useDelete(selectedUnitId!);
   const updateUnit = apiUnits.useUpdate();
   const updateAllUnit = apiUnits.useUpdateAll();
+  const cancelUnitSale = apiUnits.useCancelSaleUnit();
   const createSale = apiSales.useCreate();
 
   const onSubmitUnit: SubmitHandler<UnitFormInput> = async (data) => {
@@ -212,8 +228,8 @@ export default function usePage(): UsePageProjectAvailableProps {
           progress: undefined,
           theme: 'colored',
         });
-        unitHookForm.reset();
-        setOpenEditOneUnitModal(false);
+        cancelSellHookForm.reset();
+        setOpenCancelSellModal(false);
       }
     } catch (error: Error | unknown) {
       ExceptionCatchResponse(error);
@@ -226,6 +242,14 @@ export default function usePage(): UsePageProjectAvailableProps {
     }
     setOpenDeleteModal(false);
     deleteHookForm.reset();
+  };
+
+  const onCloseCancelSellModal = () => {
+    if (!showView) {
+      setSelectedUnitId(null);
+    }
+    setOpenCancelSellModal(false);
+    cancelSellHookForm.reset();
   };
 
   const onCloseSellModal = () => {
@@ -336,6 +360,35 @@ export default function usePage(): UsePageProjectAvailableProps {
     }
   };
 
+  const onSubmitCancelSale: SubmitHandler<CancelUnitSaleType> = async (
+    data
+  ) => {
+    try {
+      console.log(unitDetails.data);
+      const project = await cancelUnitSale.mutateAsync({
+        sale_id: unitDetails.data.sale.sale_id,
+        notes: data.notes,
+      });
+      if (!!project) {
+        toast.success(`Venta cancelada satisfactoriamente.`, {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'colored',
+        });
+        deleteHookForm.reset();
+        setSelectedUnitId(null);
+        setOpenDeleteModal(false);
+      }
+    } catch (error: Error | unknown) {
+      ExceptionCatchResponse(error);
+    }
+  };
+
   const handleClickView = async (id: string | number) => {
     setSelectedUnitId(id);
     setShowView(true);
@@ -354,6 +407,11 @@ export default function usePage(): UsePageProjectAvailableProps {
   const handleClickDelete = (id: string | number) => {
     setSelectedUnitId(id);
     setOpenDeleteModal(true);
+  };
+
+  const handleClickCancelSale = (id: string | number) => {
+    setSelectedUnitId(id);
+    setOpenCancelSellModal(true);
   };
 
   return {
@@ -403,5 +461,10 @@ export default function usePage(): UsePageProjectAvailableProps {
     sellerAutocompleteContacts,
     setClientDescription,
     clientAutocompleteContacts,
+    handleClickCancelSale,
+    onSubmitCancelSale,
+    openCancelSellModal,
+    onCloseCancelSellModal,
+    cancelSellHookForm,
   };
 }

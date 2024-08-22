@@ -11,6 +11,7 @@ import { TextFieldSharedController } from '@/common/components/textField/TextFie
 import { SelectSharedController } from '@/common/components/textField/SelectShared';
 import { UsePageProjectAvailableProps } from './ProjectAvailable/usePage';
 import { formatCurrency } from '@/common/utils/numericHelpers';
+import { handleOnClose } from '@/common/utils/dialog';
 
 type Props = {
   open: boolean;
@@ -51,7 +52,7 @@ export const DialogEditMultipleUnit = ({
       fullWidth={true}
       maxWidth={'md'}
       open={open}
-      onClose={onClose}
+      onClose={(e, reason) => handleOnClose(e, reason, onClose)}
       component="form"
       onSubmit={multipleUnitHookForm.handleSubmit(
         usePageProps.onSubmitMultipleUnit

@@ -13,6 +13,7 @@ import {
   formatCurrency,
   isValidNumberInput,
 } from '@/common/utils/numericHelpers';
+import { handleOnClose } from '@/common/utils/dialog';
 
 type Props = {
   open: boolean;
@@ -28,7 +29,7 @@ export const DialogCreateSell = ({ open, onClose, usePageProps }: Props) => {
       fullWidth={true}
       maxWidth={'sm'}
       open={open}
-      onClose={() => onClose(false)}
+      onClose={(e, reason) => handleOnClose(e, reason, onClose)}
       component="form"
       onSubmit={sellHookForm.handleSubmit(usePageProps.onSubmitSell)}
     >

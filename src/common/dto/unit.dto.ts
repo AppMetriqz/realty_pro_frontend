@@ -45,6 +45,9 @@ export interface GetUnitDto {
   price: string;
   status: string;
   cover?: File;
+  sale?: {
+    sale_id?: number;
+  };
   is_active?: boolean;
   created_at: string;
   updated_at: string;

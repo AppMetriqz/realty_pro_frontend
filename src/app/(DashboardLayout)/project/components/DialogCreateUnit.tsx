@@ -16,6 +16,7 @@ import {
   isValidNumberInput,
 } from '@/common/utils/numericHelpers';
 import { CreateUnitProjectProps } from '../[slug]/usePage';
+import { handleOnClose } from '@/common/utils/dialog';
 
 type Props<T> = {
   isEdit?: boolean;
@@ -31,19 +32,15 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
   usePageProps,
 }: Props<T>) => {
   const { hookForm } = usePageProps;
-  const isPlot = hookForm.watch('type') === 'plot';
-  const [meters_of_land, price_per_meter] = hookForm.watch([
-    'meters_of_land',
-    'price_per_meter',
-  ]);
-
-  console.log('getvalues', hookForm.getValues());
+  const isPlot =
+    hookForm.watch('type') === 'plot' || hookForm.getValues('type') === 'plot';
 
   if (isPlot) {
     hookForm.setValue(
       'price',
       formatCurrency(
-        parseFloat(meters_of_land || '0') * parseFloat(price_per_meter || '0')
+        parseFloat(hookForm.watch('meters_of_land') || '0') *
+          parseFloat(hookForm.watch('price_per_meter') || '0')
       )
     );
   }
@@ -63,7 +60,7 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
       fullWidth={true}
       maxWidth={'md'}
       open={open}
-      onClose={() => onClose(false)}
+      onClose={(e, reason) => handleOnClose(e, reason, onClose)}
       component="form"
       onSubmit={hookForm.handleSubmit(usePageProps.onSubmitUnit)}
     >

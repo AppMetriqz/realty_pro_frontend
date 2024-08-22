@@ -6,6 +6,7 @@ import { QueriesOptions } from '@/common/constants/react-query';
 import _ from 'lodash';
 import { projects } from './projects';
 import { useRouter } from 'next/navigation';
+import { sales } from './sales';
 
 export const units = 'units';
 
@@ -109,6 +110,23 @@ export const useDelete = (id: string | number | string[]) => {
   });
 };
 
+export const useCancelSaleUnit = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: [`${units}cancel-sale`],
+    mutationFn: (data: {
+      notes: string;
+      sale_id: string | number | string[];
+    }) =>
+      axiosInstance.delete(`/${sales}/${data.sale_id}`, {
+        data: { notes: data.notes },
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [`${units}FindAll`] });
+    },
+  });
+};
+
 export const apiUnits = {
   useFindAll,
   useFindAllAutocomplete,
@@ -117,4 +135,5 @@ export const apiUnits = {
   useUpdate,
   useUpdateAll,
   useDelete,
+  useCancelSaleUnit,
 };

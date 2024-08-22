@@ -42,9 +42,9 @@ const UnitDetails: FC<UnitDetailType> = ({
             <Typography variant="h3">
               {getUnitStatus(property.status ?? '')}&nbsp;
               {property.status === 'sold'
-                ? `${property.client?.first_name ?? ''} ${
+                ? `(${property.client?.first_name ?? ''} ${
                     property.client?.last_name ?? ''
-                  }`
+                  })`
                 : ''}
             </Typography>
           </Box>
@@ -200,11 +200,11 @@ const UnitDetails: FC<UnitDetailType> = ({
                 Estatus:
               </Typography>
               <Typography variant="h3">
-                {getUnitStatus(property.status ?? '')}
+                {getUnitStatus(property.status ?? '')}&nbsp;
                 {property.status === 'sold'
-                  ? `${property.client?.first_name ?? ''} ${
+                  ? `(${property.client?.first_name ?? ''} ${
                       property.client?.last_name ?? ''
-                    }`
+                    })`
                   : ''}
               </Typography>
             </Box>

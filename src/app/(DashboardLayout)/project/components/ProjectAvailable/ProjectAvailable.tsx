@@ -37,6 +37,7 @@ import { UnitFormInput } from '../../[slug]/core';
 import { DialogEditMultipleUnit } from '../DialogEditMultipleUnit';
 import { UseProjectPageProps } from '../../[slug]/usePage';
 import DoDisturbOffIcon from '@mui/icons-material/DoDisturbOff';
+import { DialogCancelSell } from '../DialogCancelSell';
 
 export interface AvailableTableData {
   id: string | number;
@@ -62,12 +63,14 @@ const ProjectAvailable: FC<{
       !useProjectPageProps.findProject.isLoading &&
       useProjectPageProps.findProject.isSuccess
     ) {
-      Object.keys(useProjectPageProps.findProject.data).map((key) => {
-        usePageProps.multipleUnitHookForm.setValue(
-          'type',
-          useProjectPageProps.findProject.data.type
-        );
-      });
+      usePageProps.multipleUnitHookForm.setValue(
+        'type',
+        useProjectPageProps.findProject.data.type
+      );
+      usePageProps.hookForm.setValue(
+        'type',
+        useProjectPageProps.findProject.data.type
+      );
     }
   }, [
     useProjectPageProps.findProject.isLoading,
@@ -78,7 +81,6 @@ const ProjectAvailable: FC<{
   useEffect(() => {
     if (
       !usePageProps.unitDetails.isLoading &&
-      usePageProps.unitDetails.data &&
       usePageProps.unitDetails.isSuccess
     ) {
       Object.keys(usePageProps.unitDetails.data).map((key) => {
@@ -88,11 +90,7 @@ const ProjectAvailable: FC<{
         );
       });
     }
-  }, [
-    usePageProps.unitDetails.isLoading,
-    usePageProps.unitDetails.data,
-    usePageProps.openEditOneUnitModal,
-  ]);
+  }, [usePageProps.unitDetails.isLoading, usePageProps.openEditOneUnitModal]);
 
   const headCells: Array<ColumnProps<AvailableTableData>> = [
     {
@@ -186,7 +184,7 @@ const ProjectAvailable: FC<{
                   ),
                   label: isSold ? 'Cancelar Venta' : 'Vender',
                   onClick: isSold
-                    ? () => {}
+                    ? () => usePageProps.handleClickCancelSale(record.id)
                     : () => usePageProps.handleClickSell(record.id),
                 },
                 !isSold
@@ -236,7 +234,11 @@ const ProjectAvailable: FC<{
                   )
                 }
                 onClickEdit={usePageProps.onClickEditUnit}
-                deleteLabel="Borrar Unidad"
+                deleteLabel={
+                  usePageProps.unitDetails.data.status !== 'sold'
+                    ? 'Borrar Unidad'
+                    : undefined
+                }
                 onClickBack={usePageProps.goBack}
                 property={mapUnitToProperty(
                   usePageProps.unitDetails.data,
@@ -390,6 +392,16 @@ const ProjectAvailable: FC<{
         usePageProps={usePageProps}
         open={usePageProps.openEditMultipleUnitModal}
         onClose={usePageProps.onCloseEditMultipleUnitModal}
+      />
+      <DialogCancelSell
+        open={usePageProps.openCancelSellModal}
+        onClose={usePageProps.onCloseCancelSellModal}
+        usePageProps={usePageProps}
+        name={
+          usePageProps.unitDetails.data
+            ? usePageProps.unitDetails.data.name
+            : ''
+        }
       />
     </>
   );

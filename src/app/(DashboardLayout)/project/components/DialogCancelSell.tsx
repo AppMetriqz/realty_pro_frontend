@@ -6,37 +6,36 @@ import { Grid, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
 import { TextFieldSharedController } from '@/common/components/textField/TextFieldShared';
+import { handleOnClose } from '@/common/utils/dialog';
 
 type Props = {
   open: boolean;
   onClose: (open: boolean) => void;
   usePageProps: any;
-  type?: string;
   name: string;
-  validationMessage: string;
 };
 
 export const DialogCancelSell = ({
   open,
   onClose,
   usePageProps,
-  type = 'Venta',
   name,
-  validationMessage,
 }: Props) => {
-  const { deleteHookForm } = usePageProps;
+  const { cancelSellHookForm } = usePageProps;
   return (
     <Dialog
       fullWidth={true}
       maxWidth={'xs'}
       open={open}
-      onClose={() => onClose(false)}
+      onClose={(e, reason) => handleOnClose(e, reason, onClose)}
       component="form"
-      onSubmit={deleteHookForm.handleSubmit(usePageProps.onSubmitDelete)}
+      onSubmit={cancelSellHookForm.handleSubmit(
+        usePageProps.onSubmitCancelSale
+      )}
     >
       <DialogTitle sx={{ py: '25px', px: '20px' }} fontSize={'18px'}>
         <>
-          Borrar {type}:
+          Cancelar Venta:
           <span style={{ fontWeight: '600' }}>
             {name ? ` ${name}` : null}&nbsp;
             {usePageProps.selectedUnits?.length > 0
@@ -49,19 +48,11 @@ export const DialogCancelSell = ({
         sx={{ display: 'flex', justifyContent: 'center', px: '20px' }}
       >
         <Grid container xs={12}>
-          <Grid sx={{ mb: 4 }} item xs={12} md={12}>
-            <TextFieldSharedController
-              label={`Escribir “${validationMessage}”:`}
-              name={'deleteInput'}
-              hookForm={deleteHookForm}
-              labelStyle={{ mb: '20px' }}
-            />
-          </Grid>
           <Grid item xs={12} md={12}>
             <TextFieldSharedController
               label={'Nota:'}
               name={'notes'}
-              hookForm={deleteHookForm}
+              hookForm={cancelSellHookForm}
               labelStyle={{ mb: '15px' }}
               textFieldProps={{
                 multiline: true,
@@ -76,7 +67,7 @@ export const DialogCancelSell = ({
             mt={3}
             fontSize="16px"
           >
-            Si borras esta venta, cualquier&nbsp;
+            Si cancelas esta venta, cualquier&nbsp;
             <span style={{ fontWeight: '600' }}>plan de pago</span> <br />
             asociado con esta venta sera&nbsp;
             <span style={{ fontWeight: '600' }}>cancelado</span>.
@@ -97,7 +88,7 @@ export const DialogCancelSell = ({
           variant="contained"
           type="submit"
         >
-          Borrar
+          Continuar
         </Button>
       </DialogActions>
     </Dialog>

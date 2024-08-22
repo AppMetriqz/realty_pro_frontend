@@ -6,3 +6,8 @@ export type SellFormType = {
   commission: number;
   notes?: string;
 };
+
+export type CancelUnitSaleType = {
+  notes: string;
+  sale_id: string | number | string[];
+};
