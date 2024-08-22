@@ -200,7 +200,6 @@ const TableShared = <T extends { id: string | number }>({
             <TableBody>
               {visibleRows.map((row, index) => {
                 const isItemSelected = isSelected(row.id);
-                console.log({ isItemSelected });
                 const labelId = `enhanced-table-checkbox`;
                 return (
                   <TableRow
