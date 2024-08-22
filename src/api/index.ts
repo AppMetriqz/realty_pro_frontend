@@ -4,5 +4,6 @@ export { apiProjects } from './projects';
 export { apiPropertyFeatures } from './config/propertyFeatures';
 export { apiUnits } from './units';
 export { apiUser } from './user';
+export { apiSales } from './sales';
 export { apiFinances } from './finances';
 export { apiDesktop } from './desktop';
