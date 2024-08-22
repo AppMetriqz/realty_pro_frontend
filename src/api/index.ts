@@ -5,3 +5,4 @@ export { apiPropertyFeatures } from './config/propertyFeatures';
 export { apiUnits } from './units';
 export { apiUser } from './user';
 export { apiFinances } from './finances';
+export { apiDesktop } from './desktop';
