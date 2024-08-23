@@ -347,6 +347,7 @@ const ProjectAvailable: FC<{
                 rows={usePageProps.availableUnits.data.rows.map(
                   mapUnitToAvailableTable
                 )}
+                count={usePageProps.availableUnits.data.count}
                 orderByValue="name"
                 page={usePageProps.page}
                 setPage={usePageProps.setPage}

@@ -29,7 +29,11 @@ export type UsePageProjectAvailableProps = {
   page: number;
   setPage: Dispatch<SetStateAction<number>>;
   handleClickView: (id: number | string) => void;
-  handleClickDelete: (id: number | string) => void;
+  handleClickDelete: (id: number | string, unitName: string) => void;
+  selectedSaleToDelete: {
+    id: string | number | string[] | null;
+    unitName: string;
+  } | null;
   onCloseDeleteModal: () => void;
   openDeleteModal: boolean;
   setOpenDeleteModal: Dispatch<SetStateAction<boolean>>;
@@ -48,10 +52,13 @@ export default function usePage(): UsePageProjectAvailableProps {
   const [selectedUnitId, setSelectedUnitId] = useState<
     string | number | string[] | null
   >(null);
+  const [selectedSaleToDelete, setSelectedSaleToDelete] = useState<{
+    id: string | number | string[] | null;
+    unitName: string;
+  } | null>(null);
   const [selectedStages, setSelectedStages] = useState<SaleStagesType[]>([]);
 
   const deleteResolver = useYupValidationResolver(deleteValidationSchema);
-  const unitResolver = useYupValidationResolver(updateUnitValidationSchema);
 
   const deleteHookForm = useForm<DeleteFormType>({
     resolver: deleteResolver,
@@ -106,11 +113,11 @@ export default function usePage(): UsePageProjectAvailableProps {
   });
 
   const unitDetails = apiUnits.useFindOne(selectedUnitId!);
-  const deleteUnit = apiUnits.useDelete(selectedUnitId!);
+  const deleteSale = apiSales.useDelete(selectedSaleToDelete?.id!);
 
   const onCloseDeleteModal = () => {
     if (!showView) {
-      setSelectedUnitId(null);
+      setSelectedSaleToDelete(null);
     }
     setOpenDeleteModal(false);
     deleteHookForm.reset();
@@ -118,7 +125,7 @@ export default function usePage(): UsePageProjectAvailableProps {
 
   const onSubmitDelete: SubmitHandler<DeleteFormType> = async (data) => {
     try {
-      const project = await deleteUnit.mutateAsync({ notes: data.notes });
+      const project = await deleteSale.mutateAsync({ notes: data.notes });
       if (!!project) {
         toast.success(`Unidad Eliminada.`, {
           position: 'top-right',
@@ -131,7 +138,7 @@ export default function usePage(): UsePageProjectAvailableProps {
           theme: 'colored',
         });
         deleteHookForm.reset();
-        setSelectedUnitId(null);
+        setSelectedSaleToDelete(null);
         setOpenDeleteModal(false);
       }
     } catch (error: Error | unknown) {
@@ -144,8 +151,8 @@ export default function usePage(): UsePageProjectAvailableProps {
     setShowView(true);
   };
 
-  const handleClickDelete = (id: number | string) => {
-    setSelectedUnitId(id);
+  const handleClickDelete = (id: number | string, unitName: string) => {
+    setSelectedSaleToDelete({ id, unitName });
     setOpenDeleteModal(true);
   };
 
@@ -166,6 +173,7 @@ export default function usePage(): UsePageProjectAvailableProps {
     page,
     setPage,
     handleClickView,
+    selectedSaleToDelete,
     handleClickDelete,
     onSubmitDelete,
     onCloseDeleteModal,

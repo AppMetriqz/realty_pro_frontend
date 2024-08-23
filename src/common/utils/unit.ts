@@ -5,8 +5,8 @@ import { getCountry } from './project';
 import { CardPropertyType } from '../types/ProjectTypes';
 import { addCommasToAnumber, formatCurrency } from './numericHelpers';
 import { SaleStages, UnitCondicionType, UnitStatus } from '../constants';
-import { AvailableTableData } from '@/app/(DashboardLayout)/project/components/ProjectAvailable/ProjectAvailable';
 import { SellTableData } from '@/app/(DashboardLayout)/project/components/ProjectSells/ProjectSells';
+import { AvailableTableData } from '@/app/(DashboardLayout)/project/components/ProjectAvailable/usePage';
 
 export const mapUnitToProperty = (
   unit: GetUnitDto,
@@ -68,12 +68,12 @@ export const mapUnitToAvailableTable = (
 export const mapSellToSellTable = (sell: GetSellDto): SellTableData => {
   return {
     id: sell.sale_id,
-    unitName: 'TODO',
-    client: 'TODO',
-    price: formatCurrency(parseFloat(sell.price)),
+    unitName: sell.unit.name,
+    client: `${sell.client.first_name} ${sell.client.last_name}`,
+    price: formatCurrency(parseFloat(sell.price) || 0),
     creationDate: DateTime.fromISO(sell.created_at).toLocaleString(),
     stage: SaleStages.find((stage) => stage.value === sell.stage)?.label ?? '',
-    actions: sell.sale_id,
+    actions: sell.unit.unit_id,
   };
 };
 

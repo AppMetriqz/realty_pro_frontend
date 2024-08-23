@@ -60,12 +60,8 @@ export const useCreate = () => {
     mutationKey: [`${sales}Create`],
     mutationFn: (data: CreateSellDto) => axiosInstance.post(`/${sales}`, data),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: [`${sales}FindAll`],
-      });
-      await queryClient.invalidateQueries({
-        queryKey: [`${units}FindAll`],
-      });
+      await queryClient.invalidateQueries({ queryKey: [`${sales}FindAll`] });
+      await queryClient.invalidateQueries({ queryKey: [`${units}FindAll`] });
     },
   });
 };
@@ -77,12 +73,8 @@ export const useCreateAll = () => {
     mutationFn: (data: CreateAllSellDto) =>
       axiosInstance.post(`/${sales}/all`, data),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
-        queryKey: [`${sales}FindAll`],
-      });
-      await queryClient.invalidateQueries({
-        queryKey: [`${units}FindAll`],
-      });
+      await queryClient.invalidateQueries({ queryKey: [`${sales}FindAll`] });
+      await queryClient.invalidateQueries({ queryKey: [`${units}FindAll`] });
     },
   });
 };
@@ -95,20 +87,24 @@ export const useUpdate = () => {
       axiosInstance.put(`/${sales}/${data.sale_id}`, data, {
         headers: { 'Content-Type': 'multipart/form-data' },
       }),
-    onSuccess: async (res, variables) => {
+    onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: [`${sales}FindAll`] });
       await queryClient.invalidateQueries({ queryKey: [sales] });
     },
   });
 };
 
-export const useDelete = (id: number) => {
+export const useDelete = (id: string | number | string[]) => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: [`${sales}Delete`],
-    mutationFn: () => axiosInstance.delete(`/${sales}/${id}`),
+    mutationFn: (data: { notes: string }) =>
+      axiosInstance.delete(`/${sales}/${id}`, {
+        data: { notes: data.notes },
+      }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`${sales}FindAll`] });
+      queryClient.invalidateQueries({ queryKey: [`${units}FindAll`] });
     },
   });
 };

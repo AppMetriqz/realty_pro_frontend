@@ -81,24 +81,23 @@ const ProjectSells = () => {
       disablePadding: false,
       label: 'Acciones',
       render: (_, record: SellTableData) => (
-        <div>
-          <MenuShared
-            actions={[
-              {
-                id: record.id,
-                icon: <VisibilityIcon fontSize="small" />,
-                label: 'Ver',
-                onClick: () => usePageProps.handleClickView(record.id),
-              },
-              {
-                id: record.id,
-                icon: <DeleteIcon fontSize="small" />,
-                label: 'Borrar',
-                onClick: () => usePageProps.handleClickDelete(record.id),
-              },
-            ]}
-          />
-        </div>
+        <MenuShared
+          actions={[
+            {
+              id: record.id,
+              icon: <VisibilityIcon fontSize="small" />,
+              label: 'Ver',
+              onClick: () => usePageProps.handleClickView(record.actions),
+            },
+            {
+              id: record.id,
+              icon: <DeleteIcon fontSize="small" />,
+              label: 'Borrar',
+              onClick: () =>
+                usePageProps.handleClickDelete(record.id, record.unitName),
+            },
+          ]}
+        />
       ),
     },
   ];
@@ -204,6 +203,7 @@ const ProjectSells = () => {
                 orderByValue="unitName"
                 page={usePageProps.page}
                 setPage={usePageProps.setPage}
+                count={usePageProps.availableSales.data.count}
               />
             </>
           )
@@ -216,8 +216,8 @@ const ProjectSells = () => {
         type={'Venta'}
         validationMessage="BORRAR VENTA"
         name={
-          usePageProps.unitDetails.data
-            ? usePageProps.unitDetails.data.name
+          usePageProps.selectedSaleToDelete?.unitName
+            ? usePageProps.selectedSaleToDelete.unitName
             : ''
         }
       />

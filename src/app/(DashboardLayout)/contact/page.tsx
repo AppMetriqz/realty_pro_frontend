@@ -149,6 +149,7 @@ const Contact = () => {
                   orderByValue="name"
                   page={usePageProps.page}
                   setPage={usePageProps.setPage}
+                  count={usePageProps.allContacts.data.count}
                 />
               </>
             )
