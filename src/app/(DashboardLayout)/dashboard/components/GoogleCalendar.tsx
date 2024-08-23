@@ -97,12 +97,9 @@ export const GoogleCalendar = ({usePageProps}: FiltersProps) => {
                         </>
 
                     ) : (
-                        <Box display="flex" gap={'20px'} alignItems={'center'} height={'300px'}
-                             sx={{display: 'flex', alignSelf: 'center', justifyContent: 'center'}}>
+                        <Box display="flex" alignItems={'center'} height={'300px'} sx={{display: 'flex', alignSelf: 'flex-start', justifyContent: 'flex-start'}}>
                             {usePageProps.isLoadingCalendar ? (<CircularProgress size={40}/>) : (
-                                <Button fullWidth disabled={usePageProps.isLoadingCalendar}
-                                        onClick={() => usePageProps.handleGoogleCalendarLogin()}
-                                        sx={{marginLeft: '25px'}}
+                                <Button sx={{marginLeft:'50px'}} fullWidth disabled={usePageProps.isLoadingCalendar} onClick={() => usePageProps.handleGoogleCalendarLogin()}
                                         variant="contained">
                                     Mostrar el calendario de google
                                 </Button>

@@ -41,27 +41,11 @@ export interface SalesToAssignDto {
     rows: GetUnitDto[]
 }
 
-export interface PaymentPlansToAssignFindAllDto extends GetSellDto {
-    project: {
-        project_id:number
-        name: string
-        description: string
-    },
-    unit: {
-        unit_id:number
-        name: string
-        description: string
-    },
-    client: {
-        contact_id:number
-        first_name: string
-        last_name: string
-    },
-}
+
 
 export interface PaymentPlansToAssignDto {
     count: number,
-    rows: PaymentPlansToAssignFindAllDto[]
+    rows: GetSellDto[]
 }
 
 

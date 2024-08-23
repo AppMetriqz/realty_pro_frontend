@@ -3,10 +3,9 @@ import MenuShared from "@/common/components/menu/MenuShared";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import DeleteIcon from "@mui/icons-material/Delete";
 import React from "react";
-import {GetSellDto, GetUnitDto} from "@/common/dto";
+import {GetSellDto} from "@/common/dto";
 import {formatCurrency} from "@/common/utils/numericHelpers";
 import {DateTime} from "luxon";
-import {PaymentPlansToAssignFindAllDto} from "@/api/desktop";
 
 export interface SalesToAssignDto {
     id: string | number;
@@ -77,14 +76,14 @@ export const HeadCellsSalesToAssign: Array<ColumnProps<SalesToAssignDto>> = [
     },
 ];
 
-export const mapSalesToAssignTable = (unit: GetUnitDto): SalesToAssignDto => {
+export const mapSalesToAssignTable = (sale: GetSellDto): SalesToAssignDto => {
     return {
-        id: unit.unit_id,
-        unit: unit.name,
-        project: unit.project.name,
-        price: formatCurrency(parseFloat(unit.price)),
-        date: DateTime.fromISO(unit.created_at).toLocaleString(),
-        actions: unit.unit_id,
+        id: sale.sale_id,
+        unit: sale.unit.name,
+        project: sale.project.name,
+        price: formatCurrency(parseFloat(sale.price)),
+        date: DateTime.fromISO(sale.created_at).toLocaleString(),
+        actions: sale.sale_id,
     };
 };
 
@@ -157,7 +156,7 @@ export const HeadCellsPaymentPlansToAssign: Array<ColumnProps<PaymentPlansToAssi
     },
 ];
 
-export const mapPaymentPlansToAssignTable = (sale: PaymentPlansToAssignFindAllDto): PaymentPlansToAssignDto => {
+export const mapPaymentPlansToAssignTable = (sale: GetSellDto): PaymentPlansToAssignDto => {
     return {
         id: sale.sale_id,
         project: sale.project.name,
