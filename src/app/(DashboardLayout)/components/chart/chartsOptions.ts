@@ -29,7 +29,7 @@ export const LineOptions = {
     },
     chart: {
         type: 'line',
-        height: 315,
+        height: 380,
         backgroundColor: 'rgba(255,255,255,0.75)',
         color: '#fff',
         borderRadius: 4

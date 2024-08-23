@@ -13,6 +13,7 @@ const axiosInstance = axios.create({
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json;charset=utf-8',
+    'Access-Control-Allow-Origin':'*'
   },
 });
 axiosInstance.interceptors.request.use(
