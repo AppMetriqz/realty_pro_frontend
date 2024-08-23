@@ -7,6 +7,8 @@ import { addCommasToAnumber, formatCurrency } from './numericHelpers';
 import { SaleStages, UnitCondicionType, UnitStatus } from '../constants';
 import { SellTableData } from '@/app/(DashboardLayout)/project/components/ProjectSells/ProjectSells';
 import { AvailableTableData } from '@/app/(DashboardLayout)/project/components/ProjectAvailable/usePage';
+import Link from 'next/link';
+import routers from '../constants/routes';
 
 export const mapUnitToProperty = (
   unit: GetUnitDto,
@@ -62,18 +64,6 @@ export const mapUnitToAvailableTable = (
       UnitStatus.find((status) => status.value === availableUnit.status)
         ?.label ?? '',
     actions: availableUnit.unit_id,
-  };
-};
-
-export const mapSellToSellTable = (sell: GetSellDto): SellTableData => {
-  return {
-    id: sell.sale_id,
-    unitName: sell.unit.name,
-    client: `${sell.client.first_name} ${sell.client.last_name}`,
-    price: formatCurrency(parseFloat(sell.price) || 0),
-    creationDate: DateTime.fromISO(sell.created_at).toLocaleString(),
-    stage: SaleStages.find((stage) => stage.value === sell.stage)?.label ?? '',
-    actions: sell.unit.unit_id,
   };
 };
 

@@ -35,7 +35,7 @@ export const useFindAll = (params: FindAllDto) => {
 };
 
 export const useFindAllAutocomplete = (params: FindAllAutocompleteDto) => {
-  return useQuery<{ rows: ProjectDto[]; count: number }, Error>({
+  return useQuery<ProjectDto[], Error>({
     queryKey: [`${projects}FindAllAutocomplete`, params],
     queryFn: () => axiosInstance.get(`/${projects}/autocomplete`, { params }),
     ...QueriesOptions,

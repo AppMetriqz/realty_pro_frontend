@@ -33,7 +33,7 @@ export const useFindAll = (params: FindAllDto) => {
 };
 
 export const useFindAllAutocomplete = (params: FindAllAutocompleteDto) => {
-  return useQuery<{ rows: GetUnitDto[]; count: number }, Error>({
+  return useQuery<GetUnitDto[], Error>({
     queryKey: [`${units}FindAllAutocomplete`, params],
     queryFn: () => axiosInstance.get(`/${units}/autocomplete`, { params }),
     ...QueriesOptions,

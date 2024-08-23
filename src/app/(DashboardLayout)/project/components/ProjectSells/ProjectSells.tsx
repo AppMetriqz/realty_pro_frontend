@@ -11,7 +11,7 @@ import {
   Select,
   Typography,
 } from '@mui/material';
-import React from 'react';
+import React, { ReactElement } from 'react';
 import usePage from './usePage';
 import UnitDetails from '../UnitDetails';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -22,13 +22,40 @@ import TableShared, {
 import SearchInput from '@/common/components/searchInput/SearchInput';
 
 import MenuShared from '@/common/components/menu/MenuShared';
-import { mapSellToSellTable, mapUnitToProperty } from '@/common/utils/unit';
+import { mapUnitToProperty } from '@/common/utils/unit';
 import { DialogDelete } from '../DialogDelete';
+import { GetSellDto } from '@/common/dto';
+import routers from '@/common/constants/routes';
+import { formatCurrency } from '@/common/utils/numericHelpers';
+import { DateTime } from 'luxon';
+import Link from 'next/link';
+import { SaleStages } from '@/common/constants';
+
+const mapSellToSellTable = (sell: GetSellDto): SellTableData => {
+  return {
+    id: sell.sale_id,
+    unitName: sell.unit.name,
+    client:
+      sell.client.contact_id !== 1 ? (
+        <Link href={`${routers.contact}/${sell.client.contact_id}`}>
+          {sell.client.first_name} {sell.client.last_name}
+        </Link>
+      ) : (
+        <>
+          {sell.client.first_name} {sell.client.last_name}
+        </>
+      ),
+    price: formatCurrency(parseFloat(sell.price) || 0),
+    creationDate: DateTime.fromISO(sell.created_at).toLocaleString(),
+    stage: SaleStages.find((stage) => stage.value === sell.stage)?.label ?? '',
+    actions: sell.unit.unit_id,
+  };
+};
 
 export interface SellTableData {
   id: string | number;
   unitName: string;
-  client: string;
+  client: ReactElement;
   price: string;
   creationDate: string;
   stage: string;
