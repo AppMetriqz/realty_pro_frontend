@@ -1,11 +1,9 @@
 import React from 'react';
-import {Box,} from "@mui/material";
-import {UsePageProps} from "@/app/(DashboardLayout)/finance/usePage";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 
 interface FiltersProps {
-    usePageProps: UsePageProps
+    usePageProps: any
 }
 
 export const LineChart = ({usePageProps}: FiltersProps) => {

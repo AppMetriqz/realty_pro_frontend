@@ -2,7 +2,7 @@
 import axiosInstance from '@/config/api/api.config';
 import {useMutation, useQuery, useQueryClient} from '@tanstack/react-query';
 import {QueriesOptions} from '@/common/constants/react-query';
-import {GetSellDto, UnitDto} from "@/common/dto";
+import {GetSellDto, GetUnitDto, UnitDto} from "@/common/dto";
 
 export const desktop = 'desktop';
 
@@ -23,9 +23,12 @@ export interface SaleStatDto {
 }
 
 export interface GoogleCalendarDto {
-    summary: string,
-    start: Date,
-    end: Date
+    isNeedLogin: boolean,
+    data: {
+        summary: string,
+        start: string,
+        end: string
+    }[]
 }
 
 export interface FindAllDto {
@@ -33,23 +36,51 @@ export interface FindAllDto {
     pageIndex: string | number;
 }
 
+export interface SalesToAssignDto {
+    count: number,
+    rows: GetUnitDto[]
+}
+
+export interface PaymentPlansToAssignFindAllDto extends GetSellDto {
+    project: {
+        project_id:number
+        name: string
+        description: string
+    },
+    unit: {
+        unit_id:number
+        name: string
+        description: string
+    },
+    client: {
+        contact_id:number
+        first_name: string
+        last_name: string
+    },
+}
+
+export interface PaymentPlansToAssignDto {
+    count: number,
+    rows: PaymentPlansToAssignFindAllDto[]
+}
+
+
 export const useGoogleCalendarLogin = () => {
     const queryClient = useQueryClient();
-    return useMutation({
+    return useMutation<string>({
         mutationKey: [`${desktop}-calendar-login`],
-        mutationFn: () => axiosInstance.post(`/${desktop}/google/calendar-login`),
+        mutationFn: () => axiosInstance.get(`/${desktop}/google/calendar-login`),
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: [`${desktop}-calendar-login`] });
         },
     });
 };
 
-export const useGoogleCalendar = (params: FindCalendarDto, isEnabled:boolean) => {
-    return useQuery<GoogleCalendarDto[], Error>({
+export const useGoogleCalendar = (params: FindCalendarDto) => {
+    return useQuery<GoogleCalendarDto, Error>({
         queryKey: [`${desktop}-calendar`, params],
         queryFn: () => axiosInstance.get(`/${desktop}/google/calendar`, {params}),
         ...QueriesOptions,
-        enabled:isEnabled
     });
 };
 
@@ -62,7 +93,7 @@ export const useSale = () => {
 };
 
 export const useSalesToAssign = (params: FindAllDto) => {
-    return useQuery<UnitDto[], Error>({
+    return useQuery<SalesToAssignDto, Error>({
         queryKey: [`${desktop}-sales-to-assign`, params],
         queryFn: () => axiosInstance.get(`/${desktop}/sales-to-assign`, {params}),
         ...QueriesOptions,
@@ -70,7 +101,7 @@ export const useSalesToAssign = (params: FindAllDto) => {
 };
 
 export const usePaymentPlansToAssign = (params: FindAllDto) => {
-    return useQuery<GetSellDto[], Error>({
+    return useQuery<PaymentPlansToAssignDto, Error>({
         queryKey: [`${desktop}-payment-plans-to-assign`, params],
         queryFn: () => axiosInstance.get(`/${desktop}/payment-plans-to-assign`, {params}),
         ...QueriesOptions,
