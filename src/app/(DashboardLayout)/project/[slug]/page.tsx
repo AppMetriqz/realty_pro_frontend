@@ -27,7 +27,7 @@ const ProjectResumen = () => {
       );
       usePageProps.hookForm.setValue(
         'project_id',
-        usePageProps.findProject.data.project_id
+        usePageProps.findProject.data.project_id!
       );
     }
 

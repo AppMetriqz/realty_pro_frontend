@@ -27,7 +27,7 @@ export interface FindAllAutocompleteDto {
 }
 
 export const useFindAll = (params: FindAllDto) => {
-  return useQuery<any, GetContactDto[]>({
+  return useQuery<{ rows: GetContactDto[]; count: number }, Error>({
     queryKey: [`${contacts}FindAll`, params],
     queryFn: () => axiosInstance.get(`/${contacts}`, { params }),
     ...QueriesOptions,
@@ -35,7 +35,7 @@ export const useFindAll = (params: FindAllDto) => {
 };
 
 export const useFindAllAutocomplete = (params: FindAllAutocompleteDto) => {
-  return useQuery<any, GetContactDto[]>({
+  return useQuery<{ rows: GetContactDto[]; count: number }, Error>({
     queryKey: [`${contacts}FindAllAutocomplete`, params],
     queryFn: () => axiosInstance.get(`/${contacts}/autocomplete`, { params }),
     ...QueriesOptions,
@@ -44,7 +44,7 @@ export const useFindAllAutocomplete = (params: FindAllAutocompleteDto) => {
 };
 
 export const useFindOne = (id: string | string[]) => {
-  return useQuery<any, GetContactDto>({
+  return useQuery<GetContactDto, Error>({
     queryKey: [contacts, id],
     queryFn: () => axiosInstance.get(`/${contacts}/${id}`),
     enabled: !!id,

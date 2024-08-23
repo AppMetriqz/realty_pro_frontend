@@ -23,7 +23,7 @@ export type CreateUnitProjectProps = {
 };
 
 export type UseProjectPageProps = {
-  findProject: UseQueryResult<any, ProjectDto>;
+  findProject: UseQueryResult<ProjectDto, Error>;
   currentTabValue: number;
   setCurrentTabValue: React.Dispatch<number>;
   handleChangeTab: (_: React.SyntheticEvent, newValue: number) => void;

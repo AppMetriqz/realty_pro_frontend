@@ -7,6 +7,15 @@ export type CreateSellDto = {
   notes?: string;
 };
 
+export type CreateAllSellDto = {
+  project_id: string | string[];
+  unit_ids?: string | number | string[] | null;
+  client_id: number;
+  seller_id: number;
+  commission: number;
+  notes?: string;
+};
+
 export type UpdateSellDto = {
   sale_id: number;
   project_id: number;

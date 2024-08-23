@@ -19,12 +19,15 @@ export type UseContactPageProps = {
   setPage: Dispatch<SetStateAction<number>>;
   rowsPerPage: number;
   setRowsPerPage: Dispatch<SetStateAction<number>>;
-  allContacts: UseQueryResult<any, GetContactDto[]>;
+  allContacts: UseQueryResult<{ rows: GetContactDto[]; count: number }, Error>;
   changePageSize: (size: number) => void;
   onCloseCreateEditContact: () => void;
   contactHookForm: UseFormReturn<ContactFormInput, any, undefined>;
   onSubmit: SubmitHandler<ContactFormInput>;
-  autocompleteContacts: UseQueryResult<any, GetContactDto[]>;
+  autocompleteContacts: UseQueryResult<
+    { rows: GetContactDto[]; count: number },
+    Error
+  >;
   setContactDescription: Dispatch<SetStateAction<string>>;
   contactDescription: string;
 };

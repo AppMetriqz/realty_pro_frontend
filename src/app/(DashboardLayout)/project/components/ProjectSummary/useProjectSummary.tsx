@@ -14,7 +14,7 @@ import {
 } from '../../core';
 
 export type UseProjectSummaryType = {
-  findSummary: UseQueryResult<any, ProjectSummaryDto>;
+  findSummary: UseQueryResult<ProjectSummaryDto, Error>;
   showCreateEditProject: boolean;
   setShowCreateEditProject: React.Dispatch<boolean>;
   onSubmit: SubmitHandler<ProjectFormInput>;

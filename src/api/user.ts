@@ -11,7 +11,7 @@ import { ApiPaginationDto, UserDto } from '@/common/dto';
 const path = '/users';
 
 export const useQueryUsers = ({ pageSize, pageIndex }: ApiPaginationDto) => {
-  return useQuery<any, UserDto[]>({
+  return useQuery<UserDto[], Error>({
     queryKey: ['user-list-paginated', pageSize, pageIndex],
     queryFn: () =>
       axiosInstance.get(`${path}?pageSize=${pageSize}&pageIndex=${pageIndex}`),
@@ -23,7 +23,7 @@ export const useQueryUsers = ({ pageSize, pageIndex }: ApiPaginationDto) => {
 
 export const useQueryUsersById = (userId: string | number | null) => {
   let id = userId;
-  return useQuery<any, UserDto>({
+  return useQuery<UserDto, Error>({
     queryKey: ['usuario-ById', { ID_PortalB2BUsuario: id }],
     queryFn: () => axiosInstance.get(`${path}/${id}`),
     enabled: !!id,

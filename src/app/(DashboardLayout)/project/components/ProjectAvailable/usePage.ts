@@ -49,8 +49,8 @@ export interface AvailableTableData {
 }
 
 export type UsePageProjectAvailableProps = {
-  unitDetails: UseQueryResult<any, GetUnitDto>;
-  availableUnits: UseQueryResult<any, GetUnitDto[]>;
+  unitDetails: UseQueryResult<GetUnitDto, Error>;
+  availableUnits: UseQueryResult<{ rows: GetUnitDto[]; count: number }, Error>;
   currentUnitStatuses: UnitStatusType[];
   onChangeStatus: (e: SelectChangeEvent) => void;
   handleDeleteStatus: (status: UnitStatusType) => void;
@@ -87,9 +87,15 @@ export type UsePageProjectAvailableProps = {
   multipleUnitHookForm: UseFormReturn<MultipleUnitFormInput>;
   onSubmitMultipleUnit: SubmitHandler<MultipleUnitFormInput>;
   setSellerDescription: Dispatch<SetStateAction<string>>;
-  sellerAutocompleteContacts: UseQueryResult<any, GetContactDto[]>;
+  sellerAutocompleteContacts: UseQueryResult<
+    { rows: GetContactDto[]; count: number },
+    Error
+  >;
   setClientDescription: Dispatch<SetStateAction<string>>;
-  clientAutocompleteContacts: UseQueryResult<any, GetContactDto[]>;
+  clientAutocompleteContacts: UseQueryResult<
+    { rows: GetContactDto[]; count: number },
+    Error
+  >;
   handleClickCancelSale: (id: string | number) => void;
   onSubmitCancelSale: SubmitHandler<CancelUnitSaleType>;
   openCancelSellModal: boolean;
@@ -98,7 +104,7 @@ export type UsePageProjectAvailableProps = {
   onClickEditMultipleUnits: () => void;
   multipleUpdateHasError: boolean;
   setMultipleUpdateHasError: Dispatch<SetStateAction<boolean>>;
-  onClickCancelSaleMultipleUnits: () => void;
+  onClickSaleMultipleUnits: () => void;
 } & UpdateUnitProjectProps;
 
 export default function usePage(): UsePageProjectAvailableProps {
@@ -220,6 +226,7 @@ export default function usePage(): UsePageProjectAvailableProps {
   const updateAllUnit = apiUnits.useUpdateAll();
   const cancelUnitSale = apiUnits.useCancelSaleUnit();
   const createSale = apiSales.useCreate();
+  const createSaleAll = apiSales.useCreateAll();
 
   const onSubmitUnit: SubmitHandler<UnitFormInput> = async (data) => {
     try {
@@ -359,27 +366,53 @@ export default function usePage(): UsePageProjectAvailableProps {
 
   const onSubmitSell: SubmitHandler<SellFormType> = async (data) => {
     try {
-      const sale = await createSale.mutateAsync({
-        project_id: slug,
-        unit_id: selectedUnitId,
-        client_id: parseInt(data.client_id),
-        seller_id: parseInt(data.seller_id),
-        commission: data.commission / 100,
-        notes: data.notes,
-      });
-      if (!!sale) {
-        toast.success(`Venta creada.`, {
-          position: 'top-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'colored',
+      if (selectedUnits.length > 0) {
+        const sales = await createSaleAll.mutateAsync({
+          project_id: slug,
+          unit_ids: selectedUnits.map((u) => u.id).join(','),
+          client_id: parseInt(data.client_id),
+          seller_id: parseInt(data.seller_id),
+          commission: data.commission / 100,
+          notes: data.notes,
         });
-        sellHookForm.reset();
-        setOpenSellModal(false);
+        if (!!sales) {
+          toast.success(`${selectedUnits.length} ventas creada.`, {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+          });
+          sellHookForm.reset();
+          setOpenSellModal(false);
+          setSelectedUnits([]);
+        }
+      } else {
+        const sale = await createSale.mutateAsync({
+          project_id: slug,
+          unit_id: selectedUnitId,
+          client_id: parseInt(data.client_id),
+          seller_id: parseInt(data.seller_id),
+          commission: data.commission / 100,
+          notes: data.notes,
+        });
+        if (!!sale) {
+          toast.success(`Venta creada.`, {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+          });
+          sellHookForm.reset();
+          setOpenSellModal(false);
+        }
       }
     } catch (error: Error | unknown) {
       ExceptionCatchResponse(error);
@@ -390,33 +423,42 @@ export default function usePage(): UsePageProjectAvailableProps {
     data
   ) => {
     try {
-      if (selectedUnits.length) {
-        console.log('multiple delete');
-      } else {
-        const project = await cancelUnitSale.mutateAsync({
-          sale_id: unitDetails.data.sale.sale_id,
-          notes: data.notes,
+      if (!unitDetails.data?.sale?.sale_id) {
+        toast.warn('No se ha encontrado la unidad vendida.', {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
         });
-        if (!!project) {
-          toast.success(
-            `${
-              selectedUnits.length ? 'Ventas' : 'Venta'
-            } cancelada satisfactoriamente.`,
-            {
-              position: 'top-right',
-              autoClose: 5000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: 'colored',
-            }
-          );
-          cancelSellHookForm.reset();
-          setSelectedUnitId(null);
-          setOpenCancelSellModal(false);
-        }
+        return;
+      }
+      const project = await cancelUnitSale.mutateAsync({
+        sale_id: unitDetails.data.sale.sale_id,
+        notes: data.notes,
+      });
+      if (!!project) {
+        toast.success(
+          `${
+            selectedUnits.length ? 'Ventas' : 'Venta'
+          } cancelada satisfactoriamente.`,
+          {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+          }
+        );
+        cancelSellHookForm.reset();
+        setSelectedUnitId(null);
+        setOpenCancelSellModal(false);
       }
     } catch (error: Error | unknown) {
       ExceptionCatchResponse(error);
@@ -454,7 +496,7 @@ export default function usePage(): UsePageProjectAvailableProps {
 
   const onClickEditMultipleUnits = () => {
     if (selectedUnits.some((u) => u.status === 'Vendido')) {
-      toast.warn('No puedes actualizar unidad vendida', {
+      toast.warn('No puedes actualizar unidades vendidas', {
         position: 'top-right',
         autoClose: 5000,
         hideProgressBar: false,
@@ -469,8 +511,21 @@ export default function usePage(): UsePageProjectAvailableProps {
     }
   };
 
-  const onClickCancelSaleMultipleUnits = () => {
-    setOpenCancelSellModal(true);
+  const onClickSaleMultipleUnits = () => {
+    if (selectedUnits.some((u) => u.status === 'Vendido')) {
+      toast.warn('No puedes vender unidades vendidas', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
+    } else {
+      setOpenSellModal(true);
+    }
   };
 
   return {
@@ -528,6 +583,6 @@ export default function usePage(): UsePageProjectAvailableProps {
     onClickEditMultipleUnits,
     multipleUpdateHasError,
     setMultipleUpdateHasError,
-    onClickCancelSaleMultipleUnits,
+    onClickSaleMultipleUnits,
   };
 }

@@ -1,6 +1,11 @@
 'use client';
 import axiosInstance from '@/config/api/api.config';
-import {CurrencyTypeDto, ProjectDto, ProjectSummaryDto, SortByDto} from '@/common/dto';
+import {
+  CurrencyTypeDto,
+  ProjectDto,
+  ProjectSummaryDto,
+  SortByDto,
+} from '@/common/dto';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { QueriesOptions } from '@/common/constants/react-query';
 import _ from 'lodash';
@@ -22,7 +27,7 @@ export interface FindAllAutocompleteDto {
 }
 
 export const useFindAll = (params: FindAllDto) => {
-  return useQuery<ProjectDto[], Error>({
+  return useQuery<{ rows: ProjectDto[]; count: number }, Error>({
     queryKey: [`${projects}FindAll`, params],
     queryFn: () => axiosInstance.get(`/${projects}`, { params }),
     ...QueriesOptions,
@@ -30,7 +35,7 @@ export const useFindAll = (params: FindAllDto) => {
 };
 
 export const useFindAllAutocomplete = (params: FindAllAutocompleteDto) => {
-  return useQuery<ProjectDto[], Error>({
+  return useQuery<{ rows: ProjectDto[]; count: number }, Error>({
     queryKey: [`${projects}FindAllAutocomplete`, params],
     queryFn: () => axiosInstance.get(`/${projects}/autocomplete`, { params }),
     ...QueriesOptions,
@@ -46,7 +51,7 @@ export const useFindOne = (id: string | string[]) => {
 };
 
 export const useFindSummary = (id: string | string[]) => {
-  return useQuery<any, ProjectSummaryDto>({
+  return useQuery<ProjectSummaryDto, Error>({
     queryKey: [`${projects}-summary`, id],
     queryFn: () => axiosInstance.get(`/${projects}/summary/${id}`),
   });

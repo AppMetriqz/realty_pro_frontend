@@ -37,7 +37,7 @@ export type ResultFindAllProjectFeatures = UseQueryResult<
 >;
 
 export const useFindAll = (params: FindAllDto) => {
-  return useQuery<{ rows: PropertyFeaturesDto[]; count: number }, any>({
+  return useQuery<{ rows: PropertyFeaturesDto[]; count: number }, Error>({
     queryKey: [`${projectFeatures}FindAll`, params],
     queryFn: () => axiosInstance.get(`/${projectFeatures}`, { params }),
     ...QueriesOptions,
@@ -56,7 +56,7 @@ export const useFindAllAutocomplete = (params: FindAllAutocompleteDto) => {
 };
 
 export const useFindOne = (id: string | number) => {
-  return useQuery<any, PropertyFeaturesDto>({
+  return useQuery<PropertyFeaturesDto, Error>({
     queryKey: [projectFeatures, id],
     queryFn: () => axiosInstance.get(`/${projectFeatures}/${id}`),
     enabled: !!id,

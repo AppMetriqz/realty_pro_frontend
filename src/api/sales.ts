@@ -5,6 +5,7 @@ import {
   CreateSellDto,
   GetSellDto,
   UpdateSellDto,
+  CreateAllSellDto,
 } from '@/common/dto';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { QueriesOptions } from '@/common/constants/react-query';
@@ -29,7 +30,7 @@ export interface FindAllAutocompleteDto {
 }
 
 export const useFindAll = (params: FindAllDto) => {
-  return useQuery<any, GetSellDto[]>({
+  return useQuery<{ rows: GetSellDto[]; count: number }, Error>({
     queryKey: [`${sales}FindAll`, params],
     queryFn: () => axiosInstance.get(`/${sales}`, { params }),
     ...QueriesOptions,
@@ -37,7 +38,7 @@ export const useFindAll = (params: FindAllDto) => {
 };
 
 export const useFindAllAutocomplete = (params: FindAllAutocompleteDto) => {
-  return useQuery<any, GetSellDto[]>({
+  return useQuery<{ rows: GetSellDto[]; count: number }, Error>({
     queryKey: [`${sales}FindAllAutocomplete`, params],
     queryFn: () => axiosInstance.get(`/${sales}/autocomplete`, { params }),
     ...QueriesOptions,
@@ -46,7 +47,7 @@ export const useFindAllAutocomplete = (params: FindAllAutocompleteDto) => {
 };
 
 export const useFindOne = (id: string | string[]) => {
-  return useQuery<any, GetSellDto>({
+  return useQuery<GetSellDto, Error>({
     queryKey: [sales, id],
     queryFn: () => axiosInstance.get(`/${sales}/${id}`),
     enabled: !!id,
@@ -58,6 +59,23 @@ export const useCreate = () => {
   return useMutation({
     mutationKey: [`${sales}Create`],
     mutationFn: (data: CreateSellDto) => axiosInstance.post(`/${sales}`, data),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: [`${sales}FindAll`],
+      });
+      await queryClient.invalidateQueries({
+        queryKey: [`${units}FindAll`],
+      });
+    },
+  });
+};
+
+export const useCreateAll = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: [`${sales}CreateAll`],
+    mutationFn: (data: CreateAllSellDto) =>
+      axiosInstance.post(`/${sales}/all`, data),
     onSuccess: async () => {
       await queryClient.invalidateQueries({
         queryKey: [`${sales}FindAll`],
@@ -100,6 +118,7 @@ export const apiSales = {
   useFindAllAutocomplete,
   useFindOne,
   useCreate,
+  useCreateAll,
   useUpdate,
   useDelete,
 };

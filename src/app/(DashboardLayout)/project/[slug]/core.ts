@@ -3,7 +3,7 @@ import { ErrorMsg } from '@/common/constants/app-config';
 import { PropertyTypeDto } from '@/common/dto';
 
 export interface UnitFormInput {
-  project_id: string;
+  project_id: number;
   name: string;
   description: string;
   type: keyof typeof PropertyTypeDto;
@@ -42,7 +42,7 @@ export const multipleUnitDefaultValues: MultipleUnitFormInput = {
 };
 
 export const unitDefaultValues: UnitFormInput = {
-  project_id: '',
+  project_id: 0,
   name: '',
   description: '',
   type: 'house',

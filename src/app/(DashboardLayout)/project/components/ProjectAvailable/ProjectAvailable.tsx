@@ -75,7 +75,7 @@ const ProjectAvailable: FC<{
       Object.keys(usePageProps.unitDetails.data).map((key) => {
         usePageProps.hookForm.setValue(
           key as keyof UnitFormInput,
-          usePageProps.unitDetails.data[key]
+          (usePageProps.unitDetails.data as any)[key]
         );
       });
     }
@@ -217,11 +217,13 @@ const ProjectAvailable: FC<{
                     ? 'Editar Unidad'
                     : undefined
                 }
-                onClickDelete={() =>
-                  usePageProps.handleClickDelete(
-                    usePageProps.unitDetails.data.unit_id
-                  )
-                }
+                onClickDelete={() => {
+                  if (usePageProps.unitDetails.data) {
+                    usePageProps.handleClickDelete(
+                      usePageProps.unitDetails.data.unit_id
+                    );
+                  }
+                }}
                 onClickEdit={usePageProps.onClickEditUnitFromView}
                 deleteLabel={
                   usePageProps.unitDetails.data.status !== 'sold'
@@ -231,7 +233,7 @@ const ProjectAvailable: FC<{
                 onClickBack={usePageProps.goBack}
                 property={mapUnitToProperty(
                   usePageProps.unitDetails.data,
-                  useProjectPageProps.findProject.data.currency_type
+                  useProjectPageProps.findProject.data?.currency_type
                 )}
               />
             </Grid>
@@ -321,7 +323,7 @@ const ProjectAvailable: FC<{
                   <>
                     <Tooltip title="Vender">
                       <IconButton
-                        onClick={usePageProps.onClickCancelSaleMultipleUnits}
+                        onClick={usePageProps.onClickSaleMultipleUnits}
                       >
                         <SellIcon fontSize="small" />
                       </IconButton>

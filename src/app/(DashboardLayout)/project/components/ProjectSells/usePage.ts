@@ -11,16 +11,12 @@ import { GetSellDto, GetUnitDto } from '@/common/dto';
 import { useParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { ExceptionCatchResponse } from '@/common/exceptions';
-import {
-  unitDefaultValues,
-  UnitFormInput,
-  updateUnitValidationSchema,
-} from '../../[slug]/core';
+import { updateUnitValidationSchema } from '../../[slug]/core';
 import { apiSales } from '@/api/sales';
 
 export type UsePageProjectAvailableProps = {
-  unitDetails: UseQueryResult<any, GetUnitDto>;
-  availableSales: UseQueryResult<any, GetSellDto[]>;
+  unitDetails: UseQueryResult<GetUnitDto, Error>;
+  availableSales: UseQueryResult<{ rows: GetSellDto[]; count: number }, Error>;
   currentSaleStages: SaleStagesType[];
   onChangeSaleStage: (e: SelectChangeEvent) => void;
   handleDeleteStage: (saleStage: SaleStagesType) => void;

@@ -21,7 +21,7 @@ const ProjectSummary: FC<{
       Object.keys(useProjectPageProps.findProject.data).map((key) =>
         useProjectSummaryProps.hookForm.setValue(
           key as keyof ProjectFormInput,
-          useProjectPageProps.findProject.data[key]
+          (useProjectPageProps.findProject.data as any)[key]
         )
       );
     }

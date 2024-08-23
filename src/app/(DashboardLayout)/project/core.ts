@@ -1,10 +1,11 @@
 import * as yup from 'yup';
 import { ErrorMsg } from '@/common/constants/app-config';
+import { PropertyTypeDto } from '@/common/dto';
 
 export interface ProjectFormInput {
   name: string;
   description: string;
-  type: string;
+  type: keyof typeof PropertyTypeDto;
   currency_type: string;
   levels_qty?: string;
   country_code: string;
@@ -24,7 +25,7 @@ export interface ProjectFormInput {
 export const projectDefaultValues = {
   name: '',
   description: '',
-  type: '',
+  type: PropertyTypeDto.house,
   currency_type: '',
   levels_qty: undefined,
   country_code: '',

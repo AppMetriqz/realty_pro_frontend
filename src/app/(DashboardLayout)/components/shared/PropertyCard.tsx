@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, ReactElement } from 'react';
 import {
   Box,
   Card,
@@ -11,15 +11,15 @@ import {
 import LocationIcon from '@/icons/LocationIcon';
 import { useRouter } from 'next/navigation';
 import routers from '@/common/constants/routes';
-import { TypeOfUnit } from '@/common/constants/unit';
 import { CardPropertyType } from '@/common/types/ProjectTypes';
 import { PropertyType } from '@/common/constants';
 import { formatCurrency } from '@/common/utils/numericHelpers';
+import { PropertyTypeDto } from '@/common/dto';
 
 type PropertyCardProps = {
   hasAction?: boolean;
   property: CardPropertyType;
-  typeOfUnit: TypeOfUnit;
+  typeOfUnit: keyof typeof PropertyTypeDto | 'project';
 };
 
 const PropertyCard: FC<PropertyCardProps> = ({
@@ -53,7 +53,13 @@ const PropertyCard: FC<PropertyCardProps> = ({
       </Box>
     </>
   );
-  const cardContent = {
+  const cardContent: {
+    project: ReactElement;
+    plot: ReactElement;
+    house: ReactElement;
+    apartment: ReactElement;
+    commercial: ReactElement;
+  } = {
     project: (
       <>
         <Box my={'12px'} display={'flex'}>
@@ -94,6 +100,7 @@ const PropertyCard: FC<PropertyCardProps> = ({
     plot: otherAndLandComponent,
     house: otherAndLandComponent,
     apartment: otherAndLandComponent,
+    commercial: otherAndLandComponent,
   };
   return (
     <Card

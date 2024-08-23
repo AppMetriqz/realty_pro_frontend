@@ -1,8 +1,10 @@
+import { PropertyTypeDto } from './api.dto';
+
 export interface ProjectDto {
   project_id?: number;
   name: string;
   description: string;
-  type: string;
+  type: keyof typeof PropertyTypeDto;
   currency_type: string;
   levels_qty?: string;
   country_code: string;

@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, ReactElement } from 'react';
 import { Box, Divider, Grid, IconButton, Typography } from '@mui/material';
 import CheckIcon from '@/icons/CheckIcon';
 import PropertyCard from '@/app/(DashboardLayout)/components/shared/PropertyCard';
@@ -11,13 +11,14 @@ import {
 import { addCommasToAnumber } from '@/common/utils/numericHelpers';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { getConditionLabel, getUnitStatus } from '@/common/utils/unit';
+import { PropertyTypeDto } from '@/common/dto';
 
 type UnitDetailType = {
   deleteLabel?: string;
   onClickDelete?: () => void;
   onClickEdit?: () => void;
   editLabel?: string;
-  typeOfUnit: TypeOfUnit;
+  typeOfUnit: keyof typeof PropertyTypeDto | 'project';
   property: CardPropertyType;
   onClickBack?: () => void;
 };
@@ -104,7 +105,13 @@ const UnitDetails: FC<UnitDetailType> = ({
       </Grid>
     </>
   );
-  const specificationContent = {
+  const specificationContent: {
+    project: ReactElement;
+    plot: ReactElement;
+    house: ReactElement;
+    apartment: ReactElement;
+    commercial: ReactElement;
+  } = {
     project: (
       <>
         <Grid container spacing={'30px'}>
@@ -225,6 +232,7 @@ const UnitDetails: FC<UnitDetailType> = ({
     ),
     house: houseAndApartment,
     apartment: houseAndApartment,
+    commercial: houseAndApartment,
   };
 
   return (

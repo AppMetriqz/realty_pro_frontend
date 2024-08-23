@@ -5,7 +5,6 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { QueriesOptions } from '@/common/constants/react-query';
 import _ from 'lodash';
 import { projects } from './projects';
-import { useRouter } from 'next/navigation';
 import { sales } from './sales';
 
 export const units = 'units';
@@ -26,7 +25,7 @@ export interface FindAllAutocompleteDto {
 }
 
 export const useFindAll = (params: FindAllDto) => {
-  return useQuery<any, GetUnitDto[]>({
+  return useQuery<{ rows: GetUnitDto[]; count: number }, Error>({
     queryKey: [`${units}FindAll`, params],
     queryFn: () => axiosInstance.get(`/${units}`, { params }),
     ...QueriesOptions,
@@ -34,7 +33,7 @@ export const useFindAll = (params: FindAllDto) => {
 };
 
 export const useFindAllAutocomplete = (params: FindAllAutocompleteDto) => {
-  return useQuery<any, GetUnitDto[]>({
+  return useQuery<{ rows: GetUnitDto[]; count: number }, Error>({
     queryKey: [`${units}FindAllAutocomplete`, params],
     queryFn: () => axiosInstance.get(`/${units}/autocomplete`, { params }),
     ...QueriesOptions,
@@ -43,7 +42,7 @@ export const useFindAllAutocomplete = (params: FindAllAutocompleteDto) => {
 };
 
 export const useFindOne = (id: string | number | string[]) => {
-  return useQuery<any, GetUnitDto>({
+  return useQuery<GetUnitDto, Error>({
     queryKey: [units, id],
     queryFn: () => axiosInstance.get(`/${units}/${id}`),
     enabled: !!id,
