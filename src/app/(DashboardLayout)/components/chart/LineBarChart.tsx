@@ -2,6 +2,7 @@ import React from 'react';
 import {Box, Typography,} from "@mui/material";
 import {UsePageProps} from "@/app/(DashboardLayout)/finance/usePage";
 import {formatter} from "@/common/constants";
+import _ from "lodash";
 
 interface FiltersProps {
     usePageProps: UsePageProps
@@ -66,7 +67,7 @@ export const LineBarChart = ({usePageProps}: FiltersProps) => {
 const TextAmount = ({name, currency, amount, color}: {
     name: string,
     currency: string,
-    amount: number,
+    amount: number | string,
     color: string
 }) => {
     return (
@@ -78,7 +79,7 @@ const TextAmount = ({name, currency, amount, color}: {
                 fontWeight={500}
                 letterSpacing={'0.5px'}
             >
-                {name}: <b>{currency}${formatter.format(amount)}</b>
+                {name}: <b>{currency}{formatter.format(_.toNumber(amount))}</b>
             </Typography>
         </Box>
     )

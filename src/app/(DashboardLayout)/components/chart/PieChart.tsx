@@ -4,6 +4,7 @@ import {UsePageProps} from "@/app/(DashboardLayout)/finance/usePage";
 import HighchartsReact from "highcharts-react-official";
 import Highcharts from "highcharts";
 import {formatter} from "@/common/constants";
+import _ from "lodash";
 
 interface FiltersProps {
     usePageProps: UsePageProps
@@ -38,7 +39,7 @@ export const PieChart = ({usePageProps}: FiltersProps) => {
 };
 
 
-const TextAmount =({name, currency, amount, color}:{name:string, currency:string, amount:number, color:string})=>{
+const TextAmount =({name, currency, amount, color}:{name:string, currency:string, amount:number | string, color:string})=>{
     return (
         <Box width={'100%'}  display={'flex'} alignItems="center" >
             <Box sx={{width: 30, height: 30, borderRadius: '100%', backgroundColor: color}} mr={"10px"}></Box>
@@ -57,7 +58,7 @@ const TextAmount =({name, currency, amount, color}:{name:string, currency:string
                     fontWeight={600}
                     letterSpacing={'0.5px'}
                 >
-                    {currency}${formatter.format(amount)}
+                    {currency}{formatter.format(_.toNumber(amount))}
                 </Typography>
             </Box>
         </Box>

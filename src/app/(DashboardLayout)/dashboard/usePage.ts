@@ -53,11 +53,7 @@ export default function usePage() {
     React.useEffect(()=>{
         (async ()=>{
             if (googleCalendar.isSuccess){
-                if (googleCalendar.data.isNeedLogin){
-                    await handleGoogleCalendarLogin()
-                }else {
-                    setIsGoogleCalendarLogin(true)
-                }
+                setIsGoogleCalendarLogin(!googleCalendar.data.isNeedLogin)
                 setIsLoadingCalendar(false)
             }
         })()
@@ -87,12 +83,10 @@ export default function usePage() {
     };
 
     const handleGoogleCalendarLogin = async () => {
-        const result = await googleCalendarLogin.mutateAsync()
         setIsLoadingCalendar(true)
-        setTimeout(()=>{
-            window.open(result, '_blank');
-            setIsLoadingCalendar(false)
-        },2000)
+        const result = await googleCalendarLogin.mutateAsync()
+        window.open(result, '_blank');
+        setIsLoadingCalendar(false)
     };
 
     return {
