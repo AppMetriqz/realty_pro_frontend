@@ -37,6 +37,17 @@ export type UpdateUnitProjectProps = {
   };
 };
 
+export interface AvailableTableData {
+  id: string | number;
+  name: string;
+  meters_of_land: string;
+  price_per_meter?: string;
+  price: string;
+  condition: string;
+  status: string;
+  actions: string | number;
+}
+
 export type UsePageProjectAvailableProps = {
   unitDetails: UseQueryResult<any, GetUnitDto>;
   availableUnits: UseQueryResult<any, GetUnitDto[]>;
@@ -46,7 +57,7 @@ export type UsePageProjectAvailableProps = {
   selectedStatuses: UnitStatusType[];
   deleteHookForm: UseFormReturn<DeleteFormType>;
   selectedUnitId: string | number | string[] | null;
-  onClickEditUnit: () => void;
+  onClickEditUnitFromView: () => void;
   goBack: () => void;
   rowsPerPage: number;
   changePageSize: (size: number) => void;
@@ -60,8 +71,8 @@ export type UsePageProjectAvailableProps = {
   openDeleteModal: boolean;
   setOpenDeleteModal: Dispatch<SetStateAction<boolean>>;
   showView: boolean;
-  selectedUnits: readonly (string | number)[];
-  setSelectedUnits: Dispatch<SetStateAction<readonly (string | number)[]>>;
+  selectedUnits: readonly AvailableTableData[];
+  setSelectedUnits: Dispatch<SetStateAction<readonly AvailableTableData[]>>;
   openSellModal: boolean;
   setOpenSellModal: Dispatch<SetStateAction<boolean>>;
   onCloseSellModal: () => void;
@@ -84,6 +95,10 @@ export type UsePageProjectAvailableProps = {
   openCancelSellModal: boolean;
   onCloseCancelSellModal: () => void;
   cancelSellHookForm: UseFormReturn<CancelUnitSaleType>;
+  onClickEditMultipleUnits: () => void;
+  multipleUpdateHasError: boolean;
+  setMultipleUpdateHasError: Dispatch<SetStateAction<boolean>>;
+  onClickCancelSaleMultipleUnits: () => void;
 } & UpdateUnitProjectProps;
 
 export default function usePage(): UsePageProjectAvailableProps {
@@ -96,6 +111,7 @@ export default function usePage(): UsePageProjectAvailableProps {
   const [openSellModal, setOpenSellModal] = useState(false);
   const [openCancelSellModal, setOpenCancelSellModal] = useState(false);
   const [openEditOneUnitModal, setOpenEditOneUnitModal] = useState(false);
+  const [multipleUpdateHasError, setMultipleUpdateHasError] = useState(false);
   const [openEditMultipleUnitModal, setOpenEditMultipleUnitModal] =
     useState(false);
   const [showView, setShowView] = useState(false);
@@ -106,7 +122,7 @@ export default function usePage(): UsePageProjectAvailableProps {
     []
   );
   const [selectedUnits, setSelectedUnits] = useState<
-    readonly (string | number)[]
+    readonly AvailableTableData[]
   >([]);
   const [sellerDescription, setSellerDescription] = useState('');
   const [clientDescription, setClientDescription] = useState('');
@@ -181,10 +197,6 @@ export default function usePage(): UsePageProjectAvailableProps {
   const goBack = () => {
     setSelectedUnitId(null);
     setShowView(false);
-  };
-
-  const onClickEditUnit = () => {
-    setOpenEditOneUnitModal(true);
   };
 
   const changePageSize = (size: number) => {
@@ -303,28 +315,42 @@ export default function usePage(): UsePageProjectAvailableProps {
     data
   ) => {
     try {
-      const project = await updateAllUnit.mutateAsync({
-        ...data,
-        project_id: slug,
-        price: Number(data.price?.replace(/[^0-9.-]+/g, '')),
-        price_per_meter: data.price_per_meter
-          ? Number(data.price_per_meter?.replace(/[^0-9.-]+/g, ''))
-          : undefined,
-        unit_ids: selectedUnits.join(','),
-      });
-      if (!!project) {
-        toast.success(`Unidades (${selectedUnits.length}) actualizadas.`, {
-          position: 'top-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'colored',
+      if (
+        data.condition !== '' ||
+        data.price !== '' ||
+        data.price_per_meter !== '' ||
+        data.status !== ''
+      ) {
+        const isPlot = data.type === 'plot';
+        const project = await updateAllUnit.mutateAsync({
+          ...data,
+          project_id: slug,
+          price:
+            !isPlot && data.price
+              ? Number(data.price?.replace(/[^0-9.-]+/g, ''))
+              : undefined,
+          price_per_meter:
+            isPlot && data.price_per_meter
+              ? Number(data.price_per_meter?.replace(/[^0-9.-]+/g, ''))
+              : undefined,
+          unit_ids: selectedUnits.map((u) => u.id).join(','),
         });
-        multipleUnitHookForm.reset();
-        setOpenEditMultipleUnitModal(false);
+        if (!!project) {
+          toast.success(`Unidades (${selectedUnits.length}) actualizadas.`, {
+            position: 'top-right',
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'colored',
+          });
+          multipleUnitHookForm.reset();
+          setOpenEditMultipleUnitModal(false);
+        }
+      } else {
+        setMultipleUpdateHasError(true);
       }
     } catch (error: Error | unknown) {
       ExceptionCatchResponse(error);
@@ -364,29 +390,41 @@ export default function usePage(): UsePageProjectAvailableProps {
     data
   ) => {
     try {
-      console.log(unitDetails.data);
-      const project = await cancelUnitSale.mutateAsync({
-        sale_id: unitDetails.data.sale.sale_id,
-        notes: data.notes,
-      });
-      if (!!project) {
-        toast.success(`Venta cancelada satisfactoriamente.`, {
-          position: 'top-right',
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'colored',
+      if (selectedUnits.length) {
+        console.log('multiple delete');
+      } else {
+        const project = await cancelUnitSale.mutateAsync({
+          sale_id: unitDetails.data.sale.sale_id,
+          notes: data.notes,
         });
-        cancelSellHookForm.reset();
-        setSelectedUnitId(null);
-        setOpenCancelSellModal(false);
+        if (!!project) {
+          toast.success(
+            `${
+              selectedUnits.length ? 'Ventas' : 'Venta'
+            } cancelada satisfactoriamente.`,
+            {
+              position: 'top-right',
+              autoClose: 5000,
+              hideProgressBar: false,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+              progress: undefined,
+              theme: 'colored',
+            }
+          );
+          cancelSellHookForm.reset();
+          setSelectedUnitId(null);
+          setOpenCancelSellModal(false);
+        }
       }
     } catch (error: Error | unknown) {
       ExceptionCatchResponse(error);
     }
+  };
+
+  const onClickEditUnitFromView = () => {
+    setOpenEditOneUnitModal(true);
   };
 
   const handleClickView = async (id: string | number) => {
@@ -414,6 +452,27 @@ export default function usePage(): UsePageProjectAvailableProps {
     setOpenCancelSellModal(true);
   };
 
+  const onClickEditMultipleUnits = () => {
+    if (selectedUnits.some((u) => u.status === 'Vendido')) {
+      toast.warn('No puedes actualizar unidad vendida', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
+    } else {
+      setOpenEditMultipleUnitModal(true);
+    }
+  };
+
+  const onClickCancelSaleMultipleUnits = () => {
+    setOpenCancelSellModal(true);
+  };
+
   return {
     unitDetails,
     availableUnits,
@@ -425,7 +484,7 @@ export default function usePage(): UsePageProjectAvailableProps {
     selectedUnitId,
     openDeleteModal,
     setOpenDeleteModal,
-    onClickEditUnit,
+    onClickEditUnitFromView,
     goBack,
     rowsPerPage,
     changePageSize,
@@ -466,5 +525,9 @@ export default function usePage(): UsePageProjectAvailableProps {
     openCancelSellModal,
     onCloseCancelSellModal,
     cancelSellHookForm,
+    onClickEditMultipleUnits,
+    multipleUpdateHasError,
+    setMultipleUpdateHasError,
+    onClickCancelSaleMultipleUnits,
   };
 }

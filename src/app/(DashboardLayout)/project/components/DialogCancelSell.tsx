@@ -35,7 +35,7 @@ export const DialogCancelSell = ({
     >
       <DialogTitle sx={{ py: '25px', px: '20px' }} fontSize={'18px'}>
         <>
-          Cancelar Venta:
+          Cancelar {usePageProps.selectedUnits.length > 0 ? 'Ventas' : 'Venta'}:
           <span style={{ fontWeight: '600' }}>
             {name ? ` ${name}` : null}&nbsp;
             {usePageProps.selectedUnits?.length > 0

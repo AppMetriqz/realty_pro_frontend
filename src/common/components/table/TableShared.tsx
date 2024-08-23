@@ -57,10 +57,7 @@ export interface ColumnProps<T> {
     column: ColumnProps<T>,
     item: T,
     isItemSelected: boolean,
-    handleClick?: (
-      event: React.MouseEvent<unknown>,
-      id: number | string
-    ) => void
+    handleClick?: (event: React.MouseEvent<unknown>, item: T) => void
   ) => React.ReactElement;
 }
 
@@ -74,10 +71,8 @@ export type TableSharedProps<T> = {
   setPage: React.Dispatch<React.SetStateAction<number>>;
   headTitle: string;
   multiSelectActions?: React.ReactElement;
-  selected?: readonly (number | string)[];
-  setSelected?: React.Dispatch<
-    React.SetStateAction<readonly (number | string)[]>
-  >;
+  selected?: readonly T[];
+  setSelected?: React.Dispatch<React.SetStateAction<readonly T[]>>;
 };
 
 const TableShared = <T extends { id: string | number }>({
@@ -107,25 +102,21 @@ const TableShared = <T extends { id: string | number }>({
 
   const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const newSelected = rows.map((n) => n.id);
-      setSelected?.(newSelected);
+      setSelected?.(rows);
       return;
     }
     setSelected?.([]);
   };
 
-  const handleClick = (
-    event: React.MouseEvent<unknown>,
-    id: number | string
-  ) => {
+  const handleClick = (event: React.MouseEvent<unknown>, item: T) => {
     if (!selected) {
       return;
     }
-    const selectedIndex = selected.indexOf(id);
-    let newSelected: readonly (number | string)[] = [];
+    const selectedIndex = selected.map((s) => s.id).indexOf(item.id);
+    let newSelected: readonly T[] = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, id);
+      newSelected = newSelected.concat(selected, item);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -150,8 +141,8 @@ const TableShared = <T extends { id: string | number }>({
     setPage(0);
   };
 
-  const isSelected = (id: number | string) =>
-    selected ? selected.indexOf(id) !== -1 : false;
+  const isSelected = (item: T) =>
+    selected ? selected.map((s) => s.id).indexOf(item.id) !== -1 : false;
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
@@ -199,7 +190,7 @@ const TableShared = <T extends { id: string | number }>({
             />
             <TableBody>
               {visibleRows.map((row, index) => {
-                const isItemSelected = isSelected(row.id);
+                const isItemSelected = isSelected(row);
                 const labelId = `enhanced-table-checkbox`;
                 return (
                   <TableRow

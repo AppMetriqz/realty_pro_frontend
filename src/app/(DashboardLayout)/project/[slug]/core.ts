@@ -157,17 +157,4 @@ export const updateUnitValidationSchema = yup.object({
     .required(ErrorMsg.required),
 });
 
-export const updateMultipleUnitValidationSchema = yup.object({
-  condition: yup.string().required(ErrorMsg.required),
-  price_per_meter: yup.string().when('type', ([type], schema) => {
-    return type === 'plot'
-      ? schema.required(ErrorMsg.required)
-      : schema.notRequired();
-  }),
-  price: yup.string().when('type', ([type], schema) => {
-    return type === 'plot'
-      ? schema.notRequired()
-      : schema.required(ErrorMsg.required);
-  }),
-  status: yup.string().required(ErrorMsg.required),
-});
+export const updateMultipleUnitValidationSchema = yup.object({});

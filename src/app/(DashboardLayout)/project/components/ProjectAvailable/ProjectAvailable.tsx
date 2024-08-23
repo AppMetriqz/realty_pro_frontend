@@ -14,7 +14,7 @@ import {
   Typography,
 } from '@mui/material';
 import React, { FC, useEffect } from 'react';
-import usePage, { UpdateUnitProjectProps } from './usePage';
+import usePage, { AvailableTableData, UpdateUnitProjectProps } from './usePage';
 import UnitDetails from '../UnitDetails';
 import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
@@ -38,17 +38,6 @@ import { DialogEditMultipleUnit } from '../DialogEditMultipleUnit';
 import { UseProjectPageProps } from '../../[slug]/usePage';
 import DoDisturbOffIcon from '@mui/icons-material/DoDisturbOff';
 import { DialogCancelSell } from '../DialogCancelSell';
-
-export interface AvailableTableData {
-  id: string | number;
-  name: string;
-  meters_of_land: string;
-  price_per_meter?: string;
-  price: string;
-  condition: string;
-  status: string;
-  actions: string | number;
-}
 
 const ProjectAvailable: FC<{
   useProjectPageProps: UseProjectPageProps;
@@ -105,13 +94,13 @@ const ProjectAvailable: FC<{
         isItemSelected: boolean,
         handleClick?: (
           event: React.MouseEvent<unknown>,
-          id: number | string
+          item: AvailableTableData
         ) => void
       ) => (
         <Checkbox
           key={`checkbox-${record.id}`}
           color="primary"
-          onClick={(event) => handleClick?.(event, record.id)}
+          onClick={(event) => handleClick?.(event, record)}
           checked={isItemSelected}
           inputProps={{
             'aria-labelledby': `enhanced-table-checkbox-${record.id}`,
@@ -233,7 +222,7 @@ const ProjectAvailable: FC<{
                     usePageProps.unitDetails.data.unit_id
                   )
                 }
-                onClickEdit={usePageProps.onClickEditUnit}
+                onClickEdit={usePageProps.onClickEditUnitFromView}
                 deleteLabel={
                   usePageProps.unitDetails.data.status !== 'sold'
                     ? 'Borrar Unidad'
@@ -331,15 +320,15 @@ const ProjectAvailable: FC<{
                 multiSelectActions={
                   <>
                     <Tooltip title="Vender">
-                      <IconButton onClick={() => {}}>
+                      <IconButton
+                        onClick={usePageProps.onClickCancelSaleMultipleUnits}
+                      >
                         <SellIcon fontSize="small" />
                       </IconButton>
                     </Tooltip>
                     <Tooltip title="Editar">
                       <IconButton
-                        onClick={() =>
-                          usePageProps.setOpenEditMultipleUnitModal(true)
-                        }
+                        onClick={usePageProps.onClickEditMultipleUnits}
                       >
                         <EditIcon />
                       </IconButton>
@@ -387,11 +376,13 @@ const ProjectAvailable: FC<{
         open={usePageProps.openEditOneUnitModal}
         onClose={usePageProps.onCloseEditOneUnitModal}
       />
-      <DialogEditMultipleUnit
+      <DialogEditMultipleUnit<AvailableTableData>
         selectedUnits={usePageProps.selectedUnits}
         usePageProps={usePageProps}
         open={usePageProps.openEditMultipleUnitModal}
         onClose={usePageProps.onCloseEditMultipleUnitModal}
+        hasError={usePageProps.multipleUpdateHasError}
+        setMultipleUpdateHasError={usePageProps.setMultipleUpdateHasError}
       />
       <DialogCancelSell
         open={usePageProps.openCancelSellModal}
