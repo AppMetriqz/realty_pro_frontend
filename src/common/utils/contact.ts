@@ -11,6 +11,5 @@ export const mapContactToTableRow = (contact: GetContactDto): ContactData => {
     phone: contact.phone_number_1,
     email: contact.email,
     created_at: DateTime.fromISO(contact.created_at).toLocaleString(),
-    actions: contact.contact_id,
   };
 };

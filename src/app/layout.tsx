@@ -1,6 +1,6 @@
 'use client';
 import 'react-toastify/dist/ReactToastify.css';
-import { baselightTheme } from '@/common/utils/theme/DefaultColors';
+import { baselightTheme } from '@/common/utils/theme/DefaultTheme';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';

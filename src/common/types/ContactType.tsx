@@ -5,7 +5,6 @@ export interface ContactData {
   phone: string;
   email: string;
   created_at: string;
-  actions: string | number;
 }
 
 export type DiffContactTypes = {

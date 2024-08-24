@@ -9,9 +9,6 @@ import TableShared, {
   ColumnProps,
 } from '@/common/components/table/TableShared';
 import useContactPage from './useContactPage';
-import MenuShared from '@/common/components/menu/MenuShared';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { ContactData } from '@/common/types/ContactType';
 import { mapContactToTableRow } from '@/common/utils/contact';
 import { GetContactDto } from '@/common/dto';
@@ -56,31 +53,6 @@ const Contact = () => {
       numeric: false,
       disablePadding: false,
       label: 'Creación',
-    },
-    {
-      key: 'actions',
-      numeric: false,
-      disablePadding: false,
-      label: 'Acciones',
-      render: (_, record: ContactData) => (
-        <MenuShared
-          isDisabled={record.id === 1}
-          actions={[
-            {
-              id: record.id,
-              icon: <VisibilityIcon fontSize="small" />,
-              label: 'Ver',
-              onClick: () => usePageProps.onClickContactView(record.id),
-            },
-            {
-              id: record.id,
-              icon: <DeleteIcon fontSize="small" />,
-              label: 'Borrar',
-              onClick: () => {},
-            },
-          ]}
-        />
-      ),
     },
   ];
 
@@ -151,6 +123,9 @@ const Contact = () => {
                   page={usePageProps.page}
                   setPage={usePageProps.setPage}
                   count={usePageProps.allContacts.data.count}
+                  onClickRow={(contact) =>
+                    usePageProps.onClickContactView(contact.id)
+                  }
                 />
               </>
             )

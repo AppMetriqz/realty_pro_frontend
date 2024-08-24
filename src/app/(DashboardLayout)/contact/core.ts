@@ -2,6 +2,7 @@ import * as yup from 'yup';
 import { ErrorMsg } from '@/common/constants/app-config';
 
 export interface ContactFormInput {
+  contact_id?: string | number;
   type: string;
   spouse_id?: number;
   first_name: string;

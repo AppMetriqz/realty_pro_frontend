@@ -69,13 +69,12 @@ export const useUpdate = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: [`${contacts}Update`],
-    mutationFn: (data: UpdateContactDto) =>
-      axiosInstance.put(`/${contacts}/${data.contact_id}`, data, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      }),
-    onSuccess: async (res, variables) => {
-      await queryClient.invalidateQueries({ queryKey: [`${contacts}FindAll`] });
-      await queryClient.invalidateQueries({ queryKey: [contacts] });
+    mutationFn: (
+      data: Omit<UpdateContactDto, 'created_by' | 'created_at' | 'updated_at'>
+    ) => axiosInstance.put(`/${contacts}/${data.contact_id}`, data),
+    onSuccess: (res, variables) => {
+      queryClient.invalidateQueries({ queryKey: [`${contacts}FindAll`] });
+      queryClient.invalidateQueries({ queryKey: [contacts] });
     },
   });
 };

@@ -74,6 +74,7 @@ export type TableSharedProps<T> = {
   multiSelectActions?: React.ReactElement;
   selected?: readonly T[];
   setSelected?: React.Dispatch<React.SetStateAction<readonly T[]>>;
+  onClickRow?: (record: T) => void;
 };
 
 const TableShared = <T extends { id: string | number }>({
@@ -89,6 +90,7 @@ const TableShared = <T extends { id: string | number }>({
   multiSelectActions,
   selected,
   setSelected,
+  onClickRow,
 }: TableSharedProps<T>) => {
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof T>(orderByValue);
@@ -202,7 +204,11 @@ const TableShared = <T extends { id: string | number }>({
                     tabIndex={-1}
                     key={`row-checkbox-${index}`}
                     selected={isItemSelected}
-                    sx={{ cursor: 'pointer' }}
+                    onClick={() => onClickRow?.(row)}
+                    sx={{
+                      cursor: onClickRow ? 'pointer' : 'auto',
+                      height: '40.9px',
+                    }}
                   >
                     {headCells.map((cell, index2) => {
                       const value = cell.render

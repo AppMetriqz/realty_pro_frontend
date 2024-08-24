@@ -14,14 +14,14 @@ export type CreateContactDto = {
   notes?: string;
 };
 export type UpdateContactDto = {
-  contact_id: number;
+  contact_id: number | string | string[];
   type: string;
   spouse_id?: number;
   first_name: string;
   last_name: string;
   email: string;
   phone_number_1: string;
-  phone_number_2: string;
+  phone_number_2?: string;
   national_id: string;
   nationality: string;
   contact_method: string;
@@ -32,7 +32,14 @@ export type UpdateContactDto = {
 
 export type GetContactDto = {
   contact_id: number;
-  spouse_id?: number;
+  spouse?: {
+    contact_id: number;
+    first_name: string;
+    last_name: string;
+    email: string;
+    phone_number_1: string;
+    national_id: string;
+  };
   type: string;
   first_name: string;
   last_name: string;

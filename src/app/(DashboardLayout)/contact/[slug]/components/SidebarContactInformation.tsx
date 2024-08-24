@@ -16,10 +16,12 @@ import { DateTime } from 'luxon';
 
 type SidebarContactInformationProps = {
   findContact: UseQueryResult<GetContactDto, Error>;
+  onClickEdit: () => void;
 };
 
 const SidebarContactInformation: FC<SidebarContactInformationProps> = ({
   findContact,
+  onClickEdit,
 }) => {
   const userInformations: (UserInfoLabelProps & { id: string | number })[] = [
     {
@@ -129,6 +131,7 @@ const SidebarContactInformation: FC<SidebarContactInformationProps> = ({
             padding: 0,
             fontWeight: 500,
           }}
+          onClick={onClickEdit}
           variant="text"
         >
           Editar

@@ -171,6 +171,17 @@ const baselightTheme = createTheme({
         },
       },
     },
+    MuiAccordion: {
+      styleOverrides: {
+        root: {
+          display: 'flex',
+          flexDirection: 'column-reverse',
+          '&.Mui-expanded': {
+            margin: 0,
+          },
+        },
+      },
+    },
   },
 });
 

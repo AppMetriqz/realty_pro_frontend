@@ -18,6 +18,13 @@ import { SelectChangeEvent } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import routers from '@/common/constants/routes';
 
+export type UseContactCreateUpdateProps = {
+  contactHookForm: UseFormReturn<ContactFormInput, any, undefined>;
+  onSubmit: SubmitHandler<ContactFormInput>;
+  autocompleteContacts: UseQueryResult<GetContactDto[], Error>;
+  setContactDescription: Dispatch<SetStateAction<string>>;
+};
+
 export type UseContactPageProps = {
   openCreateEditContact: boolean;
   setOpenCreateEditContact: Dispatch<SetStateAction<boolean>>;
@@ -28,17 +35,13 @@ export type UseContactPageProps = {
   allContacts: UseQueryResult<{ rows: GetContactDto[]; count: number }, Error>;
   changePageSize: (size: number) => void;
   onCloseCreateEditContact: () => void;
-  contactHookForm: UseFormReturn<ContactFormInput, any, undefined>;
-  onSubmit: SubmitHandler<ContactFormInput>;
   currentContactTypes: DiffContactTypes[];
   onChangeContactType: (e: SelectChangeEvent) => void;
   selectedContactTypes: DiffContactTypes[];
   handleDeleteContactType: (contactType: DiffContactTypes) => void;
-  autocompleteContacts: UseQueryResult<GetContactDto[], Error>;
-  setContactDescription: Dispatch<SetStateAction<string>>;
   contactDescription: string;
   onClickContactView: (id: string | number) => void;
-};
+} & UseContactCreateUpdateProps;
 
 export default function useContactPage(): UseContactPageProps {
   const router = useRouter();
@@ -101,6 +104,7 @@ export default function useContactPage(): UseContactPageProps {
       ExceptionCatchResponse(error);
     }
   };
+  
   const onChangeContactType = (e: SelectChangeEvent) => {
     const contactTypeObject = ContactType.find(
       (unit) => unit.value === e.target.value

@@ -13,14 +13,15 @@ import {
 import { TextFieldSharedController } from '@/common/components/textField/TextFieldShared';
 import { SelectSharedController } from '@/common/components/textField/SelectShared';
 import { AutoCompleteSharedController } from '@/common/components/textField/AutoCompleteShared';
-import { UseContactPageProps } from '../useContactPage';
+import { UseContactCreateUpdateProps } from '../useContactPage';
 import { GetContactDto } from '@/common/dto';
 import TextMaskCustom from '@/common/components/textMaskCustom/TextMaskCustom';
+import { handleOnClose } from '@/common/utils/dialog';
 
 type Props = {
   open: boolean;
   onClose: (open: boolean) => void;
-  usePageProps: UseContactPageProps;
+  usePageProps: UseContactCreateUpdateProps;
   isEdit?: boolean;
 };
 
@@ -37,7 +38,7 @@ export const DialogCreateUpdateContact = ({
       fullWidth={true}
       maxWidth={'md'}
       open={open}
-      onClose={() => onClose(false)}
+      onClose={(e, reason) => handleOnClose(e, reason, onClose)}
       component="form"
       onSubmit={contactHookForm.handleSubmit(usePageProps.onSubmit)}
     >
