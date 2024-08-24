@@ -7,3 +7,8 @@ export interface ContactData {
   created_at: string;
   actions: string | number;
 }
+
+export type DiffContactTypes = {
+  label: string;
+  value: string;
+};

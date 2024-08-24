@@ -87,15 +87,9 @@ export type UsePageProjectAvailableProps = {
   multipleUnitHookForm: UseFormReturn<MultipleUnitFormInput>;
   onSubmitMultipleUnit: SubmitHandler<MultipleUnitFormInput>;
   setSellerDescription: Dispatch<SetStateAction<string>>;
-  sellerAutocompleteContacts: UseQueryResult<
-    { rows: GetContactDto[]; count: number },
-    Error
-  >;
+  sellerAutocompleteContacts: UseQueryResult<GetContactDto[], Error>;
   setClientDescription: Dispatch<SetStateAction<string>>;
-  clientAutocompleteContacts: UseQueryResult<
-    { rows: GetContactDto[]; count: number },
-    Error
-  >;
+  clientAutocompleteContacts: UseQueryResult<GetContactDto[], Error>;
   handleClickCancelSale: (id: string | number) => void;
   onSubmitCancelSale: SubmitHandler<CancelUnitSaleType>;
   openCancelSellModal: boolean;

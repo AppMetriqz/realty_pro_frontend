@@ -16,6 +16,7 @@ import { ContactData } from '@/common/types/ContactType';
 import { mapContactToTableRow } from '@/common/utils/contact';
 import { GetContactDto } from '@/common/dto';
 import { DialogCreateUpdateContact } from './components/DialogCreateUpdateContact';
+import { Filters } from './components/Filters';
 
 const Contact = () => {
   const usePageProps = useContactPage();
@@ -69,7 +70,7 @@ const Contact = () => {
                 id: record.id,
                 icon: <VisibilityIcon fontSize="small" />,
                 label: 'Ver',
-                onClick: () => {},
+                onClick: () => usePageProps.onClickContactView(record.id),
               },
               {
                 id: record.id,
@@ -91,6 +92,7 @@ const Contact = () => {
           name="Contactos"
           btnLabel="+ Nuevo Contacto"
           onClick={() => usePageProps.setOpenCreateEditContact(true)}
+          extraContent={<Filters usePageProps={usePageProps} />}
         />
         <Box
           sx={{

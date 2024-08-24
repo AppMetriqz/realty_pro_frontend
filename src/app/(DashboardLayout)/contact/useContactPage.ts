@@ -11,6 +11,12 @@ import {
 import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
 import { toast } from 'react-toastify';
 import { ExceptionCatchResponse } from '@/common/exceptions';
+import _ from 'lodash';
+import { ContactType } from '@/common/constants';
+import { DiffContactTypes } from '@/common/types/ContactType';
+import { SelectChangeEvent } from '@mui/material';
+import { useRouter } from 'next/navigation';
+import routers from '@/common/constants/routes';
 
 export type UseContactPageProps = {
   openCreateEditContact: boolean;
@@ -24,18 +30,26 @@ export type UseContactPageProps = {
   onCloseCreateEditContact: () => void;
   contactHookForm: UseFormReturn<ContactFormInput, any, undefined>;
   onSubmit: SubmitHandler<ContactFormInput>;
-  autocompleteContacts: UseQueryResult<
-    { rows: GetContactDto[]; count: number },
-    Error
-  >;
+  currentContactTypes: DiffContactTypes[];
+  onChangeContactType: (e: SelectChangeEvent) => void;
+  selectedContactTypes: DiffContactTypes[];
+  handleDeleteContactType: (contactType: DiffContactTypes) => void;
+  autocompleteContacts: UseQueryResult<GetContactDto[], Error>;
   setContactDescription: Dispatch<SetStateAction<string>>;
   contactDescription: string;
+  onClickContactView: (id: string | number) => void;
 };
 
 export default function useContactPage(): UseContactPageProps {
+  const router = useRouter();
+  const [currentContactTypes, setCurrentContactTypes] =
+    useState<DiffContactTypes[]>(ContactType);
+  const [selectedContactTypes, setSelectedContactTypes] = useState<
+    DiffContactTypes[]
+  >([]);
+  const [contactDescription, setContactDescription] = useState('');
   const [openCreateEditContact, setOpenCreateEditContact] = useState(false);
   const [page, setPage] = useState(0);
-  const [contactDescription, setContactDescription] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const resolverCreateUpdateContact = useYupValidationResolver(
     createContactValidationSchema
@@ -87,6 +101,38 @@ export default function useContactPage(): UseContactPageProps {
       ExceptionCatchResponse(error);
     }
   };
+  const onChangeContactType = (e: SelectChangeEvent) => {
+    const contactTypeObject = ContactType.find(
+      (unit) => unit.value === e.target.value
+    );
+    if (!!contactTypeObject) {
+      setSelectedContactTypes((prevSelectedContactTypes) => [
+        ...prevSelectedContactTypes,
+        contactTypeObject,
+      ]);
+      setCurrentContactTypes((prevCurrentContactTypes) =>
+        prevCurrentContactTypes.filter(
+          (unit) => unit.value !== contactTypeObject.value
+        )
+      );
+    }
+  };
+
+  const handleDeleteContactType = (contactType: DiffContactTypes) => {
+    setSelectedContactTypes((prevSelectedContactTypes) =>
+      prevSelectedContactTypes.filter(
+        (unit) => unit.value !== contactType.value
+      )
+    );
+    setCurrentContactTypes((prevCurrentContactTypes) => [
+      ...prevCurrentContactTypes,
+      contactType,
+    ]);
+  };
+
+  const onClickContactView = (id: string | number) => {
+    router.push(`${routers.contact}/${id}`);
+  };
 
   return {
     openCreateEditContact,
@@ -103,5 +149,10 @@ export default function useContactPage(): UseContactPageProps {
     autocompleteContacts,
     setContactDescription,
     contactDescription,
+    currentContactTypes,
+    onChangeContactType,
+    selectedContactTypes,
+    handleDeleteContactType,
+    onClickContactView,
   };
 }
