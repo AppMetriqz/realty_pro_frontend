@@ -1,6 +1,5 @@
 'use client';
-import { Box } from '@mui/material';
-import { useParams } from 'next/navigation';
+import { Box, CircularProgress, Grid } from '@mui/material';
 import React from 'react';
 import SidebarContactInformation from './components/SidebarContactInformation';
 import HeaderPage from '../../components/shared/HeaderPage';
@@ -9,8 +8,6 @@ import useContactProfilePage from './usePage';
 
 const ContactProfile = () => {
   const useContactProfilePageProps = useContactProfilePage();
-  const { slug } = useParams();
-  console.log({ slug });
 
   const userSections = [
     {
@@ -34,7 +31,15 @@ const ContactProfile = () => {
           borderRight: '1px solid #E7E7E7',
         }}
       >
-        <SidebarContactInformation />
+        {useContactProfilePageProps.findContact.isLoading ? (
+          <Grid justifyContent={'center'} item xs={12}>
+            <CircularProgress sx={{ color: '#000' }} />
+          </Grid>
+        ) : (
+          <SidebarContactInformation
+            findContact={useContactProfilePageProps.findContact}
+          />
+        )}
       </Box>
       <Box sx={{ width: '100%' }}>
         <HeaderPage

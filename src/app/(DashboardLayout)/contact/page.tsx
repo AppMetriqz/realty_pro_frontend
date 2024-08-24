@@ -63,24 +63,23 @@ const Contact = () => {
       disablePadding: false,
       label: 'Acciones',
       render: (_, record: ContactData) => (
-        <div>
-          <MenuShared
-            actions={[
-              {
-                id: record.id,
-                icon: <VisibilityIcon fontSize="small" />,
-                label: 'Ver',
-                onClick: () => usePageProps.onClickContactView(record.id),
-              },
-              {
-                id: record.id,
-                icon: <DeleteIcon fontSize="small" />,
-                label: 'Borrar',
-                onClick: () => {},
-              },
-            ]}
-          />
-        </div>
+        <MenuShared
+          isDisabled={record.id === 1}
+          actions={[
+            {
+              id: record.id,
+              icon: <VisibilityIcon fontSize="small" />,
+              label: 'Ver',
+              onClick: () => usePageProps.onClickContactView(record.id),
+            },
+            {
+              id: record.id,
+              icon: <DeleteIcon fontSize="small" />,
+              label: 'Borrar',
+              onClick: () => {},
+            },
+          ]}
+        />
       ),
     },
   ];

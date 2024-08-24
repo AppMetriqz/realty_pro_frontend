@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import UserIcon from '@/icons/UserIcon';
 import HeartIcon from '@/icons/HeartIcon';
@@ -9,16 +9,36 @@ import AddressIcon from '@/icons/AddressIcon';
 import WorkIcon from '@/icons/WorkIcon';
 import UserTag from '@/icons/UserTag';
 import UserInfoLabel, { UserInfoLabelProps } from './UserInfoLabel';
+import { UseQueryResult } from '@tanstack/react-query';
+import { GetContactDto } from '@/common/dto';
+import { ContactType, MaritalStatusType } from '@/common/constants';
+import { DateTime } from 'luxon';
 
-const SidebarContactInformation = () => {
+type SidebarContactInformationProps = {
+  findContact: UseQueryResult<GetContactDto, Error>;
+};
+
+const SidebarContactInformation: FC<SidebarContactInformationProps> = ({
+  findContact,
+}) => {
   const userInformations: (UserInfoLabelProps & { id: string | number })[] = [
-    { id: 1, icon: <UserTag />, label: 'Etiqueta:', value: 'Vendedor' },
+    {
+      id: 1,
+      icon: <UserTag />,
+      label: 'Etiqueta:',
+      value:
+        ContactType.find((type) => type.value === findContact.data?.type)
+          ?.label ?? '',
+    },
     {
       id: 2,
       icon: <HeartIcon />,
       label: 'Estado Civil:',
-      value: 'Soltero',
-      extraContent: (
+      value:
+        MaritalStatusType.find(
+          (status) => status.value === findContact.data?.marital_status
+        )?.label ?? '',
+      extraContent: findContact.data?.spouse_id ? undefined : (
         <Button
           variant="text"
           sx={{
@@ -28,7 +48,7 @@ const SidebarContactInformation = () => {
             fontWeight: 500,
           }}
         >
-          + Agregar Conyegue
+          + Agregar Conyuge
         </Button>
       ),
     },
@@ -36,15 +56,24 @@ const SidebarContactInformation = () => {
       id: 3,
       icon: <PhoneIcon />,
       label: 'Telefonos:',
-      value: '(809) 922 8060',
-      extraContent: <Typography fontWeight={500}>(809) 922 8060</Typography>,
+      value: findContact.data?.phone_number_1 ?? '',
+      extraContent: findContact.data?.phone_number_2 ? (
+        <Typography fontWeight={500}>(809) 922 8060</Typography>
+      ) : undefined,
     },
-    { id: 4, icon: <EmailIcon />, label: 'Email:', value: 'abata27@gmail.com' },
+    {
+      id: 4,
+      icon: <EmailIcon />,
+      label: 'Email:',
+      value: findContact.data?.email ?? '',
+    },
     {
       id: 5,
       icon: <CakeIcon />,
       label: 'Fecha de Nacimiento:',
-      value: '08/11/1991',
+      value: findContact.data?.date_of_birth
+        ? DateTime.fromISO(findContact.data?.date_of_birth).toLocaleString()
+        : '',
     },
     {
       id: 6,
@@ -79,7 +108,7 @@ const SidebarContactInformation = () => {
         }}
       >
         <Typography color={'#505050'} mb={1} variant="h3" fontSize="21px">
-          Samuel L. Jackson
+          {findContact.data?.first_name} {findContact.data?.last_name}
         </Typography>
         <UserIcon />
         <Typography
@@ -88,7 +117,10 @@ const SidebarContactInformation = () => {
           mb={1.5}
           fontWeight={500}
         >
-          Perfil creado 11/08/2012
+          Perfil creado&nbsp;
+          {findContact.data?.created_at
+            ? DateTime.fromISO(findContact.data?.created_at).toLocaleString()
+            : ''}
         </Typography>
         <Button
           sx={{
