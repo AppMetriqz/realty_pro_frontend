@@ -6,9 +6,9 @@ import React from "react";
 import {formatter} from "@/common/constants";
 import _ from "lodash";
 
-export type PaymentPlanDto= GetPaymentPlanDto & { id: number, phone_number_1:string, sale_type:string }
+export type PaymentPlanDto= Partial<GetPaymentPlanDto> & { id: number, phone_number_1:string, sale_type:string }
 
-export const HeadCellsPaymentPlan: Array<ColumnProps<Partial<PaymentPlanDto>>> = [
+export const HeadCellsPaymentPlan: Array<ColumnProps<PaymentPlanDto>> = [
     {
         key: 'payment_plan_detail_id',
         numeric: false,
