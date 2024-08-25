@@ -15,6 +15,9 @@ export const contactDefaultValues: ContactFormInput = {
   contact_method: '',
   date_of_birth: '',
   marital_status: '',
+  workplace: '',
+  work_occupation: '',
+  address: '',
   notes: '',
 };
 
@@ -31,5 +34,8 @@ export const updateContactValidationSchema = yup.object({
   nationality: yup.string().required(ErrorMsg.required),
   contact_method: yup.string().required(ErrorMsg.required),
   date_of_birth: yup.string().required(ErrorMsg.required),
+  address: yup.string().required(ErrorMsg.required),
+  workplace: yup.string().required(ErrorMsg.required),
+  work_occupation: yup.string().required(ErrorMsg.required),
   marital_status: yup.string().required(ErrorMsg.required),
 });

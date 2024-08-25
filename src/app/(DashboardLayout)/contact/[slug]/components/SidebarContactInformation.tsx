@@ -83,24 +83,27 @@ const SidebarContactInformation: FC<SidebarContactInformationProps> = ({
       id: 6,
       icon: <AddressIcon />,
       label: 'Direccion:',
-      value: 'Calle 10 Casa #1 Santiago, Gurabo Republica Dominicana',
+      value: findContact.data?.address ?? '',
     },
     {
       id: 7,
       icon: <WorkIcon />,
       label: 'Empresa donde Labora:',
-      value: 'Laro Computers',
+      value: findContact.data?.workplace ?? '',
       extraContent: (
         <>
           <Typography fontWeight={400}>Ocupacion:</Typography>
-          <Typography mt="15px" fontWeight={500}>
-            Programador
-          </Typography>
+          {findContact.data?.workplace ? (
+            <Typography mt="15px" fontWeight={500}>
+              {findContact.data?.work_occupation}
+            </Typography>
+          ) : null}
         </>
       ),
       hasDivider: false,
     },
   ];
+
   return (
     <>
       <Box

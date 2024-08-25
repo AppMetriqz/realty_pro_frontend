@@ -174,6 +174,35 @@ export const DialogCreateUpdateContact = ({
               disableClearable={false}
             />
           </Grid>
+          <Grid item xs={12} md={6}>
+            <TextFieldSharedController
+              label={'Lugar donde trabaja:'}
+              name={'workplace'}
+              hookForm={contactHookForm}
+              labelStyle={{ mb: '15px' }}
+            />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <TextFieldSharedController
+              label={'Ocupación:'}
+              name={'work_occupation'}
+              hookForm={contactHookForm}
+              labelStyle={{ mb: '15px' }}
+            />
+          </Grid>
+          <Grid item xs={12} md={12}>
+            <TextFieldSharedController
+              label={'Dirección:'}
+              name={'address'}
+              hookForm={contactHookForm}
+              labelStyle={{ mb: '15px' }}
+              textFieldProps={{
+                multiline: true,
+                rows: 3,
+                fullWidth: true,
+              }}
+            />
+          </Grid>
           <Grid item pb={5} xs={12} md={12}>
             <TextFieldSharedController
               label={'Nota:'}

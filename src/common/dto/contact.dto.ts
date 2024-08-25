@@ -51,6 +51,9 @@ export type GetContactDto = {
   contact_method: string;
   date_of_birth: string;
   marital_status: string;
+  workplace: string;
+  work_occupation: string;
+  address: string;
   notes?: string;
   is_active: boolean;
   create_by: number;
