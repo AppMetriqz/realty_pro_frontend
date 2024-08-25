@@ -29,7 +29,7 @@ export interface UsePageProps {
   currency: string;
   selectedProject: ProjectDto | null;
   selectedProjects: ProjectDto[];
-  projects: UseQueryResult<{ rows: ProjectDto[]; count: number }, Error>;
+  projects: UseQueryResult<ProjectDto[], Error>;
   finances: UseQueryResult<FinancesDto, Error>;
   debouncedProjectText: Dispatch<SetStateAction<string>>;
   handleChangeCurrency: (e: React.ChangeEvent<HTMLInputElement>) => void;

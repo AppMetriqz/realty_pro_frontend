@@ -7,3 +7,4 @@ export * from '@/common/dto/property-features.dto';
 export * from '@/common/dto/contact.dto';
 export * from '@/common/dto/sale.dto';
 export * from '@/common/dto/finances.dto';
+export * from '@/common/dto/payment-plan.dto';
