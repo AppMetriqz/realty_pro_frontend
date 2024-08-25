@@ -22,16 +22,16 @@ import EditIcon from '@mui/icons-material/Edit';
 import SellIcon from '@mui/icons-material/Sell';
 import TableShared, {
   ColumnProps,
-} from '@/common/components/table/TableShared';
-import SearchInput from '@/common/components/searchInput/SearchInput';
+} from '@/common/components/UI/table/TableShared';
+import SearchInput from '@/common/components/UI/searchInput/SearchInput';
 
-import MenuShared from '@/common/components/menu/MenuShared';
+import MenuShared from '@/common/components/UI/menu/MenuShared';
 import {
   mapUnitToAvailableTable,
   mapUnitToProperty,
 } from '@/common/utils/unit';
 import { DialogDelete } from '../DialogDelete';
-import { DialogCreateSell } from '../DialogCreateSell';
+import { DialogCreateSell } from '../../../../../common/components/Logic/DialogCreateSell';
 import { DialogCreateUnit } from '../DialogCreateUnit';
 import { UnitFormInput } from '../../[slug]/core';
 import { DialogEditMultipleUnit } from '../DialogEditMultipleUnit';

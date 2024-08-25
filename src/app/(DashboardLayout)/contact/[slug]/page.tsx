@@ -35,6 +35,9 @@ const ContactProfile = () => {
             'spouse_id',
             useContactProfilePageProps.findContact.data?.spouse?.contact_id
           );
+          useContactProfilePageProps.setContactDescription(
+            `${useContactProfilePageProps.findContact.data?.spouse?.first_name} ${useContactProfilePageProps.findContact.data?.spouse?.last_name}`
+          );
         } else {
           useContactProfilePageProps.contactHookForm.setValue(
             key as keyof ContactFormInput,

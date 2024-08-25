@@ -7,7 +7,7 @@ import { CardPropertyType } from '@/common/types/ProjectTypes';
 import {
   ButtonShared,
   DeleteButtonShared,
-} from '@/common/components/button/ButtonShared';
+} from '@/common/components/UI/button/ButtonShared';
 import { addCommasToAnumber } from '@/common/utils/numericHelpers';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { getConditionLabel, getUnitStatus } from '@/common/utils/unit';

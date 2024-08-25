@@ -18,10 +18,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import TableShared, {
   ColumnProps,
-} from '@/common/components/table/TableShared';
-import SearchInput from '@/common/components/searchInput/SearchInput';
+} from '@/common/components/UI/table/TableShared';
+import SearchInput from '@/common/components/UI/searchInput/SearchInput';
 
-import MenuShared from '@/common/components/menu/MenuShared';
+import MenuShared from '@/common/components/UI/menu/MenuShared';
 import { mapUnitToProperty } from '@/common/utils/unit';
 import { DialogDelete } from '../DialogDelete';
 import { GetSellDto } from '@/common/dto';

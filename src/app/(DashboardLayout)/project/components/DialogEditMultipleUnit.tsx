@@ -10,8 +10,8 @@ import {
   MultipleUnitStatus,
   UnitCondicionType,
 } from '@/common/constants/app-config';
-import { TextFieldSharedController } from '@/common/components/textField/TextFieldShared';
-import { SelectSharedController } from '@/common/components/textField/SelectShared';
+import { TextFieldSharedController } from '@/common/components/UI/textField/TextFieldShared';
+import { SelectSharedController } from '@/common/components/UI/textField/SelectShared';
 import { UsePageProjectAvailableProps } from './ProjectAvailable/usePage';
 import { formatCurrency } from '@/common/utils/numericHelpers';
 import { handleOnClose } from '@/common/utils/dialog';

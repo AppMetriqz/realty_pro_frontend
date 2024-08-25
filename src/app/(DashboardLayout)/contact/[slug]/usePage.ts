@@ -28,7 +28,6 @@ export type UseContactProfilePageProps = {
 
 const useContactProfilePage = (): UseContactProfilePageProps => {
   const { slug } = useParams();
-  console.log({ slug });
   const [currentTabValue, setCurrentTabValue] = useState(0);
   const [contactDescription, setContactDescription] = useState('');
   const [openCreateEditContact, setOpenCreateEditContact] = useState(false);
@@ -55,10 +54,6 @@ const useContactProfilePage = (): UseContactProfilePageProps => {
 
   const onSubmit: SubmitHandler<ContactFormInput> = async (data) => {
     try {
-      console.log({
-        ...data,
-        contact_id: slug,
-      });
       const contact = await updateContact.mutateAsync({
         ...data,
         contact_id: slug,

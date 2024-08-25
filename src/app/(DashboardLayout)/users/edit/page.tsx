@@ -6,8 +6,8 @@ import { useRouter } from 'next/navigation';
 import usePage from './usePage';
 import { useWatch } from 'react-hook-form';
 import React from 'react';
-import { TextFieldSharedController } from '@/common/components/textField/TextFieldShared';
-import { CheckBoxShared } from '@/common/components/textField/CheckBoxSharedWhite';
+import { TextFieldSharedController } from '@/common/components/UI/textField/TextFieldShared';
+import { CheckBoxShared } from '@/common/components/UI/textField/CheckBoxSharedWhite';
 
 const UserEdit = () => {
   const router = useRouter();

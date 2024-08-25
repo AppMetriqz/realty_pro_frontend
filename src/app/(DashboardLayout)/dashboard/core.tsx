@@ -1,168 +1,76 @@
-import {ColumnProps} from "@/common/components/table/TableShared";
-import MenuShared from "@/common/components/menu/MenuShared";
-import VisibilityIcon from "@mui/icons-material/Visibility";
-import DeleteIcon from "@mui/icons-material/Delete";
-import React from "react";
-import {GetSellDto} from "@/common/dto";
-import {formatCurrency} from "@/common/utils/numericHelpers";
-import {DateTime} from "luxon";
+import { GetSellDto } from '@/common/dto';
+import { formatCurrency } from '@/common/utils/numericHelpers';
+import { DateTime } from 'luxon';
+import { SaleToAssignDto } from '@/api/desktop';
+import * as yup from 'yup';
+import { ErrorMsg } from '@/common/constants';
 
-export interface SalesToAssignDto {
-    id: string | number;
-    project: string;
-    unit: string;
-    price: string;
-    date: string;
-    actions: string | number;
+export interface SalesToAssignTableDto {
+  id: string | number;
+  project: string;
+  unit: string;
+  price: string;
+  date: string;
+  actions: string | number;
 }
 
-
-export const HeadCellsSalesToAssign: Array<ColumnProps<SalesToAssignDto>> = [
-    {
-        key: 'id',
-        numeric: false,
-        disablePadding: true,
-        label: 'ID',
-    },
-    {
-        key: 'date',
-        numeric: false,
-        disablePadding: true,
-        label: 'Fecha',
-    },
-    {
-        key: 'project',
-        numeric: false,
-        disablePadding: true,
-        label: 'Proyecto',
-    },
-    {
-        key: 'unit',
-        numeric: false,
-        disablePadding: false,
-        label: 'Unidad',
-    },
-    {
-        key: 'price',
-        numeric: false,
-        disablePadding: false,
-        label: 'Monto',
-    },
-    {
-        key: 'actions',
-        numeric: false,
-        disablePadding: false,
-        label: 'Acciones',
-        render: (_, record: SalesToAssignDto) => (
-            <div>
-                <MenuShared
-                    actions={[
-                        {
-                            id: record.id,
-                            icon: <VisibilityIcon fontSize="small" />,
-                            label: 'Asignar cliente',
-                            onClick: () => {},
-                        },
-                        {
-                            id: record.id,
-                            icon: <DeleteIcon fontSize="small" />,
-                            label: 'Borrar unidad',
-                            onClick: () => {},
-                        },
-                    ]}
-                />
-            </div>
-        ),
-    },
-];
-
-export const mapSalesToAssignTable = (sale: GetSellDto): SalesToAssignDto => {
-    return {
-        id: sale.sale_id,
-        unit: sale.unit.name,
-        project: sale.project.name,
-        price: formatCurrency(parseFloat(sale.price)),
-        date: DateTime.fromISO(sale.created_at).toLocaleString(),
-        actions: sale.sale_id,
-    };
+export const mapSalesToAssignTable = (
+  sale: SaleToAssignDto
+): SalesToAssignTableDto => {
+  return {
+    id: sale.sale_id,
+    unit: sale.unit.name,
+    project: sale.project.name,
+    price: formatCurrency(parseFloat(sale.price)),
+    date: DateTime.fromISO(sale.created_at).toLocaleString(),
+    actions: sale.sale_id,
+  };
 };
 
-
-export interface PaymentPlansToAssignDto {
-    id: string | number;
-    project: string;
-    unit: string;
-    client: string;
-    date: string;
-    actions: string | number;
+export interface PaymentPlansToAssignTableDto {
+  id: string | number;
+  project: string;
+  unit: string;
+  client: string;
+  date: string;
+  actions: string | number;
 }
+export const assignBtnStyle = {
+  color: '#18A1EE',
+  fontSize: '14px',
+  fontWeight: 500,
+  '&:hover': {
+    color: '#5FBEF3',
+    backgroundColor: 'transparent',
+  },
+};
 
-export const HeadCellsPaymentPlansToAssign: Array<ColumnProps<PaymentPlansToAssignDto>> = [
-    {
-        key: 'id',
-        numeric: false,
-        disablePadding: true,
-        label: 'ID',
-    },
-    {
-        key: 'date',
-        numeric: false,
-        disablePadding: true,
-        label: 'Fecha',
-    },
-    {
-        key: 'project',
-        numeric: false,
-        disablePadding: true,
-        label: 'Proyecto',
-    },
-    {
-        key: 'unit',
-        numeric: false,
-        disablePadding: false,
-        label: 'Unidad',
-    },
-    {
-        key: 'client',
-        numeric: false,
-        disablePadding: false,
-        label: 'Cliente',
-    },
-    {
-        key: 'actions',
-        numeric: false,
-        disablePadding: false,
-        label: 'Acciones',
-        render: (_, record: PaymentPlansToAssignDto) => (
-            <div>
-                <MenuShared
-                    actions={[
-                        {
-                            id: record.id,
-                            icon: <VisibilityIcon fontSize="small" />,
-                            label: 'Asignar Plan de Pago',
-                            onClick: () => {},
-                        },
-                        {
-                            id: record.id,
-                            icon: <DeleteIcon fontSize="small" />,
-                            label: 'Cancelar venta',
-                            onClick: () => {},
-                        },
-                    ]}
-                />
-            </div>
-        ),
-    },
-];
+export const mapPaymentPlansToAssignTable = (
+  sale: GetSellDto
+): PaymentPlansToAssignTableDto => {
+  return {
+    ...sale,
+    id: sale.sale_id,
+    project: sale.project.name,
+    unit: sale.unit.name,
+    client: `${sale.client.first_name} ${sale.client.last_name}`,
+    date: DateTime.fromISO(sale.created_at).toLocaleString(),
+    actions: sale.sale_id,
+  };
+};
 
-export const mapPaymentPlansToAssignTable = (sale: GetSellDto): PaymentPlansToAssignDto => {
-    return {
-        id: sale.sale_id,
-        project: sale.project.name,
-        unit: sale.unit.name,
-        client: `${sale.client.first_name} ${sale.client.last_name}`,
-        date: DateTime.fromISO(sale.created_at).toLocaleString(),
-        actions: sale.sale_id,
-    };
+export const sellValidationSchema = yup.object({
+  client_id: yup.string().required(ErrorMsg.required),
+  seller_id: yup.string().required(ErrorMsg.required),
+  commission: yup.string().required(ErrorMsg.required),
+});
+
+export const sellFormDefaultValues = {
+  project_id: '',
+  unit_id: '',
+  client_id: '',
+  seller_id: '',
+  price: '',
+  commission: 0,
+  notes: '',
 };

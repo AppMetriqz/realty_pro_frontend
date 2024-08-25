@@ -1,4 +1,4 @@
-import { ButtonShared } from '@/common/components/button/ButtonShared';
+import { ButtonShared } from '@/common/components/UI/button/ButtonShared';
 import { Box, Typography } from '@mui/material';
 import React, { FC, ReactNode } from 'react';
 

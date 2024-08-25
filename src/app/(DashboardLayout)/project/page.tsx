@@ -9,7 +9,7 @@ import usePage from './usePage';
 import _ from 'lodash';
 import { ProjectDto } from '@/common/dto';
 import { mapProjectToProperty } from '@/common/utils/project';
-import SearchInput from '@/common/components/searchInput/SearchInput';
+import SearchInput from '@/common/components/UI/searchInput/SearchInput';
 
 const Project = () => {
   const usePageProps = usePage();

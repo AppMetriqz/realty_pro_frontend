@@ -10,12 +10,12 @@ import {
   ContactType,
   MaritalStatusType,
 } from '@/common/constants/app-config';
-import { TextFieldSharedController } from '@/common/components/textField/TextFieldShared';
-import { SelectSharedController } from '@/common/components/textField/SelectShared';
-import { AutoCompleteSharedController } from '@/common/components/textField/AutoCompleteShared';
+import { TextFieldSharedController } from '@/common/components/UI/textField/TextFieldShared';
+import { SelectSharedController } from '@/common/components/UI/textField/SelectShared';
+import { AutoCompleteSharedController } from '@/common/components/UI/textField/AutoCompleteShared';
 import { UseContactCreateUpdateProps } from '../useContactPage';
 import { GetContactDto } from '@/common/dto';
-import TextMaskCustom from '@/common/components/textMaskCustom/TextMaskCustom';
+import TextMaskCustom from '@/common/components/UI/textMaskCustom/TextMaskCustom';
 import { handleOnClose } from '@/common/utils/dialog';
 
 type Props = {

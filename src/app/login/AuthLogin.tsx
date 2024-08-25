@@ -7,10 +7,10 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { Controller } from 'react-hook-form';
 import { getHelperTextOld } from '@/common/utils/formHook';
-import { TextFieldSharedLogin } from '@/common/components/textField/TextFieldShared';
-import { FormLabelShared } from '@/common/components/textField/FormLabelShared';
-import { CheckBoxSharedWhite } from '@/common/components/textField/CheckBoxSharedWhite';
-import { ButtonShared } from '@/common/components/button/ButtonShared';
+import { TextFieldSharedLogin } from '@/common/components/UI/textField/TextFieldShared';
+import { FormLabelShared } from '@/common/components/UI/textField/FormLabelShared';
+import { CheckBoxSharedWhite } from '@/common/components/UI/textField/CheckBoxSharedWhite';
+import { ButtonShared } from '@/common/components/UI/button/ButtonShared';
 
 const AuthLogin = (props: any) => (
   <form onSubmit={props.onLogin}>

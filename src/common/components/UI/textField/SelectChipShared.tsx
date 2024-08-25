@@ -2,7 +2,7 @@ import React, { Dispatch, FC, SetStateAction } from 'react';
 import CloseIcon from '@/icons/CloseIcon';
 import { Chip, Box, SelectChangeEvent } from '@mui/material';
 
-import { AutoCompleteSharedController } from '@/common/components/textField/AutoCompleteShared';
+import { AutoCompleteSharedController } from '@/common/components/UI/textField/AutoCompleteShared';
 
 export interface SelectChipSharedProps {
   keyId: string;

@@ -17,13 +17,13 @@ export type CreateAllSellDto = {
 };
 
 export type UpdateSellDto = {
-  sale_id: number;
-  project_id: number;
-  unit_id: number;
+  sale_id?: string | number;
+  project_id?: number | string;
+  unit_id?: number | string;
   client_id: number;
   seller_id: number;
   commission: number;
-  stage: string;
+  notes?: string;
 };
 
 export type GetSellDto = {
@@ -37,6 +37,9 @@ export type GetSellDto = {
   update_by?: number;
   created_at: string;
   updated_at: string;
+  sale?: {
+    sale_id: number;
+  };
   project: {
     project_id: number;
     name: string;

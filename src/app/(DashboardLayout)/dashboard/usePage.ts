@@ -1,111 +1,227 @@
-import React, {Dispatch, SetStateAction, useState} from "react";
-import { apiDesktop} from '@/api';
-import {CalendarEnumDto, GoogleCalendarDto, PaymentPlansToAssignDto, SalesToAssignDto} from "@/api/desktop";
-import {UseQueryResult} from "@tanstack/react-query";
-import {LineOptions} from "@/app/(DashboardLayout)/components/chart/chartsOptions";
-import _ from "lodash";
-import {DateTime} from "luxon";
-import {SelectChangeEvent} from "@mui/material/Select";
-
+import React, { Dispatch, SetStateAction, useState } from 'react';
+import { apiContacts, apiDesktop, apiSales } from '@/api';
+import {
+  CalendarEnumDto,
+  GoogleCalendarDto,
+  PaymentPlansToAssignDto,
+  SalesToAssignDto,
+} from '@/api/desktop';
+import { UseQueryResult } from '@tanstack/react-query';
+import { LineOptions } from '@/app/(DashboardLayout)/components/chart/chartsOptions';
+import _ from 'lodash';
+import { DateTime } from 'luxon';
+import { SelectChangeEvent } from '@mui/material/Select';
+import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
+import { SellFormType } from '@/common/types/SellTypes';
+import { useYupValidationResolver } from '@/common/utils/formHook';
+import {
+  PaymentPlansToAssignTableDto,
+  SalesToAssignTableDto,
+  sellFormDefaultValues,
+  sellValidationSchema,
+} from './core';
+import { ExceptionCatchResponse } from '@/common/exceptions';
+import { toast } from 'react-toastify';
+import { GetContactDto, GetSellDto } from '@/common/dto';
 
 export interface UsePageProps {
-    times: keyof typeof CalendarEnumDto;
-    handleChangeTimes: (e: SelectChangeEvent) => void;
-    handleGoogleCalendarLogin: () => void;
-    setSalesToAssignPageIndex: Dispatch<SetStateAction<number>>;
-    setSalesToAssignPageSize: Dispatch<SetStateAction<number>>;
-    setPaymentPlansToAssignPageIndex: Dispatch<SetStateAction<number>>;
-    setPaymentPlansToAssignPageSize: Dispatch<SetStateAction<number>>;
-    googleCalendar: UseQueryResult<GoogleCalendarDto, Error>;
-    salesToAssign: UseQueryResult<SalesToAssignDto, Error>;
-    paymentPlansToAssign: UseQueryResult<PaymentPlansToAssignDto, Error>;
-    isGoogleCalendarLogin: boolean;
-    isLoadingCalendar: boolean;
-    lineOptions: any;
-    salesToAssignPageIndex: number;
-    salesToAssignPageSize: number;
-    paymentPlansToAssignPageIndex: number;
-    paymentPlansToAssignPageSize: number;
+  times: keyof typeof CalendarEnumDto;
+  handleChangeTimes: (e: SelectChangeEvent) => void;
+  handleGoogleCalendarLogin: () => void;
+  setSalesToAssignPageIndex: Dispatch<SetStateAction<number>>;
+  setSalesToAssignPageSize: Dispatch<SetStateAction<number>>;
+  setPaymentPlansToAssignPageIndex: Dispatch<SetStateAction<number>>;
+  setPaymentPlansToAssignPageSize: Dispatch<SetStateAction<number>>;
+  googleCalendar: UseQueryResult<GoogleCalendarDto, Error>;
+  salesToAssign: UseQueryResult<SalesToAssignDto, Error>;
+  paymentPlansToAssign: UseQueryResult<PaymentPlansToAssignDto, Error>;
+  isGoogleCalendarLogin: boolean;
+  isLoadingCalendar: boolean;
+  lineOptions: any;
+  salesToAssignPageIndex: number;
+  salesToAssignPageSize: number;
+  paymentPlansToAssignPageIndex: number;
+  openSellModal: boolean;
+  paymentPlansToAssignPageSize: number;
+  onCloseSellModal: () => void;
+  onClickAssignSell: (sale: Partial<GetSellDto> & { id: number }) => void;
+  sellHookForm: UseFormReturn<SellFormType>;
+  sellerAutocompleteContacts: UseQueryResult<GetContactDto[], Error>;
+  setClientDescription: Dispatch<SetStateAction<string>>;
+  setSellerDescription: Dispatch<SetStateAction<string>>;
+  clientAutocompleteContacts: UseQueryResult<GetContactDto[], Error>;
 }
 
 export default function usePage() {
+  const [openSellModal, setOpenSellModal] = useState(false);
+  const [selectedUnitToAssign, setSelectedUnitToAssign] = useState<
+    (Partial<GetSellDto> & { id: number }) | null
+  >(null);
+  const [times, setTimes] = useState<keyof typeof CalendarEnumDto>('today');
 
-    const [times, setTimes] = useState<keyof typeof CalendarEnumDto>('today');
+  const [salesToAssignPageIndex, setSalesToAssignPageIndex] =
+    useState<number>(0);
+  const [salesToAssignPageSize, setSalesToAssignPageSize] =
+    useState<number>(10);
 
-    const [salesToAssignPageIndex, setSalesToAssignPageIndex] = useState<number>(0);
-    const [salesToAssignPageSize, setSalesToAssignPageSize] = useState<number>(10);
+  const [paymentPlansToAssignPageIndex, setPaymentPlansToAssignPageIndex] =
+    useState<number>(0);
+  const [paymentPlansToAssignPageSize, setPaymentPlansToAssignPageSize] =
+    useState<number>(10);
 
-    const [paymentPlansToAssignPageIndex, setPaymentPlansToAssignPageIndex] = useState<number>(0);
-    const [paymentPlansToAssignPageSize, setPaymentPlansToAssignPageSize] = useState<number>(10);
+  const [isGoogleCalendarLogin, setIsGoogleCalendarLogin] =
+    useState<boolean>(false);
+  const [isLoadingCalendar, setIsLoadingCalendar] = useState<boolean>(true);
+  const [lineOptions, setLineOptions] = useState<any>(LineOptions);
+  const [sellerDescription, setSellerDescription] = useState('');
+  const [clientDescription, setClientDescription] = useState('');
 
-    const [isGoogleCalendarLogin, setIsGoogleCalendarLogin] = useState<boolean>(false);
-    const [isLoadingCalendar, setIsLoadingCalendar] = useState<boolean>(true);
-    const [lineOptions, setLineOptions] = React.useState<any>(LineOptions);
+  const googleCalendarLogin = apiDesktop.useGoogleCalendarLogin();
+  const googleCalendar = apiDesktop.useGoogleCalendar({ times: times });
+  const sale = apiDesktop.useSale();
+  const sellResolver = useYupValidationResolver(sellValidationSchema);
 
-    const googleCalendarLogin = apiDesktop.useGoogleCalendarLogin();
-    const googleCalendar = apiDesktop.useGoogleCalendar({times: times});
-    const sale = apiDesktop.useSale();
+  const sellerAutocompleteContacts = apiContacts.useFindAllAutocomplete({
+    description: sellerDescription,
+  });
+  const clientAutocompleteContacts = apiContacts.useFindAllAutocomplete({
+    description: clientDescription,
+  });
+  const sellHookForm = useForm<SellFormType>({
+    resolver: sellResolver,
+    defaultValues: sellFormDefaultValues,
+  });
 
-    const salesToAssign = apiDesktop.useSalesToAssign({pageIndex: salesToAssignPageIndex, pageSize:salesToAssignPageSize});
-    const paymentPlansToAssign = apiDesktop.usePaymentPlansToAssign({pageIndex:paymentPlansToAssignPageIndex, pageSize:paymentPlansToAssignPageSize});
+  const salesToAssign = apiDesktop.useSalesToAssign({
+    pageIndex: salesToAssignPageIndex,
+    pageSize: salesToAssignPageSize,
+  });
+  const paymentPlansToAssign = apiDesktop.usePaymentPlansToAssign({
+    pageIndex: paymentPlansToAssignPageIndex,
+    pageSize: paymentPlansToAssignPageSize,
+  });
 
+  const assignSale = apiSales.useUpdate();
 
-    React.useEffect(()=>{
-        (async ()=>{
-            if (googleCalendar.isSuccess){
-                setIsGoogleCalendarLogin(!googleCalendar.data.isNeedLogin)
-                setIsLoadingCalendar(false)
-            }
-        })()
-    },[googleCalendar.isSuccess, googleCalendar.data])
+  React.useEffect(() => {
+    (async () => {
+      if (googleCalendar.isSuccess) {
+        setIsGoogleCalendarLogin(!googleCalendar.data.isNeedLogin);
+        setIsLoadingCalendar(false);
+      }
+    })();
+  }, [googleCalendar.isSuccess, googleCalendar.data]);
 
-    React.useEffect(() => {
-        if (sale.isSuccess) {
-            const lineData = sale.data
-            const seriesLine = [{
-                showInLegend: false,
-                data: _.map(lineData, "total")
-            }]
-            const xAxisLine = {
-                categories: _.map(lineData, (item) => {
-                    const monthName = DateTime.fromObject({month: item.month}).toFormat('LLLL');
-                    return `${monthName} ${item.year}`
-                })
-            }
-            setLineOptions((prevState: any) => ({...prevState, series: seriesLine, xAxis: xAxisLine}))
-        }
-    }, [sale.isSuccess, sale.data])
+  React.useEffect(() => {
+    if (sale.isSuccess) {
+      const lineData = sale.data;
+      const seriesLine = [
+        {
+          showInLegend: false,
+          data: _.map(lineData, 'total'),
+        },
+      ];
+      const xAxisLine = {
+        categories: _.map(lineData, (item) => {
+          const monthName = DateTime.fromObject({ month: item.month }).toFormat(
+            'LLLL'
+          );
+          return `${monthName} ${item.year}`;
+        }),
+      };
+      setLineOptions((prevState: any) => ({
+        ...prevState,
+        series: seriesLine,
+        xAxis: xAxisLine,
+      }));
+    }
+  }, [sale.isSuccess, sale.data]);
 
-    const handleChangeTimes = (event: SelectChangeEvent) => {
-        const value = event.target.value as keyof typeof CalendarEnumDto
-        setIsLoadingCalendar(true)
-        setTimes(value);
-    };
+  const onCloseSellModal = () => {
+    setSelectedUnitToAssign(null);
+    setOpenSellModal(false);
+    sellHookForm.reset();
+  };
 
-    const handleGoogleCalendarLogin = async () => {
-        setIsLoadingCalendar(true)
-        const result = await googleCalendarLogin.mutateAsync()
-        window.open(result, '_blank');
-        setIsLoadingCalendar(false)
-    };
+  const handleChangeTimes = (event: SelectChangeEvent) => {
+    const value = event.target.value as keyof typeof CalendarEnumDto;
+    setIsLoadingCalendar(true);
+    setTimes(value);
+  };
 
-    return {
-        handleChangeTimes,
-        times,
-        isGoogleCalendarLogin,
-        isLoadingCalendar,
-        setSalesToAssignPageIndex,
-        setPaymentPlansToAssignPageIndex,
-        salesToAssignPageSize,
-        setSalesToAssignPageSize,
-        paymentPlansToAssignPageSize,
-        setPaymentPlansToAssignPageSize,
-        salesToAssignPageIndex,
-        paymentPlansToAssignPageIndex,
-        handleGoogleCalendarLogin,
-        googleCalendar,
-        salesToAssign,
-        paymentPlansToAssign,
-        lineOptions,
-    };
+  const handleGoogleCalendarLogin = async () => {
+    setIsLoadingCalendar(true);
+    const result = await googleCalendarLogin.mutateAsync();
+    window.open(result, '_blank');
+    setIsLoadingCalendar(false);
+  };
+
+  const onSubmitSell: SubmitHandler<SellFormType> = async (data) => {
+    try {
+      const sale = await assignSale.mutateAsync({
+        project_id: selectedUnitToAssign?.project?.project_id,
+        sale_id: selectedUnitToAssign?.sale_id,
+        unit_id: selectedUnitToAssign?.unit?.unit_id,
+        client_id: parseInt(data.client_id),
+        seller_id: parseInt(data.seller_id),
+        commission: data.commission / 100,
+        notes: data.notes,
+      });
+      if (!!sale) {
+        toast.success(`Venta asignada.`, {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'colored',
+        });
+        sellHookForm.reset();
+        setOpenSellModal(false);
+      }
+    } catch (error: Error | unknown) {
+      ExceptionCatchResponse(error);
+    }
+  };
+
+  const onClickAssignSell = async (
+    sale: Partial<GetSellDto> & { id: number }
+  ) => {
+    if (sale.commission)
+      sellHookForm.setValue('commission', sale.commission * 100);
+    if (sale.notes) sellHookForm.setValue('notes', sale.notes);
+    setSelectedUnitToAssign(sale);
+    setOpenSellModal(true);
+  };
+
+  return {
+    handleChangeTimes,
+    times,
+    isGoogleCalendarLogin,
+    isLoadingCalendar,
+    setSalesToAssignPageIndex,
+    setPaymentPlansToAssignPageIndex,
+    salesToAssignPageSize,
+    setSalesToAssignPageSize,
+    paymentPlansToAssignPageSize,
+    setPaymentPlansToAssignPageSize,
+    salesToAssignPageIndex,
+    paymentPlansToAssignPageIndex,
+    handleGoogleCalendarLogin,
+    googleCalendar,
+    salesToAssign,
+    paymentPlansToAssign,
+    lineOptions,
+    openSellModal,
+    onCloseSellModal,
+    onSubmitSell,
+    onClickAssignSell,
+    sellHookForm,
+    sellerAutocompleteContacts,
+    setClientDescription,
+    setSellerDescription,
+    clientAutocompleteContacts,
+  };
 }

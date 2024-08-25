@@ -1,5 +1,6 @@
 export type SellFormType = {
-  unit_id: string;
+  project_id?: string | number;
+  unit_id: string | number;
   client_id: string;
   seller_id: string;
   price: string;

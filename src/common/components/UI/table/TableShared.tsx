@@ -58,7 +58,7 @@ export interface ColumnProps<T> {
     item: T,
     isItemSelected: boolean,
     handleClick?: (event: React.MouseEvent<unknown>, item: T) => void
-  ) => React.ReactElement;
+  ) => React.ReactElement | string | number;
 }
 
 export type TableSharedProps<T> = {

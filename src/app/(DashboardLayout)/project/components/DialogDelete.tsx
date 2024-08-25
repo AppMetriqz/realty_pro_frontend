@@ -5,7 +5,7 @@ import DialogContent from '@mui/material/DialogContent';
 import { Grid, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
-import { TextFieldSharedController } from '@/common/components/textField/TextFieldShared';
+import { TextFieldSharedController } from '@/common/components/UI/textField/TextFieldShared';
 import { handleOnClose } from '@/common/utils/dialog';
 
 type Props = {

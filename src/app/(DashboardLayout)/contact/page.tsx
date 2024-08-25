@@ -4,10 +4,10 @@ import React from 'react';
 import HeaderPage from '../components/shared/HeaderPage';
 import { Box, CircularProgress, Grid, Typography } from '@mui/material';
 import _ from 'lodash';
-import SearchInput from '@/common/components/searchInput/SearchInput';
+import SearchInput from '@/common/components/UI/searchInput/SearchInput';
 import TableShared, {
   ColumnProps,
-} from '@/common/components/table/TableShared';
+} from '@/common/components/UI/table/TableShared';
 import useContactPage from './useContactPage';
 import { ContactData } from '@/common/types/ContactType';
 import { mapContactToTableRow } from '@/common/utils/contact';

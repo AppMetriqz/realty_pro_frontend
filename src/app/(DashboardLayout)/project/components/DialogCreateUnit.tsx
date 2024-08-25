@@ -9,8 +9,8 @@ import DialogActions from '@mui/material/DialogActions';
 import { UnitCondicionType, UnitStatus } from '@/common/constants/app-config';
 import { ProjectFeatures } from '@/app/(DashboardLayout)/project/components/ProjectFeatures';
 import { Cover } from '@/app/(DashboardLayout)/project/components/Cover';
-import { TextFieldSharedController } from '@/common/components/textField/TextFieldShared';
-import { SelectSharedController } from '@/common/components/textField/SelectShared';
+import { TextFieldSharedController } from '@/common/components/UI/textField/TextFieldShared';
+import { SelectSharedController } from '@/common/components/UI/textField/SelectShared';
 import {
   formatCurrency,
   isValidNumberInput,

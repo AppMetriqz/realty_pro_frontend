@@ -6,22 +6,24 @@ import { Grid } from '@mui/material';
 import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
 
-import { TextFieldSharedController } from '@/common/components/textField/TextFieldShared';
-import { AutoCompleteSharedController } from '@/common/components/textField/AutoCompleteShared';
+import { TextFieldSharedController } from '@/common/components/UI/textField/TextFieldShared';
+import { AutoCompleteSharedController } from '@/common/components/UI/textField/AutoCompleteShared';
 import { GetContactDto } from '@/common/dto';
-import {
-  formatCurrency,
-  isValidNumberInput,
-} from '@/common/utils/numericHelpers';
 import { handleOnClose } from '@/common/utils/dialog';
 
 type Props = {
+  isEdit?: boolean;
   open: boolean;
   onClose: (open: boolean) => void;
   usePageProps: any;
 };
 
-export const DialogCreateSell = ({ open, onClose, usePageProps }: Props) => {
+export const DialogCreateSell = ({
+  isEdit = false,
+  open,
+  onClose,
+  usePageProps,
+}: Props) => {
   const { sellHookForm } = usePageProps;
 
   return (
@@ -34,9 +36,11 @@ export const DialogCreateSell = ({ open, onClose, usePageProps }: Props) => {
       onSubmit={sellHookForm.handleSubmit(usePageProps.onSubmitSell)}
     >
       <DialogTitle sx={{ p: '40px' }} fontSize={'21px'}>
-        Nueva {usePageProps.selectedUnits.length > 0 ? 'Ventas' : 'Venta'}&nbsp;
+        {isEdit ? 'Editar' : 'Nuevo'}&nbsp;
+        {usePageProps.selectedUnits?.length > 0 ? 'Ventas' : 'Venta'}
+        &nbsp;
         <span style={{ fontWeight: 600 }}>
-          {usePageProps.selectedUnits?.length > 0
+          {usePageProps?.selectedUnits && usePageProps.selectedUnits?.length > 0
             ? `(${usePageProps.selectedUnits.length})`
             : null}
         </span>
