@@ -23,7 +23,7 @@ interface FindAllDto {
 
 export interface FindAllAutocompleteDto {
   description: string;
-  currencyType: keyof typeof CurrencyTypeDto;
+  currencyType?: keyof typeof CurrencyTypeDto;
 }
 
 export const useFindAll = (params: FindAllDto) => {
