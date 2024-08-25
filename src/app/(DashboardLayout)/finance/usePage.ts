@@ -57,8 +57,7 @@ export default function usePage() {
     }
   );
   const [pieOptions, setPieOptions] = React.useState<any>(PieOptions);
-  const [currency, setCurrency] =
-    React.useState<keyof typeof CurrencyTypeDto>('US');
+  const [currency, setCurrency] = React.useState<keyof typeof CurrencyTypeDto>('US');
 
   const projects = apiProjects.useFindAllAutocomplete({
     description: projectText,

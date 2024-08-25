@@ -7,3 +7,4 @@ export { apiUser } from './user';
 export { apiSales } from './sales';
 export { apiFinances } from './finances';
 export { apiDesktop } from './desktop';
+export { apiPaymentPlans } from './payment-plans';
