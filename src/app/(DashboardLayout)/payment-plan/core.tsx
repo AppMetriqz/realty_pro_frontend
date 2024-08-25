@@ -3,6 +3,8 @@ import {GetPaymentPlanDto} from "@/common/dto";
 import {DateTime} from "luxon";
 import { Typography} from "@mui/material";
 import React from "react";
+import {formatter} from "@/common/constants";
+import _ from "lodash";
 
 export type PaymentPlanDto= GetPaymentPlanDto & { id: number, phone_number_1:string, sale_type:string }
 
@@ -43,7 +45,7 @@ export const HeadCellsPaymentPlan: Array<ColumnProps<Partial<PaymentPlanDto>>> =
         numeric: false,
         disablePadding: true,
         label: 'Monto',
-        render: (_, record: Partial<PaymentPlanDto>) => record.payment_amount??0,
+        render: (_, record: Partial<PaymentPlanDto>) => (record.project?.currency_type ?? "") + (formatter.format(record.payment_amount??0)),
     },
     {
         key: 'project',

@@ -5,7 +5,7 @@ export type GetPaymentPlanDto = {
   unit_id: number;
   sale_type: string;
   total_amount: string;
-  payment_amount: string;
+  payment_amount: number;
   payment_date: string;
   separation_amount: number;
   separation_date: string;
@@ -30,6 +30,7 @@ export type GetPaymentPlanDto = {
   project: {
     project_id: number;
     name: string;
+    currency_type: string;
   };
   unit: {
     unit_id: number;
