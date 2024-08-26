@@ -84,8 +84,8 @@ const ProjectAvailable: FC<{
   const actionList = (
     isSold: boolean,
     record: AvailableTableData
-  ): ActionType[] =>
-    [
+  ): ActionType[] => {
+    const actionArray = [
       {
         id: record.id,
         icon: <VisibilityIcon fontSize="small" />,
@@ -104,23 +104,25 @@ const ProjectAvailable: FC<{
           ? () => usePageProps.handleClickCancelSale(record.id)
           : () => usePageProps.handleClickSell(record.id),
       },
-      !isSold
-        ? {
-            id: record.id,
-            icon: <EditIcon fontSize="small" />,
-            label: 'Editar',
-            onClick: () => usePageProps.handleClickEdit(record.id),
-          }
-        : null,
-      !isSold
-        ? {
-            id: record.id,
-            icon: <DeleteIcon fontSize="small" />,
-            label: 'Borrar',
-            onClick: () => usePageProps.handleClickDelete(record.id),
-          }
-        : null,
-    ].filter((x) => !!x);
+    ];
+    if (!isSold) {
+      actionArray.push.apply(actionArray, [
+        {
+          id: record.id,
+          icon: <EditIcon fontSize="small" />,
+          label: 'Editar',
+          onClick: () => usePageProps.handleClickEdit(record.id),
+        },
+        {
+          id: record.id,
+          icon: <DeleteIcon fontSize="small" />,
+          label: 'Borrar',
+          onClick: () => usePageProps.handleClickDelete(record.id),
+        },
+      ]);
+    }
+    return actionArray;
+  };
 
   const headCells: Array<ColumnProps<AvailableTableData>> = [
     {
