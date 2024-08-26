@@ -1,8 +1,13 @@
 'use client';
 import axiosInstance from '@/config/api/api.config';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { QueriesOptions } from '@/common/constants/react-query';
-import {GetPaymentPlanStatDto, GetPaymentPlanDto} from "@/common/dto";
+import {
+  GetPaymentPlanStatDto,
+  GetPaymentPlanDto,
+  CreatePaymentPlanDto,
+} from '@/common/dto';
+import { desktop } from './desktop';
 
 export const paymentPlans = 'payment-plans';
 
@@ -29,6 +34,23 @@ export const useFindAllStats = (params: FindAllStatsDto) => {
   });
 };
 
+export const useCreate = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: [`${paymentPlans}Create`],
+    mutationFn: (data: CreatePaymentPlanDto) =>
+      axiosInstance.post(`/${paymentPlans}`, data),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({
+        queryKey: [`${desktop}-sales-to-assign`],
+      });
+      await queryClient.invalidateQueries({
+        queryKey: [`${desktop}-payment-plans-to-assign`],
+      });
+    },
+  });
+};
+
 export const useFindAll = (params: FindAllDto) => {
   return useQuery<GetPaymentPlanDto[], Error>({
     queryKey: [`${paymentPlans}`, params],
@@ -37,7 +59,8 @@ export const useFindAll = (params: FindAllDto) => {
   });
 };
 
-export const apiFinances = {
+export const apiPaymentPlans = {
   useFindAllStats,
   useFindAll,
+  useCreate,
 };

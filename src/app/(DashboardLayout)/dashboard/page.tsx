@@ -13,61 +13,71 @@ import { GoogleCalendar } from '@/app/(DashboardLayout)/dashboard/components/Goo
 import TableShared, {
   ColumnProps,
 } from '@/common/components/UI/table/TableShared';
-import {
-  assignBtnStyle,
-  mapPaymentPlansToAssignTable,
-  mapSalesToAssignTable,
-  PaymentPlansToAssignTableDto,
-  SalesToAssignTableDto,
-} from '@/app/(DashboardLayout)/dashboard/core';
+import { assignBtnStyle } from '@/app/(DashboardLayout)/dashboard/core';
 import { DialogCreateSell } from '@/common/components/Logic/DialogCreateSell';
-import { GetSellDto } from '@/common/dto';
+import { GetSellDto, PaymentPlanToAssignDto } from '@/common/dto';
 import { DateTime } from 'luxon';
 import { formatCurrency } from '@/common/utils/numericHelpers';
+import { DialogCreatePaymentPlan } from '@/common/components/Logic/DialogCreatePaymentPlan';
 
 const Dashboard = () => {
   const usePageProps: UsePageProps = usePage();
 
   const HeadCellsPaymentPlansToAssign: Array<
-    ColumnProps<PaymentPlansToAssignTableDto>
+    ColumnProps<Partial<PaymentPlanToAssignDto> & { id: number }>
   > = [
     {
       key: 'id',
       numeric: false,
       disablePadding: true,
       label: 'ID',
+      render: (_, record) => record.sale_id ?? 0,
     },
     {
-      key: 'date',
+      key: 'created_at',
       numeric: false,
       disablePadding: true,
       label: 'Fecha',
+      render: (_, record) =>
+        record.created_at
+          ? DateTime.fromISO(record.created_at).toLocaleString()
+          : '',
     },
     {
       key: 'project',
       numeric: false,
       disablePadding: true,
       label: 'Proyecto',
+      render: (_, record) => (record.project ? record.project.name : ''),
     },
     {
       key: 'unit',
       numeric: false,
       disablePadding: false,
       label: 'Unidad',
+      render: (_, record) => (record.unit ? record.unit.name : ''),
     },
     {
       key: 'client',
       numeric: false,
       disablePadding: false,
       label: 'Cliente',
+      render: (_, record) =>
+        record.client
+          ? `${record.client.first_name} ${record.client.last_name}`
+          : '',
     },
     {
-      key: 'actions',
+      key: 'created_at',
       numeric: false,
       disablePadding: false,
       label: 'Acciones',
-      render: (_, record: PaymentPlansToAssignTableDto) => (
-        <Button variant="text" sx={assignBtnStyle}>
+      render: (_, record) => (
+        <Button
+          variant="text"
+          sx={assignBtnStyle}
+          onClick={() => usePageProps.onClickPaymentPlan(record)}
+        >
           Asignar
         </Button>
       ),
@@ -115,7 +125,7 @@ const Dashboard = () => {
         formatCurrency(parseFloat(record.price ?? '0')),
     },
     {
-      key: 'updated_at',
+      key: 'created_at',
       numeric: false,
       disablePadding: false,
       label: 'Cliente',
@@ -183,7 +193,7 @@ const Dashboard = () => {
       </Box>
 
       <Box sx={{ mx: '60px', my: '100px' }}>
-        <TableShared<PaymentPlansToAssignTableDto>
+        <TableShared<Partial<PaymentPlanToAssignDto> & { id: number }>
           headTitle="Planes de Pago Por Asignar"
           headCells={HeadCellsPaymentPlansToAssign}
           count={
@@ -193,9 +203,10 @@ const Dashboard = () => {
           }
           rows={
             usePageProps.paymentPlansToAssign.isSuccess
-              ? usePageProps.paymentPlansToAssign.data.rows.map(
-                  mapPaymentPlansToAssignTable
-                )
+              ? usePageProps.paymentPlansToAssign.data.rows.map((plan) => ({
+                  ...plan,
+                  id: plan.sale_id,
+                }))
               : []
           }
           orderByValue="project"
@@ -209,6 +220,11 @@ const Dashboard = () => {
         isEdit
         open={usePageProps.openSellModal}
         onClose={usePageProps.onCloseSellModal}
+        usePageProps={usePageProps}
+      />
+      <DialogCreatePaymentPlan
+        open={usePageProps.openCreatePaymentPlanModal}
+        onClose={usePageProps.onCloseCreatePaymentPlanModal}
         usePageProps={usePageProps}
       />
     </PageContainer>

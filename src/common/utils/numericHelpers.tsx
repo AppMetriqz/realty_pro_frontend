@@ -8,3 +8,7 @@ export const isValidNumberInput = (inputString: string) => {
   const pattern = /^[0-9.,]*$/;
   return pattern.test(inputString);
 };
+
+export const fromStringCurrencyToFloat = (value: string) => {
+  return parseFloat((value || '0').replaceAll(/[$,]/gi, ''));
+};

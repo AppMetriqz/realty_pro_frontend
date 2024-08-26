@@ -2,7 +2,7 @@
 import axiosInstance from '@/config/api/api.config';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { QueriesOptions } from '@/common/constants/react-query';
-import { GetSellDto, GetUnitDto, UnitDto } from '@/common/dto';
+import { GetSellDto, GetUnitDto, PaymentPlanToAssignDto, UnitDto } from '@/common/dto';
 
 export const desktop = 'desktop';
 
@@ -68,9 +68,10 @@ export interface SaleToAssignDto {
   };
 }
 
+
 export interface PaymentPlansToAssignDto {
   count: number;
-  rows: GetSellDto[];
+  rows: PaymentPlanToAssignDto[];
 }
 
 export const useGoogleCalendarLogin = () => {

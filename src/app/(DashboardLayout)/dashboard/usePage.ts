@@ -15,14 +15,21 @@ import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
 import { SellFormType } from '@/common/types/SellTypes';
 import { useYupValidationResolver } from '@/common/utils/formHook';
 import {
-  PaymentPlansToAssignTableDto,
-  SalesToAssignTableDto,
+  createPaymentPlanDefaultValues,
+  createPaymentPlanValidationSchema,
+  CreateUpdatePaymentPlanType,
   sellFormDefaultValues,
   sellValidationSchema,
 } from './core';
 import { ExceptionCatchResponse } from '@/common/exceptions';
 import { toast } from 'react-toastify';
-import { GetContactDto, GetSellDto } from '@/common/dto';
+import {
+  GetContactDto,
+  GetSellDto,
+  PaymentPlanToAssignDto,
+} from '@/common/dto';
+import { apiPaymentPlans } from '@/api/payment-plans';
+import { formatCurrency } from '@/common/utils/numericHelpers';
 
 export interface UsePageProps {
   times: keyof typeof CalendarEnumDto;
@@ -43,6 +50,7 @@ export interface UsePageProps {
   paymentPlansToAssignPageIndex: number;
   openSellModal: boolean;
   paymentPlansToAssignPageSize: number;
+  onSubmitSell: SubmitHandler<SellFormType>;
   onCloseSellModal: () => void;
   onClickAssignSell: (sale: Partial<GetSellDto> & { id: number }) => void;
   sellHookForm: UseFormReturn<SellFormType>;
@@ -50,12 +58,28 @@ export interface UsePageProps {
   setClientDescription: Dispatch<SetStateAction<string>>;
   setSellerDescription: Dispatch<SetStateAction<string>>;
   clientAutocompleteContacts: UseQueryResult<GetContactDto[], Error>;
+  openCreatePaymentPlanModal: boolean;
+  onCloseCreatePaymentPlanModal: () => void;
+  paymentPlanHookForm: UseFormReturn<
+    CreateUpdatePaymentPlanType,
+    any,
+    undefined
+  >;
+  onClickPaymentPlan: (
+    paymentPlan: Partial<PaymentPlanToAssignDto> & { id: number }
+  ) => void;
+  onSubmitPaymentPlan: SubmitHandler<CreateUpdatePaymentPlanType>;
 }
 
-export default function usePage() {
+export default function usePage(): UsePageProps {
   const [openSellModal, setOpenSellModal] = useState(false);
+  const [openCreatePaymentPlanModal, setOpenCreatePaymentPlanModal] =
+    useState(false);
   const [selectedUnitToAssign, setSelectedUnitToAssign] = useState<
     (Partial<GetSellDto> & { id: number }) | null
+  >(null);
+  const [selectedPaymentToAssign, setSelectedPaymentToAssign] = useState<
+    (Partial<PaymentPlanToAssignDto> & { id: number }) | null
   >(null);
   const [times, setTimes] = useState<keyof typeof CalendarEnumDto>('today');
 
@@ -80,6 +104,9 @@ export default function usePage() {
   const googleCalendar = apiDesktop.useGoogleCalendar({ times: times });
   const sale = apiDesktop.useSale();
   const sellResolver = useYupValidationResolver(sellValidationSchema);
+  const paymentPlanResolver = useYupValidationResolver(
+    createPaymentPlanValidationSchema
+  );
 
   const sellerAutocompleteContacts = apiContacts.useFindAllAutocomplete({
     description: sellerDescription,
@@ -90,6 +117,10 @@ export default function usePage() {
   const sellHookForm = useForm<SellFormType>({
     resolver: sellResolver,
     defaultValues: sellFormDefaultValues,
+  });
+  const paymentPlanHookForm = useForm<CreateUpdatePaymentPlanType>({
+    resolver: paymentPlanResolver,
+    defaultValues: createPaymentPlanDefaultValues,
   });
 
   const salesToAssign = apiDesktop.useSalesToAssign({
@@ -102,6 +133,7 @@ export default function usePage() {
   });
 
   const assignSale = apiSales.useUpdate();
+  const createPaymentPlan = apiPaymentPlans.useCreate();
 
   React.useEffect(() => {
     (async () => {
@@ -186,14 +218,72 @@ export default function usePage() {
     }
   };
 
-  const onClickAssignSell = async (
-    sale: Partial<GetSellDto> & { id: number }
-  ) => {
+  const onClickAssignSell = (sale: Partial<GetSellDto> & { id: number }) => {
     if (sale.commission)
       sellHookForm.setValue('commission', sale.commission * 100);
     if (sale.notes) sellHookForm.setValue('notes', sale.notes);
     setSelectedUnitToAssign(sale);
     setOpenSellModal(true);
+  };
+
+  const onClickPaymentPlan = (
+    paymentPlan: Partial<PaymentPlanToAssignDto> & { id: number }
+  ) => {
+    if (paymentPlan.price)
+      paymentPlanHookForm.setValue(
+        'total_amount',
+        formatCurrency(parseFloat(paymentPlan.price))
+      );
+    if (paymentPlan.sale_id)
+      paymentPlanHookForm.setValue('sale_id', paymentPlan.sale_id);
+    setSelectedPaymentToAssign(paymentPlan);
+    setOpenCreatePaymentPlanModal(true);
+  };
+
+  const onCloseCreatePaymentPlanModal = () => {
+    setSelectedPaymentToAssign(null);
+    setOpenCreatePaymentPlanModal(false);
+    paymentPlanHookForm.reset();
+  };
+
+  const onSubmitPaymentPlan: SubmitHandler<
+    CreateUpdatePaymentPlanType
+  > = async (data) => {
+    try {
+      const sale = await createPaymentPlan.mutateAsync({
+        sale_id: data.sale_id,
+        separation_amount: parseFloat(
+          data.separation_amount
+            ? data.separation_amount.replaceAll(/[$,]/gi, '')
+            : '0'
+        ),
+        separation_date: data.separation_date,
+        payment_plan_numbers: data.payment_plan_numbers,
+        separation_rate: data.separation_rate / 100,
+        is_resale: data.is_resale,
+        total_amount:
+          data.is_resale && data.total_amount
+            ? parseFloat(data.total_amount)
+            : undefined,
+        client_id: data.is_resale ? data.client_id : undefined,
+      });
+      if (!!sale) {
+        toast.success(`Plan de pago creado.`, {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'colored',
+        });
+        paymentPlanHookForm.reset();
+        setOpenCreatePaymentPlanModal(false);
+      }
+    } catch (error: Error | unknown) {
+      ExceptionCatchResponse(error);
+    }
   };
 
   return {
@@ -223,5 +313,10 @@ export default function usePage() {
     setClientDescription,
     setSellerDescription,
     clientAutocompleteContacts,
+    openCreatePaymentPlanModal,
+    onCloseCreatePaymentPlanModal,
+    paymentPlanHookForm,
+    onClickPaymentPlan,
+    onSubmitPaymentPlan,
   };
 }
