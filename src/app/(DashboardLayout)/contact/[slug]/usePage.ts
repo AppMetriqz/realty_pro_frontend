@@ -6,13 +6,26 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
 import { ContactFormInput } from '../core';
 import { useYupValidationResolver } from '@/common/utils/formHook';
-import { contactDefaultValues, updateContactValidationSchema } from './core';
+import {
+  addSpouseContactValidationSchema,
+  contactDefaultValues,
+  contactSpouseDefaultValues,
+  ContactSpouseFormInput,
+  updateContactValidationSchema,
+} from './core';
 import { ExceptionCatchResponse } from '@/common/exceptions';
 import { toast } from 'react-toastify';
 
 export type UseContactCreateUpdateProps = {
   contactHookForm: UseFormReturn<ContactFormInput, any, undefined>;
   onSubmit: SubmitHandler<ContactFormInput>;
+  autocompleteContacts: UseQueryResult<GetContactDto[], Error>;
+  setContactDescription: Dispatch<SetStateAction<string>>;
+};
+
+export type UseContactAddSpouse = {
+  contactSpouseHookForm: UseFormReturn<ContactSpouseFormInput, any, undefined>;
+  onSubmitAddSpouse: SubmitHandler<ContactSpouseFormInput>;
   autocompleteContacts: UseQueryResult<GetContactDto[], Error>;
   setContactDescription: Dispatch<SetStateAction<string>>;
 };
@@ -25,6 +38,11 @@ export type UseContactProfilePageProps = {
   findContact: UseQueryResult<GetContactDto, Error>;
   onCloseCreateEditContact: () => void;
   findContactPaymentPlans: UseQueryResult<GetContactPaymentPlanDto[], Error>;
+  openAddSpouse: boolean;
+  setOpenAddSpouse: Dispatch<SetStateAction<boolean>>;
+  onCloseAddSpouse: () => void;
+  contactSpouseHookForm: UseFormReturn<ContactSpouseFormInput, any, undefined>;
+  onSubmitAddSpouse: SubmitHandler<ContactSpouseFormInput>;
 } & UseContactCreateUpdateProps;
 
 const useContactProfilePage = (): UseContactProfilePageProps => {
@@ -32,6 +50,10 @@ const useContactProfilePage = (): UseContactProfilePageProps => {
   const [currentTabValue, setCurrentTabValue] = useState(0);
   const [contactDescription, setContactDescription] = useState('');
   const [openCreateEditContact, setOpenCreateEditContact] = useState(false);
+  const [openAddSpouse, setOpenAddSpouse] = useState(false);
+  const resolveSpouseContact = useYupValidationResolver(
+    addSpouseContactValidationSchema
+  );
   const resolverCreateUpdateContact = useYupValidationResolver(
     updateContactValidationSchema
   );
@@ -39,6 +61,10 @@ const useContactProfilePage = (): UseContactProfilePageProps => {
   const contactHookForm = useForm<ContactFormInput>({
     resolver: resolverCreateUpdateContact,
     defaultValues: contactDefaultValues,
+  });
+  const contactSpouseHookForm = useForm<ContactSpouseFormInput>({
+    resolver: resolveSpouseContact,
+    defaultValues: contactSpouseDefaultValues,
   });
 
   const findContact = apiContacts.useFindOne(slug);
@@ -55,6 +81,7 @@ const useContactProfilePage = (): UseContactProfilePageProps => {
   });
 
   const updateContact = apiContacts.useUpdate();
+  const addSpouseContact = apiContacts.useAddSpouse();
 
   const onSubmit: SubmitHandler<ContactFormInput> = async (data) => {
     try {
@@ -85,6 +112,38 @@ const useContactProfilePage = (): UseContactProfilePageProps => {
     setOpenCreateEditContact(false);
   };
 
+  const onCloseAddSpouse = () => {
+    setOpenAddSpouse(false);
+    contactSpouseHookForm.reset();
+  };
+
+  const onSubmitAddSpouse: SubmitHandler<ContactSpouseFormInput> = async (
+    data
+  ) => {
+    try {
+      const contact = await addSpouseContact.mutateAsync({
+        contact_id: slug,
+        spouse_id: data.spouse_id,
+      });
+      if (!!contact) {
+        toast.success(`Conyuge agregado.`, {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'colored',
+        });
+        setOpenAddSpouse(false);
+        contactSpouseHookForm.reset();
+      }
+    } catch (error: Error | unknown) {
+      ExceptionCatchResponse(error);
+    }
+  };
+
   return {
     currentTabValue,
     handleChangeTab,
@@ -97,6 +156,11 @@ const useContactProfilePage = (): UseContactProfilePageProps => {
     onCloseCreateEditContact,
     setOpenCreateEditContact,
     findContactPaymentPlans,
+    openAddSpouse,
+    setOpenAddSpouse,
+    onCloseAddSpouse,
+    onSubmitAddSpouse,
+    contactSpouseHookForm,
   };
 };
 

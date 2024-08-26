@@ -96,6 +96,21 @@ export const useUpdate = () => {
   });
 };
 
+export const useAddSpouse = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: [`${contacts}AddSpouse`],
+    mutationFn: (data: { contact_id: string | string[]; spouse_id?: number }) =>
+      axiosInstance.put(`/${contacts}/${data.contact_id}`, {
+        data: { spouse_id: data.spouse_id },
+      }),
+    onSuccess: (res, variables) => {
+      queryClient.invalidateQueries({ queryKey: [`${contacts}FindAll`] });
+      queryClient.invalidateQueries({ queryKey: [contacts] });
+    },
+  });
+};
+
 export const useDelete = (id: number) => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -114,5 +129,6 @@ export const apiContacts = {
   useFindOne,
   useCreate,
   useUpdate,
+  useAddSpouse,
   useDelete,
 };

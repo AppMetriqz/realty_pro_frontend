@@ -100,8 +100,8 @@ export default function useContactPage(): UseContactPageProps {
           progress: undefined,
           theme: 'colored',
         });
-        contactHookForm.reset();
         setOpenCreateEditContact(false);
+        contactHookForm.reset();
       }
     } catch (error: Error | unknown) {
       ExceptionCatchResponse(error);

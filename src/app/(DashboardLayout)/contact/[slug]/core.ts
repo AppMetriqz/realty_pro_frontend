@@ -39,3 +39,14 @@ export const updateContactValidationSchema = yup.object({
   work_occupation: yup.string().required(ErrorMsg.required),
   marital_status: yup.string().required(ErrorMsg.required),
 });
+
+export type ContactSpouseFormInput = {
+  spouse_id?: number;
+};
+
+export const contactSpouseDefaultValues: ContactSpouseFormInput = {
+  spouse_id: undefined,
+};
+export const addSpouseContactValidationSchema = yup.object({
+  spouse_id: yup.number().required(ErrorMsg.required),
+});

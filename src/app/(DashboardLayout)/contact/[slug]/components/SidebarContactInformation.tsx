@@ -17,11 +17,13 @@ import { DateTime } from 'luxon';
 type SidebarContactInformationProps = {
   findContact: UseQueryResult<GetContactDto, Error>;
   onClickEdit: () => void;
+  onClickAddSpouse: () => void;
 };
 
 const SidebarContactInformation: FC<SidebarContactInformationProps> = ({
   findContact,
   onClickEdit,
+  onClickAddSpouse
 }) => {
   const userInformations: (UserInfoLabelProps & { id: string | number })[] = [
     {
@@ -49,6 +51,7 @@ const SidebarContactInformation: FC<SidebarContactInformationProps> = ({
             padding: 0,
             fontWeight: 500,
           }}
+          onClick={onClickAddSpouse}
         >
           + Agregar Conyuge
         </Button>

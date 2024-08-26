@@ -10,6 +10,7 @@ import FinalizedTab from './components/FinalizedTab';
 import { DialogCreateUpdateContact } from '../components/DialogCreateUpdateContact';
 import { ContactFormInput } from '../core';
 import { DateTime } from 'luxon';
+import { DialogAddSpouse } from '../components/DialogAddSpouse';
 
 const ContactProfile = () => {
   const useContactProfilePageProps = useContactProfilePage();
@@ -89,6 +90,7 @@ const ContactProfile = () => {
             onClickEdit={() =>
               useContactProfilePageProps.setOpenCreateEditContact(true)
             }
+            onClickAddSpouse={() => useContactProfilePageProps.setOpenAddSpouse(true)}
           />
         )}
       </Box>
@@ -111,6 +113,11 @@ const ContactProfile = () => {
         isEdit
         open={useContactProfilePageProps.openCreateEditContact}
         onClose={useContactProfilePageProps.onCloseCreateEditContact}
+        usePageProps={useContactProfilePageProps}
+      />
+      <DialogAddSpouse
+        open={useContactProfilePageProps.openAddSpouse}
+        onClose={useContactProfilePageProps.onCloseAddSpouse}
         usePageProps={useContactProfilePageProps}
       />
     </Box>

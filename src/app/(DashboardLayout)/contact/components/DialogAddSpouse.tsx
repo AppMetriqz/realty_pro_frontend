@@ -5,51 +5,39 @@ import DialogContent from '@mui/material/DialogContent';
 import { Grid } from '@mui/material';
 import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
-import {
-  ContactMethodType,
-  ContactType,
-  MaritalStatusType,
-} from '@/common/constants/app-config';
-import { TextFieldSharedController } from '@/common/components/UI/textField/TextFieldShared';
-import { SelectSharedController } from '@/common/components/UI/textField/SelectShared';
 import { AutoCompleteSharedController } from '@/common/components/UI/textField/AutoCompleteShared';
-import { UseContactCreateUpdateProps } from '../useContactPage';
 import { GetContactDto } from '@/common/dto';
-import TextMaskCustom from '@/common/components/UI/textMaskCustom/TextMaskCustom';
 import { handleOnClose } from '@/common/utils/dialog';
+import { UseContactAddSpouse } from '../[slug]/usePage';
 
 type Props = {
   open: boolean;
   onClose: (open: boolean) => void;
-  usePageProps: UseContactCreateUpdateProps;
-  isEdit?: boolean;
+  usePageProps: UseContactAddSpouse;
 };
 
-export const DialogCreateUpdateContact = ({
-  isEdit = false,
-  open,
-  onClose,
-  usePageProps,
-}: Props) => {
-  const { contactHookForm } = usePageProps;
+export const DialogAddSpouse = ({ open, onClose, usePageProps }: Props) => {
+  const { contactSpouseHookForm } = usePageProps;
 
   return (
     <Dialog
       fullWidth={true}
-      maxWidth={'md'}
+      maxWidth={'sm'}
       open={open}
       onClose={(e, reason) => handleOnClose(e, reason, onClose)}
       component="form"
-      onSubmit={contactHookForm.handleSubmit(usePageProps.onSubmit)}
+      onSubmit={contactSpouseHookForm.handleSubmit(
+        usePageProps.onSubmitAddSpouse
+      )}
     >
       <DialogTitle sx={{ p: '40px' }} fontSize={'21px'}>
-        {isEdit ? 'Editar' : 'Nuevo'} Contacto
+        Nuevo Conyuge
       </DialogTitle>
       <DialogContent
         sx={{ display: 'flex', justifyContent: 'center', px: '40px' }}
       >
         <Grid container spacing={5} xs={12}>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={12}>
             <AutoCompleteSharedController
               keyId={'spouse_id'}
               keyName={'spouse_id'}
@@ -71,7 +59,7 @@ export const DialogCreateUpdateContact = ({
                     )
                   : []
               }
-              hookForm={contactHookForm}
+              hookForm={contactSpouseHookForm}
               labelStyle={{ mb: '15px' }}
               disableClearable={false}
             />
