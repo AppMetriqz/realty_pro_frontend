@@ -18,12 +18,9 @@ export const LineBarChart = ({usePageProps}: FiltersProps) => {
     return (
         <>
             <Box display={'flex'} alignItems="center" justifyContent="space-around" width={'100%'} mb={"32px"}>
-                <TextAmount name={"Pagos Recibido"} amount={usePageProps.finances?.data.payments_received}
-                            currency={usePageProps.currency} color={"#70E798"}/>
-                <TextAmount name={"Pagos Pendiente"} amount={usePageProps.finances?.data.pending_payments}
-                            currency={usePageProps.currency} color={"#B9E5FF"}/>
-                <TextAmount name={"Capacidad Total"} amount={usePageProps.finances?.data.total_capacity}
-                            currency={usePageProps.currency} color={"#E7E7E7"}/>
+                <TextAmount name={"Pagos Recibido"} amount={usePageProps.finances.isSuccess? usePageProps.finances?.data.payments_received : 0} currency={usePageProps.currency} color={"#70E798"}/>
+                <TextAmount name={"Pagos Pendiente"} amount={usePageProps.finances.isSuccess? usePageProps.finances?.data.pending_payments:0} currency={usePageProps.currency} color={"#B9E5FF"}/>
+                <TextAmount name={"Capacidad Total"} amount={usePageProps.finances.isSuccess? usePageProps.finances?.data.total_capacity:0} currency={usePageProps.currency} color={"#E7E7E7"}/>
             </Box>
 
             <Box
