@@ -9,6 +9,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { QueriesOptions } from '@/common/constants/react-query';
 import _ from 'lodash';
+import { contacts } from './contacts';
 
 export const projects = 'projects';
 
@@ -100,6 +101,9 @@ export const useUpdate = () => {
         headers: { 'Content-Type': 'multipart/form-data' },
       }),
     onSuccess: async (res, variables) => {
+      await queryClient.invalidateQueries({
+        queryKey: [`${contacts}PaymentPlans`],
+      });
       await queryClient.invalidateQueries({ queryKey: [`${projects}FindAll`] });
       await queryClient.invalidateQueries({ queryKey: [projects] });
       await queryClient.invalidateQueries({

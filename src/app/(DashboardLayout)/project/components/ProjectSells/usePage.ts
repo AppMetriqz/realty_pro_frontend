@@ -11,7 +11,6 @@ import { GetSellDto, GetUnitDto } from '@/common/dto';
 import { useParams } from 'next/navigation';
 import { toast } from 'react-toastify';
 import { ExceptionCatchResponse } from '@/common/exceptions';
-import { updateUnitValidationSchema } from '../../[slug]/core';
 import { apiSales } from '@/api/sales';
 
 export type UsePageProjectAvailableProps = {

@@ -17,7 +17,7 @@ const PendingPayment: FC<PendingPaymentProps> = ({
     <>
       <Divider sx={{ width: '250px', marginY: '35px' }} />
       <Typography fontSize={'16px'} fontWeight={500}>
-        Total Pagos Pendiente (Inicial): US{pendingAmount}
+        Total Pagos Pendiente (Inicial): {pendingAmount}
       </Typography>
       <Box my={'32px'} display="flex" columnGap={'44px'}>
         <Button
@@ -52,7 +52,7 @@ const PendingPayment: FC<PendingPaymentProps> = ({
           '&:hover': { backgroundColor: '#FFE3CD' },
         }}
       >
-        Pasar a Financamiento (US{financingAmount})
+        Pasar a Financamiento ({financingAmount})
       </Button>
     </>
   );

@@ -1,14 +1,11 @@
 import { DateTime } from 'luxon';
-import { GetSellDto, GetUnitDto } from '../dto';
+import { GetUnitDto } from '../dto';
 import { BASE_URL } from '@/config/api/api.config';
 import { getCountry } from './project';
 import { CardPropertyType } from '../types/ProjectTypes';
 import { addCommasToAnumber, formatCurrency } from './numericHelpers';
-import { SaleStages, UnitCondicionType, UnitStatus } from '../constants';
-import { SellTableData } from '@/app/(DashboardLayout)/project/components/ProjectSells/ProjectSells';
+import { UnitCondicionType, UnitStatus } from '../constants';
 import { AvailableTableData } from '@/app/(DashboardLayout)/project/components/ProjectAvailable/usePage';
-import Link from 'next/link';
-import routers from '../constants/routes';
 
 export const mapUnitToProperty = (
   unit: GetUnitDto,

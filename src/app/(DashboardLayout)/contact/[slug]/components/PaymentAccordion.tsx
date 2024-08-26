@@ -43,7 +43,8 @@ const PaymentAccordion: FC<{
       bgColor: 'separation',
       content: (
         <Typography fontSize={'14px'} fontWeight={500} textAlign={'center'}>
-          {DateTime.fromISO(plan.separation_date).toLocaleString()} - US
+          {DateTime.fromISO(plan.separation_date).toLocaleString()} -&nbsp;
+          {plan.project.currency_type}
           {formatCurrency(parseFloat(plan.separation_amount))} - Pago de
           Separación
         </Typography>
@@ -55,7 +56,8 @@ const PaymentAccordion: FC<{
       content: (
         <Typography fontSize={'14px'} fontWeight={500} textAlign={'center'}>
           {DateTime.fromISO(plan.created_at).toLocaleString()} - Plan de Pago
-          Creado ({plan.payment_plan_numbers} Meses) - US
+          Creado ({plan.payment_plan_numbers} Meses) -{' '}
+          {plan.project.currency_type}
           {formatCurrency(initialAmount)}
         </Typography>
       ),
@@ -67,7 +69,7 @@ const PaymentAccordion: FC<{
         content: (
           <Typography fontSize={'14px'} fontWeight={500} textAlign={'center'}>
             {DateTime.fromISO(planDetail.payment_date).toLocaleString()}&nbsp;
-            -&nbsp;US
+            -&nbsp;{plan.project.currency_type}
             {formatCurrency(parseFloat(planDetail.payment_amount))}&nbsp;- Pago
             de cuota.
           </Typography>
@@ -119,12 +121,13 @@ const PaymentAccordion: FC<{
             {plan.unit.name}, {plan.project.name}
           </Typography>
           <Typography fontSize={'18px'} fontWeight={500}>
-            US{formatCurrency(parseFloat(plan.total_amount))}
+            {plan.project.currency_type}
+            {formatCurrency(parseFloat(plan.total_amount))}
           </Typography>
         </Box>
         <Box display={'flex'} justifyContent={'space-between'}>
           <Typography fontSize={'14px'} fontWeight={400}>
-            US
+            {plan.project.currency_type}
             {formatCurrency(
               parseFloat(nextPayment?.payment_amount || '0') -
                 parseFloat(nextPayment?.amount_paid || '0')
@@ -133,7 +136,7 @@ const PaymentAccordion: FC<{
             {DateTime.fromISO(nextPayment?.payment_date || '').toLocaleString()}
           </Typography>
           <Typography fontSize={'14px'} fontWeight={400}>
-            Balance a Financiar: US
+            Balance a Financiar: {plan.project.currency_type}
             {formatCurrency(parseFloat(plan.total_amount) - initialAmount)}
           </Typography>
         </Box>
@@ -161,7 +164,7 @@ const PaymentAccordion: FC<{
             Inicial ({plan.separation_rate * 100}
             %):&nbsp;
             <span style={{ fontWeight: 500 }}>
-              US
+              {plan.project.currency_type}
               {formatCurrency(initialAmount)}
             </span>
           </Typography>
@@ -184,10 +187,12 @@ const PaymentAccordion: FC<{
             {hasPendingPayments ? (
               <PendingPayment
                 pendingPaymentList={pendingPayments}
-                pendingAmount={formatCurrency(pendingAmount)}
-                financingAmount={formatCurrency(
+                pendingAmount={`${plan.project.currency_type}${formatCurrency(
+                  pendingAmount
+                )}`}
+                financingAmount={`${plan.project.currency_type}${formatCurrency(
                   parseFloat(plan.total_amount) - initialAmount
-                )}
+                )}`}
               />
             ) : null}
           </Box>

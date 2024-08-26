@@ -6,6 +6,7 @@ import { QueriesOptions } from '@/common/constants/react-query';
 import _ from 'lodash';
 import { projects } from './projects';
 import { sales } from './sales';
+import { contacts } from './contacts';
 
 export const units = 'units';
 
@@ -78,6 +79,9 @@ export const useUpdate = () => {
         headers: { 'Content-Type': 'multipart/form-data' },
       }),
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [`${contacts}PaymentPlans`],
+      });
       queryClient.invalidateQueries({ queryKey: [`${units}FindAll`] });
     },
   });

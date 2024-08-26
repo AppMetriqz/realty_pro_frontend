@@ -73,3 +73,11 @@ export const ContactMethodType = [
   { label: 'Referencia ', value: 'reference' },
   { label: 'Sin Vía ', value: 'none' },
 ];
+
+export const PaymentPlanType = [
+  {
+    label: 'Reventa',
+    value: 'resale',
+  },
+  { label: 'Venta', value: 'sale' },
+];

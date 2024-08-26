@@ -1,7 +1,6 @@
 import CloseIcon from '@/icons/CloseIcon';
 import {
   Box,
-  Checkbox,
   Chip,
   CircularProgress,
   FormControl,
@@ -141,7 +140,10 @@ const ProjectSells = () => {
               <UnitDetails
                 typeOfUnit={usePageProps.unitDetails.data.type}
                 onClickBack={usePageProps.goBack}
-                property={mapUnitToProperty(usePageProps.unitDetails.data)}
+                property={mapUnitToProperty(
+                  usePageProps.unitDetails.data,
+                  usePageProps.unitDetails.data?.project.currency_type
+                )}
               />
             </Grid>
           </>

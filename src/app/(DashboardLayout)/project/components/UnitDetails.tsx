@@ -2,7 +2,6 @@ import React, { FC, ReactElement } from 'react';
 import { Box, Divider, Grid, IconButton, Typography } from '@mui/material';
 import CheckIcon from '@/icons/CheckIcon';
 import PropertyCard from '@/app/(DashboardLayout)/components/shared/PropertyCard';
-import { TypeOfUnit } from '@/common/constants/unit';
 import { CardPropertyType } from '@/common/types/ProjectTypes';
 import {
   ButtonShared,

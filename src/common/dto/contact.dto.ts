@@ -93,6 +93,7 @@ export type GetContactPaymentPlanDto = {
     project_id: number;
     name: string;
     description: string;
+    currency_type: string;
   };
   unit: {
     unit_id: number;

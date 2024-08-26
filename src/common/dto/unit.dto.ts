@@ -65,6 +65,7 @@ export interface GetUnitDto {
     sector: string;
     address: string;
     country_code: string;
+    currency_type: string;
   };
 }
 
