@@ -43,11 +43,11 @@ export const useCreate = () => {
     mutationKey: [`${paymentPlans}Create`],
     mutationFn: (data: CreatePaymentPlanDto) =>
       axiosInstance.post(`/${paymentPlans}`, data),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
+    onSuccess: () => {
+      queryClient.invalidateQueries({
         queryKey: [`${desktop}-sales-to-assign`],
       });
-      await queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: [`${desktop}-payment-plans-to-assign`],
       });
     },

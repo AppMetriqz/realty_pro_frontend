@@ -76,7 +76,7 @@ export const useCreate = () => {
         headers: { 'Content-Type': 'multipart/form-data' },
       }),
     onSuccess: async () => {
-      await queryClient.invalidateQueries({
+      queryClient.invalidateQueries({
         queryKey: [`${projects}FindAll`],
       });
     },
@@ -100,13 +100,13 @@ export const useUpdate = () => {
       axiosInstance.put(`/${projects}/${data.project_id}`, data, {
         headers: { 'Content-Type': 'multipart/form-data' },
       }),
-    onSuccess: async (res, variables) => {
-      await queryClient.invalidateQueries({
+    onSuccess: (res, variables) => {
+      queryClient.invalidateQueries({
         queryKey: [`${contacts}PaymentPlans`],
       });
-      await queryClient.invalidateQueries({ queryKey: [`${projects}FindAll`] });
-      await queryClient.invalidateQueries({ queryKey: [projects] });
-      await queryClient.invalidateQueries({
+      queryClient.invalidateQueries({ queryKey: [`${projects}FindAll`] });
+      queryClient.invalidateQueries({ queryKey: [projects] });
+      queryClient.invalidateQueries({
         queryKey: [`${projects}-summary`],
       });
     },

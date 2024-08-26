@@ -43,7 +43,7 @@ const useContactProfilePage = (): UseContactProfilePageProps => {
 
   const findContact = apiContacts.useFindOne(slug);
   const findContactPaymentPlans = apiContacts.useFindPaymentPlans(slug, {
-    status: 'active',
+    status: 'sales',
   });
 
   const handleChangeTab = (_: React.SyntheticEvent, newValue: number) => {

@@ -241,8 +241,10 @@ export default function usePage(): UsePageProjectAvailableProps {
           progress: undefined,
           theme: 'colored',
         });
-        cancelSellHookForm.reset();
-        setOpenCancelSellModal(false);
+        unitHookForm.reset();
+        multipleUnitHookForm.reset();
+        setOpenEditOneUnitModal(false);
+        setOpenEditMultipleUnitModal(false);
       }
     } catch (error: Error | unknown) {
       ExceptionCatchResponse(error);

@@ -4,7 +4,6 @@ import {
   CreateContactDto,
   GetContactDto,
   GetContactPaymentPlanDto,
-  ProjectDto,
   SortByDto,
   UpdateContactDto,
 } from '@/common/dto';
@@ -21,6 +20,7 @@ interface FindAllDto {
   sortBy?: string;
   dateFrom?: number;
   dateTo?: number;
+  type: string;
 }
 
 interface FindContactPaymentPlan {
@@ -74,8 +74,8 @@ export const useCreate = () => {
     mutationKey: [`${contacts}Create`],
     mutationFn: (data: CreateContactDto) =>
       axiosInstance.post(`/${contacts}`, data),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({
+    onSuccess: () => {
+      queryClient.invalidateQueries({
         queryKey: [`${contacts}FindAll`],
       });
     },

@@ -43,7 +43,7 @@ export const DialogCreateUpdateContact = ({
       onSubmit={contactHookForm.handleSubmit(usePageProps.onSubmit)}
     >
       <DialogTitle sx={{ p: '40px' }} fontSize={'21px'}>
-        {isEdit ? 'Editar' : 'Nuevo'} Proyecto
+        {isEdit ? 'Editar' : 'Nuevo'} Contacto
       </DialogTitle>
       <DialogContent
         sx={{ display: 'flex', justifyContent: 'center', px: '40px' }}

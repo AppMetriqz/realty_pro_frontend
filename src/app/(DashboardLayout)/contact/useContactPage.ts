@@ -75,6 +75,9 @@ export default function useContactPage(): UseContactPageProps {
     pageSize: rowsPerPage,
     sortOrder: 'DESC',
     sortBy: 'created_at',
+    type: selectedContactTypes
+      .map((contactType) => contactType.value)
+      .join(','),
   });
   const cretateContact = apiContacts.useCreate();
 
@@ -104,7 +107,7 @@ export default function useContactPage(): UseContactPageProps {
       ExceptionCatchResponse(error);
     }
   };
-  
+
   const onChangeContactType = (e: SelectChangeEvent) => {
     const contactTypeObject = ContactType.find(
       (unit) => unit.value === e.target.value

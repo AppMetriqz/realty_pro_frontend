@@ -83,6 +83,8 @@ export const useUpdate = () => {
         queryKey: [`${contacts}PaymentPlans`],
       });
       queryClient.invalidateQueries({ queryKey: [`${units}FindAll`] });
+      queryClient.invalidateQueries({ queryKey: [units] });
+      queryClient.invalidateQueries({ queryKey: [`${projects}-summary`] });
     },
   });
 };

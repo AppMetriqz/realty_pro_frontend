@@ -59,9 +59,9 @@ export const useCreate = () => {
   return useMutation({
     mutationKey: [`${sales}Create`],
     mutationFn: (data: CreateSellDto) => axiosInstance.post(`/${sales}`, data),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: [`${sales}FindAll`] });
-      await queryClient.invalidateQueries({ queryKey: [`${units}FindAll`] });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [`${sales}FindAll`] });
+      queryClient.invalidateQueries({ queryKey: [`${units}FindAll`] });
     },
   });
 };
@@ -72,9 +72,9 @@ export const useCreateAll = () => {
     mutationKey: [`${sales}CreateAll`],
     mutationFn: (data: CreateAllSellDto) =>
       axiosInstance.post(`/${sales}/all`, data),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: [`${sales}FindAll`] });
-      await queryClient.invalidateQueries({ queryKey: [`${units}FindAll`] });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [`${sales}FindAll`] });
+      queryClient.invalidateQueries({ queryKey: [`${units}FindAll`] });
     },
   });
 };
@@ -87,9 +87,9 @@ export const useUpdate = () => {
       axiosInstance.put(`/${sales}/${data.sale_id}`, data, {
         headers: { 'Content-Type': 'multipart/form-data' },
       }),
-    onSuccess: async () => {
-      await queryClient.invalidateQueries({ queryKey: [`${sales}FindAll`] });
-      await queryClient.invalidateQueries({ queryKey: [sales] });
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [`${sales}FindAll`] });
+      queryClient.invalidateQueries({ queryKey: [sales] });
     },
   });
 };
