@@ -33,6 +33,9 @@ export const DialogCreateUpdateContact = ({
 }: Props) => {
   const { contactHookForm } = usePageProps;
 
+  console.log(contactHookForm.getValues('first_name'))
+  console.log(contactHookForm.getValues('spouse'))
+
   return (
     <Dialog
       fullWidth={true}
@@ -151,6 +154,7 @@ export const DialogCreateUpdateContact = ({
             <AutoCompleteSharedController
               keyId={'spouse_id'}
               keyName={'spouse_id'}
+              keyValue={'spouse'}
               isLoading={usePageProps.autocompleteContacts.isLoading}
               getOptionLabel={(option: GetContactDto) =>
                 `${option.first_name} ${option.last_name}`

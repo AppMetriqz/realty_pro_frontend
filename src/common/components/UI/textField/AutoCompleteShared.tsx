@@ -15,6 +15,7 @@ import { TextFieldShared } from './TextFieldShared';
 interface AutoCompleteSharedControllerProps {
   keyId: string;
   keyName: string;
+  keyValue?: string;
   label?: string;
   disableClearable?: boolean;
   placeholder?: string;
@@ -39,14 +40,9 @@ export const AutoCompleteSharedController: FC<
 > = (props) => {
   const id = props.keyId;
   const name = props.keyName;
+  const keyValue = props.keyValue;
 
   const [selected, onSelected] = React.useState(props.value);
-
-  React.useEffect(() => {
-    if (props.value) {
-      onSelected(props.value);
-    }
-  }, [props.value]);
 
   return (
     <>
@@ -75,11 +71,11 @@ export const AutoCompleteSharedController: FC<
         }
         onInputChange={(event) => {
           if (props.onInputChange) {
-            const target = event.target as HTMLInputElement;
-            props.onInputChange(target.value);
+            const target = event?.target as HTMLInputElement;
+            props.onInputChange(target?.value ?? "");
           }
         }}
-        value={selected}
+        value={keyValue? props.hookForm?.watch(keyValue) : selected}
         defaultValue={props.value}
         onChange={(event, newValue: any) => {
           if (!props.isNotValue) {
@@ -92,6 +88,9 @@ export const AutoCompleteSharedController: FC<
             if (props.hookForm) {
               props.hookForm.setValue(id, newValue[id]);
               props.hookForm.clearErrors(id);
+              if (keyValue){
+                props.hookForm.setValue(keyValue, newValue);
+              }
             }
           } else {
             if (props.hookForm) {
