@@ -39,7 +39,7 @@ export interface UsePageProps {
   lineBarOptions: LineBarOptionsDto;
 }
 
-export default function usePage() {
+export default function usePage(project_id?:number) {
   const [selectedProjects, setSelectedProjects] = useState<ProjectDto[]>([]);
   const [selectedProject, setSelectedProject] = useState<ProjectDto | null>(
     null
@@ -66,6 +66,15 @@ export default function usePage() {
   const finances = apiFinances.useFindAll({
     projectIds: _.join(_.map(selectedProjects, 'project_id'), ','),
   });
+
+  React.useEffect(()=>{
+    if (project_id){
+      let project = {project_id} as ProjectDto
+      setSelectedProjects(
+          _.uniqBy(_.concat(selectedProjects, [project]), 'project_id')
+      );
+    }
+  },[project_id])
 
   React.useEffect(() => {
     if (finances.isSuccess) {

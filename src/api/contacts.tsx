@@ -56,7 +56,7 @@ export const useFindAllAutocomplete = (params: FindAllAutocompleteDto) => {
     queryKey: [`${contacts}FindAllAutocomplete`, params],
     queryFn: () => axiosInstance.get(`/${contacts}/autocomplete`, { params }),
     ...QueriesOptions,
-    enabled: _.size(params.description) > 1,
+    // enabled: _.size(params.description) > 1,
   });
 };
 
