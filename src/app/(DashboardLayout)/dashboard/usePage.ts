@@ -88,10 +88,8 @@ export default function usePage(): UsePageProps {
   const [salesToAssignPageSize, setSalesToAssignPageSize] =
     useState<number>(10);
 
-  const [paymentPlansToAssignPageIndex, setPaymentPlansToAssignPageIndex] =
-    useState<number>(0);
-  const [paymentPlansToAssignPageSize, setPaymentPlansToAssignPageSize] =
-    useState<number>(10);
+  const [paymentPlansToAssignPageIndex, setPaymentPlansToAssignPageIndex] = useState<number>(0);
+  const [paymentPlansToAssignPageSize, setPaymentPlansToAssignPageSize] = useState<number>(10);
 
   const [isGoogleCalendarLogin, setIsGoogleCalendarLogin] =
     useState<boolean>(false);
