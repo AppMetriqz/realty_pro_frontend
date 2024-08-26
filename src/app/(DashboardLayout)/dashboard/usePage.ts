@@ -69,6 +69,9 @@ export interface UsePageProps {
     paymentPlan: Partial<PaymentPlanToAssignDto> & { id: number }
   ) => void;
   onSubmitPaymentPlan: SubmitHandler<CreateUpdatePaymentPlanType>;
+  selectedPaymentToAssign:
+    | (Partial<PaymentPlanToAssignDto> & { id: number })
+    | null;
 }
 
 export default function usePage(): UsePageProps {
@@ -88,8 +91,10 @@ export default function usePage(): UsePageProps {
   const [salesToAssignPageSize, setSalesToAssignPageSize] =
     useState<number>(10);
 
-  const [paymentPlansToAssignPageIndex, setPaymentPlansToAssignPageIndex] = useState<number>(0);
-  const [paymentPlansToAssignPageSize, setPaymentPlansToAssignPageSize] = useState<number>(10);
+  const [paymentPlansToAssignPageIndex, setPaymentPlansToAssignPageIndex] =
+    useState<number>(0);
+  const [paymentPlansToAssignPageSize, setPaymentPlansToAssignPageSize] =
+    useState<number>(10);
 
   const [isGoogleCalendarLogin, setIsGoogleCalendarLogin] =
     useState<boolean>(false);
@@ -316,5 +321,6 @@ export default function usePage(): UsePageProps {
     paymentPlanHookForm,
     onClickPaymentPlan,
     onSubmitPaymentPlan,
+    selectedPaymentToAssign,
   };
 }

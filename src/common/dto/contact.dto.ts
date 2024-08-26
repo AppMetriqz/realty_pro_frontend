@@ -61,3 +61,54 @@ export type GetContactDto = {
   created_at: string;
   updated_at: string;
 };
+
+export type PaymentPlanDetailDto = {
+  payment_amount: string;
+  amount_paid: string;
+  payment_number: number;
+  payment_date: string;
+  sale_type: string;
+  status: string;
+};
+
+export type GetContactPaymentPlanDto = {
+  payment_plan_id: number;
+  project_id: number;
+  unit_id: number;
+  sale_id: number;
+  sale_type: string;
+  total_amount: string;
+  separation_amount: string;
+  separation_date: string;
+  payment_plan_numbers: number;
+  separation_rate: number;
+  status: string;
+  notes?: string;
+  is_active: boolean;
+  create_by: number;
+  update_by?: number;
+  created_at: string;
+  updated_at?: string;
+  project: {
+    project_id: number;
+    name: string;
+    description: string;
+  };
+  unit: {
+    unit_id: number;
+    name: string;
+    description: string;
+  };
+  sale: {
+    sale_id: number;
+    price: string;
+    commission: number;
+    stage: string;
+    client: {
+      contact_id: number;
+      first_name: string;
+      last_name: string;
+    };
+  };
+  payment_plan_details: PaymentPlanDetailDto[];
+};

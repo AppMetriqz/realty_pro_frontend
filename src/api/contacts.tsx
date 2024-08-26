@@ -3,6 +3,7 @@ import axiosInstance from '@/config/api/api.config';
 import {
   CreateContactDto,
   GetContactDto,
+  GetContactPaymentPlanDto,
   ProjectDto,
   SortByDto,
   UpdateContactDto,
@@ -22,6 +23,10 @@ interface FindAllDto {
   dateTo?: number;
 }
 
+interface FindContactPaymentPlan {
+  status: string;
+}
+
 export interface FindAllAutocompleteDto {
   description: string;
 }
@@ -30,6 +35,18 @@ export const useFindAll = (params: FindAllDto) => {
   return useQuery<{ rows: GetContactDto[]; count: number }, Error>({
     queryKey: [`${contacts}FindAll`, params],
     queryFn: () => axiosInstance.get(`/${contacts}`, { params }),
+    ...QueriesOptions,
+  });
+};
+
+export const useFindPaymentPlans = (
+  contact_id: string | string[],
+  params: FindContactPaymentPlan
+) => {
+  return useQuery<GetContactPaymentPlanDto[], Error>({
+    queryKey: [`${contacts}PaymentPlans`, params],
+    queryFn: () =>
+      axiosInstance.get(`/${contacts}/payment-plans/${contact_id}`, { params }),
     ...QueriesOptions,
   });
 };
@@ -92,6 +109,7 @@ export const useDelete = (id: number) => {
 
 export const apiContacts = {
   useFindAll,
+  useFindPaymentPlans,
   useFindAllAutocomplete,
   useFindOne,
   useCreate,

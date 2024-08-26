@@ -2,14 +2,22 @@ import React, { FC } from 'react';
 import { Box, Button, Divider, Typography } from '@mui/material';
 import PaymentInformationChip, { ChipType } from './PaymentInformationChip';
 
-type PendingPaymentProps = { pendingPaymentList: ChipType[] };
+type PendingPaymentProps = {
+  pendingPaymentList: ChipType[];
+  pendingAmount: string;
+  financingAmount: string;
+};
 
-const PendingPayment: FC<PendingPaymentProps> = ({ pendingPaymentList }) => {
+const PendingPayment: FC<PendingPaymentProps> = ({
+  pendingPaymentList,
+  pendingAmount,
+  financingAmount,
+}) => {
   return (
     <>
       <Divider sx={{ width: '250px', marginY: '35px' }} />
       <Typography fontSize={'16px'} fontWeight={500}>
-        Total Pagos Pendiente (Inicial): US$29,000
+        Total Pagos Pendiente (Inicial): US{pendingAmount}
       </Typography>
       <Box my={'32px'} display="flex" columnGap={'44px'}>
         <Button
@@ -44,7 +52,7 @@ const PendingPayment: FC<PendingPaymentProps> = ({ pendingPaymentList }) => {
           '&:hover': { backgroundColor: '#FFE3CD' },
         }}
       >
-        Pasar a Financamiento (US$70,000.00)
+        Pasar a Financamiento (US{financingAmount})
       </Button>
     </>
   );

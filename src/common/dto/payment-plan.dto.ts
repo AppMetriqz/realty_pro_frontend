@@ -42,11 +42,11 @@ export type GetPaymentPlanDto = {
     last_name: string;
     phone_number_1: string;
   };
-  remaining_time:{
-    days:number
-    hours:number
-  }
-}
+  remaining_time: {
+    days: number;
+    hours: number;
+  };
+};
 
 interface Stat {
   total: string | null;
@@ -77,6 +77,7 @@ export interface PaymentPlanToAssignDto {
     project_id: number;
     name: string;
     description: string;
+    currency_type: string;
   };
   unit: {
     unit_id: number;

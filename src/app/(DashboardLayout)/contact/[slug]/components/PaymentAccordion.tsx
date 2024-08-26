@@ -9,6 +9,9 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PaymentInformationChip, { ChipType } from './PaymentInformationChip';
 import PendingPayment from './PendingPayment';
+import { GetContactPaymentPlanDto } from '@/common/dto';
+import { formatCurrency } from '@/common/utils/numericHelpers';
+import { DateTime } from 'luxon';
 
 const accordionBgColors = {
   success: '#E0F5E7',
@@ -17,16 +20,26 @@ const accordionBgColors = {
 };
 
 const PaymentAccordion: FC<{
+  plan: GetContactPaymentPlanDto;
   hasPendingPayments: boolean;
   bgColor: keyof typeof accordionBgColors;
-}> = ({ hasPendingPayments, bgColor }) => {
+}> = ({ plan, hasPendingPayments, bgColor }) => {
+  const initialAmount =
+    parseFloat(plan.total_amount) * plan.separation_rate -
+    parseFloat(plan.separation_amount) +
+    parseFloat(plan.separation_amount);
+  const nextPayment = plan.payment_plan_details
+    .sort((a, b) => a.payment_number - b.payment_number)
+    .find((plan) => plan.status === 'pending');
   const paymentExample: ChipType[] = [
     {
       id: 1,
       bgColor: 'separation',
       content: (
         <Typography fontSize={'14px'} fontWeight={500} textAlign={'center'}>
-          15/01/2024 - US$1,000.00 - Pago de Separacion
+          {DateTime.fromISO(plan.separation_date).toLocaleString()} - US
+          {formatCurrency(parseFloat(plan.separation_amount))} - Pago de
+          Separación
         </Typography>
       ),
     },
@@ -35,53 +48,25 @@ const PaymentAccordion: FC<{
       bgColor: 'paymentPlanCreated',
       content: (
         <Typography fontSize={'14px'} fontWeight={500} textAlign={'center'}>
-          15/01/2024 - Plan de Pago Creado (5 Meses) - US$29,000
+          {DateTime.fromISO(plan.created_at).toLocaleString()} - Plan de Pago
+          Creado ({plan.payment_plan_numbers} Meses) - US
+          {formatCurrency(initialAmount)}
         </Typography>
       ),
     },
   ];
-  const pendingPayments: ChipType[] = [
-    {
-      id: 1,
+  const pendingPayments: ChipType[] = plan.payment_plan_details.map(
+    (planDetail) => ({
+      id: planDetail.payment_number,
       content: (
         <Typography fontSize={'14px'} fontWeight={500} textAlign={'center'}>
-          15/01/2024 - US$5,800.00 Pago de Cuota (Pendiente)
+          {DateTime.fromISO(planDetail.payment_date).toLocaleString()} -&nbsp;
+          {formatCurrency(parseFloat(planDetail.payment_amount))} Pago de Cuota
+          (Pendiente)
         </Typography>
       ),
-    },
-    {
-      id: 2,
-      content: (
-        <Typography fontSize={'14px'} fontWeight={500} textAlign={'center'}>
-          15/02/2024 - US$5,8000.00 Pago de Cuota (Pendiente)
-        </Typography>
-      ),
-    },
-    {
-      id: 3,
-      content: (
-        <Typography fontSize={'14px'} fontWeight={500} textAlign={'center'}>
-          15/03/2024 - US$5,800.00 Pago de Cuota (Pendiente)
-        </Typography>
-      ),
-    },
-    {
-      id: 4,
-      content: (
-        <Typography fontSize={'14px'} fontWeight={500} textAlign={'center'}>
-          15/04/2024 - US$5,8000.00 Pago de Cuota (Pendiente)
-        </Typography>
-      ),
-    },
-    {
-      id: 5,
-      content: (
-        <Typography fontSize={'14px'} fontWeight={500} textAlign={'center'}>
-          15/05/2024 - US$5,800.00 Pago de Cuota (Pendiente)
-        </Typography>
-      ),
-    },
-  ];
+    })
+  );
 
   return (
     <Box
@@ -100,18 +85,21 @@ const PaymentAccordion: FC<{
       >
         <Box mb={'17px'} display={'flex'} justifyContent={'space-between'}>
           <Typography fontSize={'18px'} fontWeight={500}>
-            Casa 1, Residencial Dalia Fernanda
+            {plan.unit.name}, {plan.project.name}
           </Typography>
           <Typography fontSize={'18px'} fontWeight={500}>
-            US$50,000.00
+            US{formatCurrency(parseFloat(plan.total_amount))}
           </Typography>
         </Box>
         <Box display={'flex'} justifyContent={'space-between'}>
           <Typography fontSize={'14px'} fontWeight={400}>
-            US$10,000.00 a pagar el 15/02/2024
+            US{formatCurrency(parseFloat(nextPayment?.payment_amount || '0'))} a
+            pagar el&nbsp;
+            {DateTime.fromISO(nextPayment?.payment_date || '').toLocaleString()}
           </Typography>
           <Typography fontSize={'14px'} fontWeight={400}>
-            Balance: US$30,000.00
+            Balance a Financiar: US
+            {formatCurrency(parseFloat(plan.total_amount) - initialAmount)}
           </Typography>
         </Box>
       </Box>
@@ -135,7 +123,12 @@ const PaymentAccordion: FC<{
         />
         <AccordionDetails sx={{ padding: '32px 25px' }}>
           <Typography mb="69px" fontSize={'18px'} fontWeight={400}>
-            Inicial (30%): <span style={{ fontWeight: 500 }}>US$30,000</span>
+            Inicial ({plan.separation_rate * 100}
+            %):&nbsp;
+            <span style={{ fontWeight: 500 }}>
+              US
+              {formatCurrency(initialAmount)}
+            </span>
           </Typography>
           <Box
             display="flex"
@@ -154,7 +147,16 @@ const PaymentAccordion: FC<{
               ))}
             </Box>
             {hasPendingPayments ? (
-              <PendingPayment pendingPaymentList={pendingPayments} />
+              <PendingPayment
+                pendingPaymentList={pendingPayments}
+                pendingAmount={formatCurrency(
+                  parseFloat(plan.total_amount) * plan.separation_rate -
+                    parseFloat(plan.separation_amount)
+                )}
+                financingAmount={formatCurrency(
+                  parseFloat(plan.total_amount) - initialAmount
+                )}
+              />
             ) : null}
           </Box>
         </AccordionDetails>

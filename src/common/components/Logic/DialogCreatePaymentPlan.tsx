@@ -189,7 +189,10 @@ export const DialogCreatePaymentPlan = ({
             <Typography mb="30px" variant="body1">
               Monto del Inicial&nbsp;
               <span style={{ fontWeight: 700 }}>
-                RD{formatCurrency(calculatedInitialAmount)}
+                {usePageProps.selectedPaymentToAssign?.project
+                  ? usePageProps.selectedPaymentToAssign.project.currency_type
+                  : ''}
+                {formatCurrency(calculatedInitialAmount)}
               </span>
             </Typography>
             <Typography variant="body1">
@@ -198,7 +201,9 @@ export const DialogCreatePaymentPlan = ({
               </span>
               &nbsp;de&nbsp;
               <span style={{ fontWeight: 700 }}>
-                RD
+                {usePageProps.selectedPaymentToAssign?.project
+                  ? usePageProps.selectedPaymentToAssign.project.currency_type
+                  : ''}
                 {formatCurrency(
                   calculatedInitialAmount /
                     parseInt(paymentPlanHookForm.watch('payment_plan_numbers'))

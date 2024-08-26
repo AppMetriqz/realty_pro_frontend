@@ -53,7 +53,11 @@ const ContactProfile = () => {
     {
       label: 'Ventas',
       id: 'sales',
-      component: <SaleTab />,
+      component: (
+        <SaleTab
+          paymentPlan={useContactProfilePageProps.findContactPaymentPlans}
+        />
+      ),
     },
     {
       label: 'Finalizado',

@@ -1,5 +1,5 @@
 import { apiContacts } from '@/api';
-import { GetContactDto } from '@/common/dto';
+import { GetContactDto, GetContactPaymentPlanDto } from '@/common/dto';
 import { UseQueryResult } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { Dispatch, SetStateAction, useState } from 'react';
@@ -24,6 +24,7 @@ export type UseContactProfilePageProps = {
   handleChangeTab: (_: React.SyntheticEvent, newValue: number) => void;
   findContact: UseQueryResult<GetContactDto, Error>;
   onCloseCreateEditContact: () => void;
+  findContactPaymentPlans: UseQueryResult<GetContactPaymentPlanDto[], Error>;
 } & UseContactCreateUpdateProps;
 
 const useContactProfilePage = (): UseContactProfilePageProps => {
@@ -41,6 +42,9 @@ const useContactProfilePage = (): UseContactProfilePageProps => {
   });
 
   const findContact = apiContacts.useFindOne(slug);
+  const findContactPaymentPlans = apiContacts.useFindPaymentPlans(slug, {
+    status: 'active',
+  });
 
   const handleChangeTab = (_: React.SyntheticEvent, newValue: number) => {
     setCurrentTabValue(newValue);
@@ -92,6 +96,7 @@ const useContactProfilePage = (): UseContactProfilePageProps => {
     onSubmit,
     onCloseCreateEditContact,
     setOpenCreateEditContact,
+    findContactPaymentPlans,
   };
 };
 
