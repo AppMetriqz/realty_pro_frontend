@@ -31,6 +31,12 @@ const PaymentAccordion: FC<{
   const nextPayment = plan.payment_plan_details
     .sort((a, b) => a.payment_number - b.payment_number)
     .find((plan) => plan.status === 'pending');
+  const pendingPaymentFromApi = plan.payment_plan_details.filter(
+    (p) => p.status === 'pending'
+  );
+  const paidPaymentFromApi = plan.payment_plan_details.filter(
+    (p) => p.status === 'paid'
+  );
   const paymentExample: ChipType[] = [
     {
       id: 1,
@@ -54,18 +60,43 @@ const PaymentAccordion: FC<{
         </Typography>
       ),
     },
+    ...paidPaymentFromApi.map((planDetail): ChipType => {
+      return {
+        id: planDetail.payment_number + 2,
+        bgColor: 'separation',
+        content: (
+          <Typography fontSize={'14px'} fontWeight={500} textAlign={'center'}>
+            {DateTime.fromISO(planDetail.payment_date).toLocaleString()}&nbsp;
+            -&nbsp;US
+            {formatCurrency(parseFloat(planDetail.payment_amount))}&nbsp;- Pago
+            de cuota.
+          </Typography>
+        ),
+      };
+    }),
   ];
-  const pendingPayments: ChipType[] = plan.payment_plan_details.map(
-    (planDetail) => ({
-      id: planDetail.payment_number,
-      content: (
-        <Typography fontSize={'14px'} fontWeight={500} textAlign={'center'}>
-          {DateTime.fromISO(planDetail.payment_date).toLocaleString()} -&nbsp;
-          {formatCurrency(parseFloat(planDetail.payment_amount))} Pago de Cuota
-          (Pendiente)
-        </Typography>
-      ),
-    })
+  const pendingAmount = pendingPaymentFromApi.reduce((prev, curr) => {
+    const pendingAmount =
+      parseFloat(curr.payment_amount) - parseFloat(curr.amount_paid);
+    return prev + pendingAmount;
+  }, 0);
+  const pendingPayments: ChipType[] = pendingPaymentFromApi.map(
+    (planDetail) => {
+      const pendingAmount =
+        parseFloat(planDetail.payment_amount) -
+        parseFloat(planDetail.amount_paid);
+      return {
+        id: planDetail.payment_number,
+        content: (
+          <Typography fontSize={'14px'} fontWeight={500} textAlign={'center'}>
+            {DateTime.fromISO(planDetail.payment_date).toLocaleString()} -&nbsp;
+            {formatCurrency(parseFloat(planDetail.payment_amount))} Pago de
+            cuota (Pendiente:&nbsp;
+            {formatCurrency(pendingAmount)})
+          </Typography>
+        ),
+      };
+    }
   );
 
   return (
@@ -93,8 +124,12 @@ const PaymentAccordion: FC<{
         </Box>
         <Box display={'flex'} justifyContent={'space-between'}>
           <Typography fontSize={'14px'} fontWeight={400}>
-            US{formatCurrency(parseFloat(nextPayment?.payment_amount || '0'))} a
-            pagar el&nbsp;
+            US
+            {formatCurrency(
+              parseFloat(nextPayment?.payment_amount || '0') -
+                parseFloat(nextPayment?.amount_paid || '0')
+            )}
+            &nbsp;a pagar el&nbsp;
             {DateTime.fromISO(nextPayment?.payment_date || '').toLocaleString()}
           </Typography>
           <Typography fontSize={'14px'} fontWeight={400}>
@@ -149,10 +184,7 @@ const PaymentAccordion: FC<{
             {hasPendingPayments ? (
               <PendingPayment
                 pendingPaymentList={pendingPayments}
-                pendingAmount={formatCurrency(
-                  parseFloat(plan.total_amount) * plan.separation_rate -
-                    parseFloat(plan.separation_amount)
-                )}
+                pendingAmount={formatCurrency(pendingAmount)}
                 financingAmount={formatCurrency(
                   parseFloat(plan.total_amount) - initialAmount
                 )}

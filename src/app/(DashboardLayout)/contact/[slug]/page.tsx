@@ -62,7 +62,11 @@ const ContactProfile = () => {
     {
       label: 'Finalizado',
       id: 'finalized',
-      component: <FinalizedTab />,
+      component: (
+        <FinalizedTab
+          paymentPlan={useContactProfilePageProps.findContactPaymentPlans}
+        />
+      ),
     },
   ];
 

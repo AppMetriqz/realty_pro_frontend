@@ -14,16 +14,14 @@ const SaleTab: FC<{
           <CircularProgress sx={{ color: '#000' }} />
         </Grid>
       ) : (
-        <>
-          {paymentPlan.data?.map((plan) => (
-            <PaymentAccordion
-              key={plan.payment_plan_id}
-              plan={plan}
-              hasPendingPayments
-              bgColor="warning"
-            />
-          ))}
-        </>
+        paymentPlan.data?.map((plan) => (
+          <PaymentAccordion
+            key={plan.payment_plan_id}
+            plan={plan}
+            hasPendingPayments
+            bgColor="warning"
+          />
+        ))
       )}
     </Box>
   );

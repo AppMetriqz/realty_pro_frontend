@@ -1,12 +1,28 @@
-import React from 'react';
-import { Box } from '@mui/material';
+import React, { FC } from 'react';
+import { Box, CircularProgress, Grid } from '@mui/material';
 import PaymentAccordion from './PaymentAccordion';
+import { UseQueryResult } from '@tanstack/react-query';
+import { GetContactPaymentPlanDto } from '@/common/dto';
 
-const FinalizedTab = () => {
+const FinalizedTab: FC<{
+  paymentPlan: UseQueryResult<GetContactPaymentPlanDto[], Error>;
+}> = ({ paymentPlan }) => {
   return (
     <Box display={'flex'} rowGap={'40px'} flexDirection={'column'}>
-      <PaymentAccordion hasPendingPayments={false} bgColor="success" />
-      <PaymentAccordion hasPendingPayments={false} bgColor="danger" />
+      {paymentPlan.isLoading ? (
+        <Grid justifyContent={'center'} item xs={12}>
+          <CircularProgress sx={{ color: '#000' }} />
+        </Grid>
+      ) : (
+        paymentPlan.data?.map((plan) => (
+          <PaymentAccordion
+            key={plan.payment_plan_id}
+            plan={plan}
+            hasPendingPayments={false}
+            bgColor="success"
+          />
+        ))
+      )}
     </Box>
   );
 };
