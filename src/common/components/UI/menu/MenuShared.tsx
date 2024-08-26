@@ -9,7 +9,7 @@ import {
 import React, { FC, ReactElement, useState } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
-type ActionType = {
+export type ActionType = {
   id: string | number;
   onClick: () => void;
   icon: ReactElement;

@@ -25,7 +25,7 @@ import TableShared, {
 } from '@/common/components/UI/table/TableShared';
 import SearchInput from '@/common/components/UI/searchInput/SearchInput';
 
-import MenuShared from '@/common/components/UI/menu/MenuShared';
+import MenuShared, { ActionType } from '@/common/components/UI/menu/MenuShared';
 import {
   mapUnitToAvailableTable,
   mapUnitToProperty,
@@ -80,6 +80,47 @@ const ProjectAvailable: FC<{
       });
     }
   }, [usePageProps.unitDetails.isLoading, usePageProps.openEditOneUnitModal]);
+
+  const actionList = (
+    isSold: boolean,
+    record: AvailableTableData
+  ): ActionType[] =>
+    [
+      {
+        id: record.id,
+        icon: <VisibilityIcon fontSize="small" />,
+        label: 'Ver',
+        onClick: () => usePageProps.handleClickView(record.id),
+      },
+      {
+        id: record.id,
+        icon: isSold ? (
+          <DoDisturbOffIcon fontSize="small" />
+        ) : (
+          <SellIcon fontSize="small" />
+        ),
+        label: isSold ? 'Cancelar Venta' : 'Vender',
+        onClick: isSold
+          ? () => usePageProps.handleClickCancelSale(record.id)
+          : () => usePageProps.handleClickSell(record.id),
+      },
+      !isSold
+        ? {
+            id: record.id,
+            icon: <EditIcon fontSize="small" />,
+            label: 'Editar',
+            onClick: () => usePageProps.handleClickEdit(record.id),
+          }
+        : null,
+      !isSold
+        ? {
+            id: record.id,
+            icon: <DeleteIcon fontSize="small" />,
+            label: 'Borrar',
+            onClick: () => usePageProps.handleClickDelete(record.id),
+          }
+        : null,
+    ].filter((x) => !!x);
 
   const headCells: Array<ColumnProps<AvailableTableData>> = [
     {
@@ -153,46 +194,10 @@ const ProjectAvailable: FC<{
       label: 'Acciones',
       render: (_, record: AvailableTableData) => {
         const isSold = record.status === 'Vendido';
-
         return (
           <div>
             <MenuShared
-              actions={[
-                {
-                  id: record.id,
-                  icon: <VisibilityIcon fontSize="small" />,
-                  label: 'Ver',
-                  onClick: () => usePageProps.handleClickView(record.id),
-                },
-                {
-                  id: record.id,
-                  icon: isSold ? (
-                    <DoDisturbOffIcon fontSize="small" />
-                  ) : (
-                    <SellIcon fontSize="small" />
-                  ),
-                  label: isSold ? 'Cancelar Venta' : 'Vender',
-                  onClick: isSold
-                    ? () => usePageProps.handleClickCancelSale(record.id)
-                    : () => usePageProps.handleClickSell(record.id),
-                },
-                !isSold
-                  ? {
-                      id: record.id,
-                      icon: <EditIcon fontSize="small" />,
-                      label: 'Editar',
-                      onClick: () => usePageProps.handleClickEdit(record.id),
-                    }
-                  : null,
-                !isSold
-                  ? {
-                      id: record.id,
-                      icon: <DeleteIcon fontSize="small" />,
-                      label: 'Borrar',
-                      onClick: () => usePageProps.handleClickDelete(record.id),
-                    }
-                  : null,
-              ].filter((x) => !!x)}
+              actions={actionList(isSold, record)}
               isDisabled={usePageProps.selectedUnits.length > 1}
             />
           </div>
