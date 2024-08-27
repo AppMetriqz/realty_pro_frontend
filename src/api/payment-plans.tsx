@@ -9,6 +9,7 @@ import {
   CurrencyTypeDto,
   CreatePaymentPlanDto,
 } from '@/common/dto';
+import { contacts } from './contacts';
 
 export const paymentPlans = 'payment-plans';
 
@@ -50,13 +51,16 @@ export const useCreate = () => {
       queryClient.invalidateQueries({
         queryKey: [`${desktop}-payment-plans-to-assign`],
       });
+      queryClient.invalidateQueries({
+        queryKey: [`${contacts}PaymentPlans`],
+      });
     },
   });
 };
 
 export const useFindAll = (params: FindAllDto) => {
   return useQuery<{ count: number; rows: GetPaymentPlanDto[] }, Error>({
-    queryKey: [`${paymentPlans}`, params],
+    queryKey: [`${paymentPlans}FindAll`, params],
     queryFn: () => axiosInstance.get(`/${paymentPlans}`, { params }),
     ...QueriesOptions,
   });

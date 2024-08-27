@@ -3,15 +3,19 @@ import { Box, Button, Divider, Typography } from '@mui/material';
 import PaymentInformationChip, { ChipType } from './PaymentInformationChip';
 
 type PendingPaymentProps = {
+  paymentPlanId: number;
   pendingPaymentList: ChipType[];
   pendingAmount: string;
   financingAmount: string;
+  onClickCreatePayment: (paymentPlanId: number) => void;
 };
 
 const PendingPayment: FC<PendingPaymentProps> = ({
+  paymentPlanId,
   pendingPaymentList,
   pendingAmount,
   financingAmount,
+  onClickCreatePayment,
 }) => {
   return (
     <>
@@ -34,6 +38,7 @@ const PendingPayment: FC<PendingPaymentProps> = ({
             backgroundColor: '#F3F3F3',
             '&:hover': { backgroundColor: '#E6E6E6' },
           }}
+          onClick={() => onClickCreatePayment(paymentPlanId)}
         >
           Nuevo Pago
         </Button>

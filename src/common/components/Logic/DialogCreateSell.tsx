@@ -53,6 +53,7 @@ export const DialogCreateSell = ({
             <AutoCompleteSharedController
               keyId={'client_id'}
               keyName={'client_id'}
+              keyValue="client"
               isLoading={usePageProps.clientAutocompleteContacts.isLoading}
               getOptionLabel={(option: GetContactDto) =>
                 `${option.first_name} ${option.last_name}`
@@ -80,6 +81,7 @@ export const DialogCreateSell = ({
             <AutoCompleteSharedController
               keyId={'seller_id'}
               keyName={'seller_id'}
+              keyValue="seller"
               isLoading={usePageProps.sellerAutocompleteContacts.isLoading}
               getOptionLabel={(option: GetContactDto) =>
                 `${option.first_name} ${option.last_name}`

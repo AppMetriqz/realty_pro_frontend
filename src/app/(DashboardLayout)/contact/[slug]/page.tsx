@@ -1,5 +1,5 @@
 'use client';
-import { Box, CircularProgress, Grid } from '@mui/material';
+import { Box, CircularProgress, Grid, Typography } from '@mui/material';
 import React, { useEffect } from 'react';
 import SidebarContactInformation from './components/SidebarContactInformation';
 import HeaderPage from '../../components/shared/HeaderPage';
@@ -11,6 +11,8 @@ import { DialogCreateUpdateContact } from '../components/DialogCreateUpdateConta
 import { ContactFormInput } from '../core';
 import { DateTime } from 'luxon';
 import { DialogAddSpouse } from '../components/DialogAddSpouse';
+import { DialogCreatePaymentPlan } from '@/common/components/Logic/DialogCreatePaymentPlan';
+import { DialogCreatePayment } from './components/DialogCreatePayment';
 
 const ContactProfile = () => {
   const useContactProfilePageProps = useContactProfilePage();
@@ -32,8 +34,14 @@ const ContactProfile = () => {
             ).toISODate() ?? ''
           );
         } else if (key === 'spouse') {
-          useContactProfilePageProps.contactHookForm.setValue('spouse_id', useContactProfilePageProps.findContact.data?.spouse?.contact_id);
-          useContactProfilePageProps.contactHookForm.setValue('spouse', useContactProfilePageProps.findContact.data?.spouse);
+          useContactProfilePageProps.contactHookForm.setValue(
+            'spouse_id',
+            useContactProfilePageProps.findContact.data?.spouse?.contact_id
+          );
+          useContactProfilePageProps.contactHookForm.setValue(
+            'spouse',
+            useContactProfilePageProps.findContact.data?.spouse
+          );
           useContactProfilePageProps.setContactDescription(
             `${useContactProfilePageProps.findContact.data?.spouse?.first_name} ${useContactProfilePageProps.findContact.data?.spouse?.last_name}`
           );
@@ -52,19 +60,28 @@ const ContactProfile = () => {
     {
       label: 'Ventas',
       id: 'sales',
-      component: (
+      component: useContactProfilePageProps.findContactPaymentPlans.data
+        ?.length ? (
         <SaleTab
+          onClickCreatePayment={useContactProfilePageProps.onClickCreatePayment}
           paymentPlan={useContactProfilePageProps.findContactPaymentPlans}
         />
+      ) : (
+        <Typography variant="body1">Sin resultados.</Typography>
       ),
     },
     {
       label: 'Finalizado',
       id: 'finalized',
-      component: (
+      component: useContactProfilePageProps.findFinishedContactPaymentPlans.data
+        ?.length ? (
         <FinalizedTab
-          paymentPlan={useContactProfilePageProps.findContactPaymentPlans}
+          paymentPlan={
+            useContactProfilePageProps.findFinishedContactPaymentPlans
+          }
         />
+      ) : (
+        <Typography variant="body1">Sin resultados.</Typography>
       ),
     },
   ];
@@ -88,7 +105,9 @@ const ContactProfile = () => {
             onClickEdit={() =>
               useContactProfilePageProps.setOpenCreateEditContact(true)
             }
-            onClickAddSpouse={() => useContactProfilePageProps.setOpenAddSpouse(true)}
+            onClickAddSpouse={() =>
+              useContactProfilePageProps.setOpenAddSpouse(true)
+            }
           />
         )}
       </Box>
@@ -116,6 +135,17 @@ const ContactProfile = () => {
       <DialogAddSpouse
         open={useContactProfilePageProps.openAddSpouse}
         onClose={useContactProfilePageProps.onCloseAddSpouse}
+        usePageProps={useContactProfilePageProps}
+      />
+      <DialogCreatePaymentPlan
+        isResale
+        open={useContactProfilePageProps.openCreatePaymentPlanModal}
+        onClose={useContactProfilePageProps.onCloseCreatePaymentPlanModal}
+        usePageProps={useContactProfilePageProps}
+      />
+      <DialogCreatePayment
+        open={useContactProfilePageProps.openCreatePaymentModal}
+        onClose={useContactProfilePageProps.onCloseCreatePaymentModal}
         usePageProps={useContactProfilePageProps}
       />
     </Box>

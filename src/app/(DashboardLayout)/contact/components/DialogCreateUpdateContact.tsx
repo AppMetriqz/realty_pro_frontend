@@ -33,9 +33,6 @@ export const DialogCreateUpdateContact = ({
 }: Props) => {
   const { contactHookForm } = usePageProps;
 
-  console.log(contactHookForm.getValues('first_name'))
-  console.log(contactHookForm.getValues('spouse'))
-
   return (
     <Dialog
       fullWidth={true}

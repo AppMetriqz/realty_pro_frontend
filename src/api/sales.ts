@@ -11,6 +11,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { QueriesOptions } from '@/common/constants/react-query';
 import _ from 'lodash';
 import { units } from './units';
+import { desktop } from './desktop';
 
 export const sales = 'sales';
 
@@ -88,6 +89,12 @@ export const useUpdate = () => {
         headers: { 'Content-Type': 'multipart/form-data' },
       }),
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [`${desktop}-sales-to-assign`],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [`${desktop}-payment-plans-to-assign`],
+      });
       queryClient.invalidateQueries({ queryKey: [`${sales}FindAll`] });
       queryClient.invalidateQueries({ queryKey: [sales] });
     },

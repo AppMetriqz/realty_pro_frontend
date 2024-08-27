@@ -23,7 +23,8 @@ const PaymentAccordion: FC<{
   plan: GetContactPaymentPlanDto;
   hasPendingPayments: boolean;
   bgColor: keyof typeof accordionBgColors;
-}> = ({ plan, hasPendingPayments, bgColor }) => {
+  onClickCreatePayment: (paymentPlanId: number) => void;
+}> = ({ plan, hasPendingPayments, bgColor, onClickCreatePayment }) => {
   const initialAmount =
     parseFloat(plan.total_amount) * plan.separation_rate -
     parseFloat(plan.separation_amount) +
@@ -186,6 +187,8 @@ const PaymentAccordion: FC<{
             </Box>
             {hasPendingPayments ? (
               <PendingPayment
+                onClickCreatePayment={onClickCreatePayment}
+                paymentPlanId={plan.payment_plan_id}
                 pendingPaymentList={pendingPayments}
                 pendingAmount={`${plan.project.currency_type}${formatCurrency(
                   pendingAmount
