@@ -102,7 +102,7 @@ export const useAddSpouse = () => {
     mutationKey: [`${contacts}AddSpouse`],
     mutationFn: (data: { contact_id: string | string[]; spouse_id?: number }) =>
       axiosInstance.put(`/${contacts}/${data.contact_id}`, {
-        data: { spouse_id: data.spouse_id },
+        spouse_id: data.spouse_id,
       }),
     onSuccess: (res, variables) => {
       queryClient.invalidateQueries({ queryKey: [`${contacts}FindAll`] });
