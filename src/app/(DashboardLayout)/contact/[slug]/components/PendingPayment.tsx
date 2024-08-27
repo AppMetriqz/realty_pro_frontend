@@ -33,15 +33,17 @@ const PendingPayment: FC<PendingPaymentProps> = ({
         >
           Crear Reventa
         </Button>
-        <Button
-          sx={{
-            backgroundColor: '#F3F3F3',
-            '&:hover': { backgroundColor: '#E6E6E6' },
-          }}
-          onClick={() => onClickCreatePayment(paymentPlanId)}
-        >
-          Nuevo Pago
-        </Button>
+        {parseFloat(pendingAmount.replaceAll(/[US$,]/gi, '')) > 0 ? (
+          <Button
+            sx={{
+              backgroundColor: '#F3F3F3',
+              '&:hover': { backgroundColor: '#E6E6E6' },
+            }}
+            onClick={() => onClickCreatePayment(paymentPlanId)}
+          >
+            Nuevo Pago
+          </Button>
+        ) : null}
       </Box>
       <Box display={'flex'} rowGap={'25px'} flexDirection={'column'}>
         {pendingPaymentList.map((payment) => (
