@@ -197,8 +197,8 @@ export default function usePage(): UsePageProps {
         project_id: selectedUnitToAssign?.project?.project_id,
         sale_id: selectedUnitToAssign?.sale_id,
         unit_id: selectedUnitToAssign?.unit?.unit_id,
-        client_id: data.client_id,
-        seller_id: data.seller_id,
+        client_id: parseInt(data.client_id),
+        seller_id: parseInt(data.seller_id),
         commission: data.commission / 100,
         notes: data.notes,
       });
@@ -225,8 +225,10 @@ export default function usePage(): UsePageProps {
     if (sale.commission)
       sellHookForm.setValue('commission', sale.commission * 100);
     if (sale.notes) sellHookForm.setValue('notes', sale.notes);
-    if (sale.client) sellHookForm.setValue('client_id', sale.client.contact_id);
-    if (sale.seller) sellHookForm.setValue('seller_id', sale.seller.contact_id);
+    if (sale.client)
+      sellHookForm.setValue('client_id', sale.client.contact_id.toString());
+    if (sale.seller)
+      sellHookForm.setValue('seller_id', sale.seller.contact_id.toString());
     setSelectedUnitToAssign(sale);
     setOpenSellModal(true);
   };

@@ -48,8 +48,8 @@ export const sellValidationSchema = yup.object({
 export const sellFormDefaultValues = {
   project_id: '',
   unit_id: '',
-  client_id: 0,
-  seller_id: 0,
+  client_id: '',
+  seller_id: '',
   price: '',
   commission: 0,
   notes: '',

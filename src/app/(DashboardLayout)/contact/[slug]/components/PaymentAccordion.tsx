@@ -38,7 +38,7 @@ const PaymentAccordion: FC<{
   const paidPaymentFromApi = plan.payment_plan_details.filter(
     (p) => p.status === 'paid'
   );
-  const paymentExample: ChipType[] = [
+  const paidPayment: ChipType[] = [
     {
       id: 1,
       bgColor: 'separation',
@@ -57,7 +57,7 @@ const PaymentAccordion: FC<{
       content: (
         <Typography fontSize={'14px'} fontWeight={500} textAlign={'center'}>
           {DateTime.fromISO(plan.created_at).toLocaleString()} - Plan de Pago
-          Creado ({plan.payment_plan_numbers} Meses) -{' '}
+          Creado ({plan.payment_plan_numbers} Meses) -&nbsp;
           {plan.project.currency_type}
           {formatCurrency(initialAmount)}
         </Typography>
@@ -69,7 +69,7 @@ const PaymentAccordion: FC<{
         bgColor: 'separation',
         content: (
           <Typography fontSize={'14px'} fontWeight={500} textAlign={'center'}>
-            {DateTime.fromISO(planDetail.payment_date).toLocaleString()}&nbsp;
+            {DateTime.fromISO(planDetail.created_at).toLocaleString()}&nbsp;
             -&nbsp;{plan.project.currency_type}
             {formatCurrency(parseFloat(planDetail.payment_amount))}&nbsp;- Pago
             de cuota.
@@ -176,7 +176,7 @@ const PaymentAccordion: FC<{
             mx="43px"
           >
             <Box display={'flex'} rowGap={'25px'} flexDirection={'column'}>
-              {paymentExample.map((payment) => (
+              {paidPayment.map((payment) => (
                 <PaymentInformationChip
                   key={payment.id}
                   bgColor={payment.bgColor}

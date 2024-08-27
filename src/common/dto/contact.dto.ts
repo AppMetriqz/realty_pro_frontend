@@ -69,6 +69,7 @@ export type PaymentPlanDetailDto = {
   payment_date: string;
   sale_type: string;
   status: string;
+  created_at: string;
 };
 
 export type GetContactPaymentPlanDto = {
