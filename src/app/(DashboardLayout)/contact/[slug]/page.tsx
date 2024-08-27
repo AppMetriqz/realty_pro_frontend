@@ -60,7 +60,7 @@ const ContactProfile = () => {
     {
       label: 'Ventas',
       id: 'sales',
-      component: useContactProfilePageProps.findContactPaymentPlans.data
+      component: !!useContactProfilePageProps.findContactPaymentPlans.data
         ?.length ? (
         <SaleTab
           onClickCreatePayment={useContactProfilePageProps.onClickCreatePayment}
@@ -73,8 +73,8 @@ const ContactProfile = () => {
     {
       label: 'Finalizado',
       id: 'finalized',
-      component: useContactProfilePageProps.findFinishedContactPaymentPlans.data
-        ?.length ? (
+      component: !!useContactProfilePageProps.findFinishedContactPaymentPlans
+        .data?.length ? (
         <FinalizedTab
           paymentPlan={
             useContactProfilePageProps.findFinishedContactPaymentPlans

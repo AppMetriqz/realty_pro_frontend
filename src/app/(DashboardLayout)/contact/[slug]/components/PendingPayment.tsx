@@ -7,7 +7,7 @@ type PendingPaymentProps = {
   pendingPaymentList: ChipType[];
   pendingAmount: string;
   financingAmount: string;
-  onClickCreatePayment: (paymentPlanId: number) => void;
+  onClickCreatePayment?: (paymentPlanId: number) => void;
 };
 
 const PendingPayment: FC<PendingPaymentProps> = ({
@@ -39,7 +39,7 @@ const PendingPayment: FC<PendingPaymentProps> = ({
               backgroundColor: '#F3F3F3',
               '&:hover': { backgroundColor: '#E6E6E6' },
             }}
-            onClick={() => onClickCreatePayment(paymentPlanId)}
+            onClick={() => onClickCreatePayment?.(paymentPlanId)}
           >
             Nuevo Pago
           </Button>

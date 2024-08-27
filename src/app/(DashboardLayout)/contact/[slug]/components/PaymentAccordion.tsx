@@ -23,7 +23,7 @@ const PaymentAccordion: FC<{
   plan: GetContactPaymentPlanDto;
   hasPendingPayments: boolean;
   bgColor: keyof typeof accordionBgColors;
-  onClickCreatePayment: (paymentPlanId: number) => void;
+  onClickCreatePayment?: (paymentPlanId: number) => void;
 }> = ({ plan, hasPendingPayments, bgColor, onClickCreatePayment }) => {
   const initialAmount =
     parseFloat(plan.total_amount) * plan.separation_rate -
