@@ -32,10 +32,8 @@ const ContactProfile = () => {
             ).toISODate() ?? ''
           );
         } else if (key === 'spouse') {
-          useContactProfilePageProps.contactHookForm.setValue(
-            'spouse_id',
-            useContactProfilePageProps.findContact.data?.spouse?.contact_id
-          );
+          useContactProfilePageProps.contactHookForm.setValue('spouse_id', useContactProfilePageProps.findContact.data?.spouse?.contact_id);
+          useContactProfilePageProps.contactHookForm.setValue('spouse', useContactProfilePageProps.findContact.data?.spouse);
           useContactProfilePageProps.setContactDescription(
             `${useContactProfilePageProps.findContact.data?.spouse?.first_name} ${useContactProfilePageProps.findContact.data?.spouse?.last_name}`
           );
