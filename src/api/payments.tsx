@@ -48,7 +48,7 @@ export const useCreate = () => {
       queryClient.invalidateQueries({ queryKey: [`${payments}FindAll`] });
       queryClient.invalidateQueries({ queryKey: [`${units}FindAll`] });
       queryClient.invalidateQueries({
-        queryKey: [`${contacts}FindAll`],
+        queryKey: [`${contacts}PaymentPlans`],
       });
     },
   });
