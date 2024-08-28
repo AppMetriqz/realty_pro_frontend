@@ -64,7 +64,7 @@ export type CreateUpdatePaymentPlanType = {
   separation_rate: number;
   is_resale: boolean; // true si es reventa
   total_amount?: string; // enviar solo si es una reventa
-  client_id?: number; // enviar solo si es una reventa
+  client_id?: string; // enviar solo si es una reventa
 };
 
 export const createPaymentPlanDefaultValues = {
@@ -88,17 +88,23 @@ export const createPaymentPlanValidationSchema = yup.object({
           fromStringCurrencyToFloat(node.value);
         const minValue =
           initialAmount + fromStringCurrencyToFloat(node.value) - 1000;
-        return initialAmount > 1000
+        const minGreaterThan0Msg =
+          'El monto de separación tiene que ser mayor a 0.';
+        const amountErrorMsg = `El monto del inicial no puede ser menor a $1,000. El monto de separación debiera ser ${formatCurrency(
+          minValue
+        )}.`;
+        return fromStringCurrencyToFloat(node.value) <= 0
+          ? schema.min(700, minGreaterThan0Msg)
+          : initialAmount > 1000
           ? schema.notRequired()
-          : schema.min(
-              minValue,
-              `El monto del inicial no puede ser menor a $1,000. El monto de separación debiera ser ${formatCurrency(
-                minValue
-              )}.`
-            );
+          : schema.min(1000, amountErrorMsg);
       }
     )
     .required(ErrorMsg.required),
+  is_resale: yup.boolean(),
+  client_id: yup.string().when('is_resale', ([is_resale], schema) => {
+    return is_resale ? schema.required(ErrorMsg.required) : schema.nullable();
+  }),
   separation_date: yup.string().required(ErrorMsg.required),
   payment_plan_numbers: yup.number().required(ErrorMsg.required),
   separation_rate: yup

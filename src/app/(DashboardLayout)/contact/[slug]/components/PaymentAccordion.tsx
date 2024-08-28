@@ -24,7 +24,14 @@ const PaymentAccordion: FC<{
   hasPendingPayments: boolean;
   bgColor: keyof typeof accordionBgColors;
   onClickCreatePayment?: (paymentPlanId: number) => void;
-}> = ({ plan, hasPendingPayments, bgColor, onClickCreatePayment }) => {
+  onClickCreateResale?: (currentPaymentPlan: GetContactPaymentPlanDto) => void;
+}> = ({
+  plan,
+  hasPendingPayments,
+  bgColor,
+  onClickCreatePayment,
+  onClickCreateResale,
+}) => {
   const initialAmount =
     parseFloat(plan.total_amount) * plan.separation_rate -
     parseFloat(plan.separation_amount) +
@@ -69,15 +76,18 @@ const PaymentAccordion: FC<{
         bgColor: 'separation',
         content: (
           <Typography fontSize={'14px'} fontWeight={500} textAlign={'center'}>
-            {DateTime.fromISO(planDetail.created_at).toLocaleString()}&nbsp;
-            -&nbsp;{plan.project.currency_type}
-            {formatCurrency(parseFloat(planDetail.payment_amount))}&nbsp;- Pago
-            de cuota.
+            {DateTime.fromISO(
+              planDetail.paid_at ? planDetail.paid_at : planDetail.updated_at
+            ).toLocaleString()}
+            &nbsp; -&nbsp;{plan.project.currency_type}
+            {formatCurrency(parseFloat(planDetail.amount_paid))}&nbsp;- Pago de
+            cuota.
           </Typography>
         ),
       };
     }),
   ];
+
   const pendingAmount = pendingPaymentFromApi.reduce((prev, curr) => {
     const pendingAmount =
       parseFloat(curr.payment_amount) - parseFloat(curr.amount_paid);
@@ -188,7 +198,8 @@ const PaymentAccordion: FC<{
             {hasPendingPayments ? (
               <PendingPayment
                 onClickCreatePayment={onClickCreatePayment}
-                paymentPlanId={plan.payment_plan_id}
+                onClickCreateResale={onClickCreateResale}
+                plan={plan}
                 pendingPaymentList={pendingPayments}
                 pendingAmount={`${plan.project.currency_type}${formatCurrency(
                   pendingAmount

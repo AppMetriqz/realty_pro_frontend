@@ -1,4 +1,4 @@
-import { apiContacts, apiPayments } from '@/api';
+import { apiContacts, apiPaymentPlans, apiPayments } from '@/api';
 import { GetContactDto, GetContactPaymentPlanDto } from '@/common/dto';
 import { UseQueryResult } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
@@ -21,6 +21,7 @@ import {
 import { ExceptionCatchResponse } from '@/common/exceptions';
 import { toast } from 'react-toastify';
 import { CreateUpdatePaymentPlanType } from '../../dashboard/core';
+import { formatCurrency } from '@/common/utils/numericHelpers';
 
 export type UseContactCreateUpdateProps = {
   contactHookForm: UseFormReturn<ContactFormInput, any, undefined>;
@@ -66,6 +67,10 @@ export type UseContactProfilePageProps = {
   clientAutocompleteContacts: UseQueryResult<GetContactDto[], Error>;
   onClickCreatePayment: (paymentPlanId: number) => void;
   onSubmitPayment: SubmitHandler<CreateUpdatePaymentType>;
+  isResale: boolean;
+  onClickCreateResale: (currentPaymentPlan: GetContactPaymentPlanDto) => void;
+  onSubmitPaymentPlan: SubmitHandler<CreateUpdatePaymentPlanType>;
+  setClientDescription: Dispatch<SetStateAction<string>>;
 } & UseContactCreateUpdateProps;
 
 const useContactProfilePage = (): UseContactProfilePageProps => {
@@ -76,6 +81,7 @@ const useContactProfilePage = (): UseContactProfilePageProps => {
   const [openAddSpouse, setOpenAddSpouse] = useState(false);
   const [openCreatePaymentPlanModal, setOpenCreatePaymentPlanModal] =
     useState(false);
+  const [isResale, setIsResale] = useState(false);
   const [openCreatePaymentModal, setOpenCreatePaymentModal] = useState(false);
   const [clientDescription, setClientDescription] = useState('');
   const resolveSpouseContact = useYupValidationResolver(
@@ -107,6 +113,7 @@ const useContactProfilePage = (): UseContactProfilePageProps => {
     resolver: paymentResolver,
     defaultValues: createPaymentDefaultValues,
   });
+  const createResale = apiPaymentPlans.useCreate();
 
   const findContact = apiContacts.useFindOne(slug);
   const findContactPaymentPlans = apiContacts.useFindPaymentPlans(slug, {
@@ -202,6 +209,7 @@ const useContactProfilePage = (): UseContactProfilePageProps => {
 
   const onCloseCreatePaymentModal = () => {
     setOpenCreatePaymentModal(false);
+    setIsResale(false);
     paymentHookForm.reset();
   };
 
@@ -238,6 +246,69 @@ const useContactProfilePage = (): UseContactProfilePageProps => {
     }
   };
 
+  const onClickCreateResale = (
+    currentPaymentPlan: GetContactPaymentPlanDto
+  ) => {
+    const { separation_amount, separation_rate, total_amount, sale_id } =
+      currentPaymentPlan;
+    if (total_amount)
+      paymentPlanHookForm.setValue(
+        'total_amount',
+        formatCurrency(parseFloat(total_amount))
+      );
+    if (separation_amount)
+      paymentPlanHookForm.setValue(
+        'separation_amount',
+        formatCurrency(parseFloat(separation_amount))
+      );
+    if (sale_id) paymentPlanHookForm.setValue('sale_id', sale_id);
+    paymentPlanHookForm.setValue('is_resale', true);
+    if (separation_rate)
+      paymentPlanHookForm.setValue('separation_rate', separation_rate * 100);
+    setIsResale(true);
+    setOpenCreatePaymentPlanModal(true);
+  };
+
+  const onSubmitPaymentPlan: SubmitHandler<
+    CreateUpdatePaymentPlanType
+  > = async (data) => {
+    try {
+      const sale = await createResale.mutateAsync({
+        sale_id: data.sale_id,
+        separation_amount: parseFloat(
+          data.separation_amount
+            ? data.separation_amount.replaceAll(/[$,]/gi, '')
+            : '0'
+        ),
+        separation_date: data.separation_date,
+        payment_plan_numbers: data.payment_plan_numbers,
+        separation_rate: data.separation_rate / 100,
+        is_resale: isResale,
+        total_amount:
+          data.is_resale && data.total_amount
+            ? parseFloat(data.total_amount.replaceAll(/[$,]/gi, ''))
+            : undefined,
+        client_id: data.is_resale ? parseInt(data.client_id) : undefined,
+      });
+      if (!!sale) {
+        toast.success(`Reventa creada satisfactoriamente.`, {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'colored',
+        });
+        paymentPlanHookForm.reset();
+        setOpenCreatePaymentPlanModal(false);
+      }
+    } catch (error: Error | unknown) {
+      ExceptionCatchResponse(error);
+    }
+  };
+
   return {
     currentTabValue,
     handleChangeTab,
@@ -265,6 +336,10 @@ const useContactProfilePage = (): UseContactProfilePageProps => {
     paymentHookForm,
     onClickCreatePayment,
     onSubmitPayment,
+    isResale,
+    onClickCreateResale,
+    onSubmitPaymentPlan,
+    setClientDescription,
   };
 };
 

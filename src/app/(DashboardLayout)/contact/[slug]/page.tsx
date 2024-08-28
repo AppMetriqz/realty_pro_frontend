@@ -64,6 +64,7 @@ const ContactProfile = () => {
         ?.length ? (
         <SaleTab
           onClickCreatePayment={useContactProfilePageProps.onClickCreatePayment}
+          onClickCreateResale={useContactProfilePageProps.onClickCreateResale}
           paymentPlan={useContactProfilePageProps.findContactPaymentPlans}
         />
       ) : (
@@ -138,7 +139,7 @@ const ContactProfile = () => {
         usePageProps={useContactProfilePageProps}
       />
       <DialogCreatePaymentPlan
-        isResale
+        isResale={useContactProfilePageProps.isResale}
         open={useContactProfilePageProps.openCreatePaymentPlanModal}
         onClose={useContactProfilePageProps.onCloseCreatePaymentPlanModal}
         usePageProps={useContactProfilePageProps}
