@@ -49,7 +49,9 @@ export const sellFormDefaultValues = {
   project_id: '',
   unit_id: '',
   client_id: '',
+  client: undefined,
   seller_id: '',
+  seller: undefined,
   price: '',
   commission: 0,
   notes: '',
@@ -62,8 +64,8 @@ export type CreateUpdatePaymentPlanType = {
   payment_plan_numbers: number;
   separation_rate: number;
   is_resale: boolean; // true si es reventa
-  total_amount?: string; // enviar solo si es una reventa
-  client_id: string; // enviar solo si es una reventa
+  total_amount: string; // enviar solo si es una reventa
+  client_id?: number; // enviar solo si es una reventa
 };
 
 export const createPaymentPlanDefaultValues = {

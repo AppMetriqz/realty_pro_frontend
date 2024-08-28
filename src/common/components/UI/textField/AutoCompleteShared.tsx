@@ -66,9 +66,9 @@ export const AutoCompleteSharedController: FC<
             ? props.getOptionLabel
             : (option: any) => option[name]
         }
-        isOptionEqualToValue={(option: any, value: any) =>
-          option[id] === value[id]
-        }
+        // isOptionEqualToValue={(option: any, value: any) =>
+        //   option[id] === value[id]
+        // }
         onInputChange={(event) => {
           if (props.onInputChange) {
             const target = event?.target as HTMLInputElement;

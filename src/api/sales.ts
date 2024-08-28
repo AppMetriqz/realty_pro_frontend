@@ -85,9 +85,7 @@ export const useUpdate = () => {
   return useMutation({
     mutationKey: [`${sales}Update`],
     mutationFn: (data: UpdateSellDto) =>
-      axiosInstance.put(`/${sales}/${data.sale_id}`, data, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      }),
+      axiosInstance.put(`/${sales}/${data.sale_id}`, data),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [`${desktop}-sales-to-assign`],
