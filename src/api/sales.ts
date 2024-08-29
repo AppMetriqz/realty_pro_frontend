@@ -62,6 +62,12 @@ export const useCreate = () => {
     mutationKey: [`${sales}Create`],
     mutationFn: (data: CreateSellDto) => axiosInstance.post(`/${sales}`, data),
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [`${desktop}-sales-to-assign`],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [`${desktop}-payment-plans-to-assign`],
+      });
       queryClient.invalidateQueries({ queryKey: [`${sales}FindAll`] });
       queryClient.invalidateQueries({ queryKey: [`${units}FindAll`] });
     },
@@ -75,6 +81,12 @@ export const useCreateAll = () => {
     mutationFn: (data: CreateAllSellDto) =>
       axiosInstance.post(`/${sales}/all`, data),
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [`${desktop}-sales-to-assign`],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [`${desktop}-payment-plans-to-assign`],
+      });
       queryClient.invalidateQueries({ queryKey: [`${sales}FindAll`] });
       queryClient.invalidateQueries({ queryKey: [`${units}FindAll`] });
     },

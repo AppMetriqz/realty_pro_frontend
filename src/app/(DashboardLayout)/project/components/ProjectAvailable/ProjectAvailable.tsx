@@ -344,7 +344,7 @@ const ProjectAvailable: FC<{
                     </Tooltip>
                     <Tooltip title="Eliminar">
                       <IconButton
-                        onClick={() => usePageProps.setOpenDeleteModal(true)}
+                        onClick={usePageProps.onClickDeleteMultipleUnits}
                       >
                         <DeleteIcon />
                       </IconButton>

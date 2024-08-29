@@ -115,6 +115,24 @@ export const useDelete = (id: string | number | string[]) => {
   });
 };
 
+export const useDeleteAll = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: [`${units}DeleteAll`],
+    mutationFn: (data: {
+      projectId: string | string[];
+      notes: string;
+      unit_ids: string;
+    }) =>
+      axiosInstance.delete(`/${units}/all/${data.projectId}`, {
+        data: { notes: data.notes, unit_ids: data.unit_ids },
+      }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [`${units}FindAll`] });
+    },
+  });
+};
+
 export const useCancelSaleUnit = () => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -140,5 +158,6 @@ export const apiUnits = {
   useUpdate,
   useUpdateAll,
   useDelete,
+  useDeleteAll,
   useCancelSaleUnit,
 };

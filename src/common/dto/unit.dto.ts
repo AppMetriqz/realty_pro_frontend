@@ -71,9 +71,8 @@ export interface GetUnitDto {
 
 export interface MultipleUnitDto {
   project_id: string | string[];
-  condition: string;
+  condition?: string;
   price_per_meter?: number; // si no es plot enviar price
-  price?: number;
   status: string;
   unit_ids: string; //'1,2,3';
 }

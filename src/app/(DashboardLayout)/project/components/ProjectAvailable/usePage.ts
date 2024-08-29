@@ -99,6 +99,7 @@ export type UsePageProjectAvailableProps = {
   multipleUpdateHasError: boolean;
   setMultipleUpdateHasError: Dispatch<SetStateAction<boolean>>;
   onClickSaleMultipleUnits: () => void;
+  onClickDeleteMultipleUnits: () => void;
 } & UpdateUnitProjectProps;
 
 export default function usePage(): UsePageProjectAvailableProps {
@@ -221,6 +222,7 @@ export default function usePage(): UsePageProjectAvailableProps {
   const cancelUnitSale = apiUnits.useCancelSaleUnit();
   const createSale = apiSales.useCreate();
   const createSaleAll = apiSales.useCreateAll();
+  const deleteUnitAll = apiUnits.useDeleteAll();
 
   const onSubmitUnit: SubmitHandler<UnitFormInput> = async (data) => {
     try {
@@ -293,7 +295,14 @@ export default function usePage(): UsePageProjectAvailableProps {
 
   const onSubmitDelete: SubmitHandler<DeleteFormType> = async (data) => {
     try {
-      const project = await deleteUnit.mutateAsync({ notes: data.notes });
+      const project =
+        selectedUnits.length > 0
+          ? await deleteUnitAll.mutateAsync({
+              projectId: slug,
+              notes: data.notes,
+              unit_ids: selectedUnits.map((u) => u.id).join(','),
+            })
+          : await deleteUnit.mutateAsync({ notes: data.notes });
       if (!!project) {
         toast.success(`Unidad Eliminada.`, {
           position: 'top-right',
@@ -320,23 +329,19 @@ export default function usePage(): UsePageProjectAvailableProps {
     try {
       if (
         data.condition !== '' ||
-        data.price !== '' ||
         data.price_per_meter !== '' ||
         data.status !== ''
       ) {
         const isPlot = data.type === 'plot';
         const project = await updateAllUnit.mutateAsync({
-          ...data,
           project_id: slug,
-          price:
-            !isPlot && data.price
-              ? Number(data.price?.replace(/[^0-9.-]+/g, ''))
-              : undefined,
           price_per_meter:
             isPlot && data.price_per_meter
               ? Number(data.price_per_meter?.replace(/[^0-9.-]+/g, ''))
               : undefined,
           unit_ids: selectedUnits.map((u) => u.id).join(','),
+          status: data.status,
+          condition: data.condition ? data.condition : undefined,
         });
         if (!!project) {
           toast.success(`Unidades (${selectedUnits.length}) actualizadas.`, {
@@ -366,7 +371,7 @@ export default function usePage(): UsePageProjectAvailableProps {
         const sales = await createSaleAll.mutateAsync({
           project_id: slug,
           unit_ids: selectedUnits.map((u) => u.id).join(','),
-          client_id: parseInt(data.client_id),
+          client_id: data.client_id ? parseInt(data.client_id) : 0,
           seller_id: parseInt(data.seller_id),
           commission: data.commission / 100,
           notes: data.notes,
@@ -390,7 +395,7 @@ export default function usePage(): UsePageProjectAvailableProps {
         const sale = await createSale.mutateAsync({
           project_id: slug,
           unit_id: selectedUnitId,
-          client_id: parseInt(data.client_id),
+          client_id: data.client_id ? parseInt(data.client_id) : 0,
           seller_id: parseInt(data.seller_id),
           commission: data.commission / 100,
           notes: data.notes,
@@ -524,6 +529,23 @@ export default function usePage(): UsePageProjectAvailableProps {
     }
   };
 
+  const onClickDeleteMultipleUnits = () => {
+    if (selectedUnits.some((u) => u.status === 'Vendido')) {
+      toast.warn('No puedes eliminar unidades vendidas', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+      });
+    } else {
+      setOpenDeleteModal(true);
+    }
+  };
+
   return {
     unitDetails,
     availableUnits,
@@ -580,5 +602,6 @@ export default function usePage(): UsePageProjectAvailableProps {
     multipleUpdateHasError,
     setMultipleUpdateHasError,
     onClickSaleMultipleUnits,
+    onClickDeleteMultipleUnits,
   };
 }

@@ -77,7 +77,7 @@ export const DialogDelete = ({
             mt={3}
             fontSize="16px"
           >
-            Si borras esta venta, cualquier&nbsp;
+            Si borras esta unidad, cualquier&nbsp;
             <span style={{ fontWeight: '600' }}>plan de pago</span> <br />
             asociado con esta venta sera&nbsp;
             <span style={{ fontWeight: '600' }}>cancelado</span>.
