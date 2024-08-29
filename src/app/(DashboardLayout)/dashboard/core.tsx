@@ -65,7 +65,7 @@ export type CreateUpdatePaymentPlanType = {
   separation_rate: number;
   is_resale: boolean; // true si es reventa
   total_amount: string; // enviar solo si es una reventa
-  client_id?: number; // enviar solo si es una reventa
+  client_id?: string; // enviar solo si es una reventa
 };
 
 export const createPaymentPlanDefaultValues = {

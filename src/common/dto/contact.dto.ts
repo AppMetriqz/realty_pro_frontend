@@ -92,6 +92,9 @@ export type GetContactPaymentPlanDto = {
   update_by?: number;
   created_at: string;
   updated_at?: string;
+  total_payment_amount: string;
+  total_amount_paid: string;
+  total_financing: number;
   project: {
     project_id: number;
     name: string;

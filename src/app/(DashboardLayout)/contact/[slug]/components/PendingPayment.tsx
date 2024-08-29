@@ -10,6 +10,7 @@ type PendingPaymentProps = {
   plan: GetContactPaymentPlanDto;
   onClickCreatePayment?: (paymentPlanId: number) => void;
   onClickCreateResale?: (currentPaymentPlan: GetContactPaymentPlanDto) => void;
+  onClickMoveToFinancing?: ({ sale_id }: { sale_id: number }) => Promise<void>;
 };
 
 const PendingPayment: FC<PendingPaymentProps> = ({
@@ -19,6 +20,7 @@ const PendingPayment: FC<PendingPaymentProps> = ({
   plan,
   onClickCreatePayment,
   onClickCreateResale,
+  onClickMoveToFinancing,
 }) => {
   return (
     <>
@@ -64,6 +66,8 @@ const PendingPayment: FC<PendingPaymentProps> = ({
           backgroundColor: '#FFF1E6',
           '&:hover': { backgroundColor: '#FFE3CD' },
         }}
+        disabled={plan.sale && plan.sale.stage === 'financed'}
+        onClick={() => onClickMoveToFinancing?.({ sale_id: plan.sale.sale_id })}
       >
         Pasar a Financamiento ({financingAmount})
       </Button>

@@ -65,6 +65,9 @@ const ContactProfile = () => {
         <SaleTab
           onClickCreatePayment={useContactProfilePageProps.onClickCreatePayment}
           onClickCreateResale={useContactProfilePageProps.onClickCreateResale}
+          onClickMoveToFinancing={
+            useContactProfilePageProps.onClickMoveToFinancing
+          }
           paymentPlan={useContactProfilePageProps.findContactPaymentPlans}
         />
       ) : (

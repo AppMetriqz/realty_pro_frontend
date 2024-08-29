@@ -23,6 +23,7 @@ export type UpdateSellDto = {
   client_id?: number;
   seller_id: number;
   commission: number;
+  stage?: string;
   notes?: string;
 };
 

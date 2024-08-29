@@ -12,6 +12,7 @@ import { QueriesOptions } from '@/common/constants/react-query';
 import _ from 'lodash';
 import { units } from './units';
 import { desktop } from './desktop';
+import { contacts } from './contacts';
 
 export const sales = 'sales';
 
@@ -84,7 +85,7 @@ export const useUpdate = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: [`${sales}Update`],
-    mutationFn: (data: UpdateSellDto) =>
+    mutationFn: (data: Partial<UpdateSellDto>) =>
       axiosInstance.put(`/${sales}/${data.sale_id}`, data),
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -95,6 +96,7 @@ export const useUpdate = () => {
       });
       queryClient.invalidateQueries({ queryKey: [`${sales}FindAll`] });
       queryClient.invalidateQueries({ queryKey: [sales] });
+      queryClient.invalidateQueries({ queryKey: [`${contacts}PaymentPlans`] });
     },
   });
 };

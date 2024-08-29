@@ -8,7 +8,13 @@ const SaleTab: FC<{
   paymentPlan: UseQueryResult<GetContactPaymentPlanDto[], Error>;
   onClickCreatePayment: (paymentPlanId: number) => void;
   onClickCreateResale?: (currentPaymentPlan: GetContactPaymentPlanDto) => void;
-}> = ({ paymentPlan, onClickCreatePayment, onClickCreateResale }) => {
+  onClickMoveToFinancing?: ({ sale_id }: { sale_id: number }) => Promise<void>;
+}> = ({
+  paymentPlan,
+  onClickCreatePayment,
+  onClickCreateResale,
+  onClickMoveToFinancing,
+}) => {
   return (
     <Box display={'flex'} rowGap={'40px'} flexDirection={'column'}>
       {paymentPlan.isLoading ? (
@@ -20,6 +26,7 @@ const SaleTab: FC<{
           <PaymentAccordion
             onClickCreateResale={onClickCreateResale}
             onClickCreatePayment={onClickCreatePayment}
+            onClickMoveToFinancing={onClickMoveToFinancing}
             key={plan.payment_plan_id}
             plan={plan}
             hasPendingPayments

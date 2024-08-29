@@ -1,4 +1,4 @@
-import { apiContacts, apiPaymentPlans, apiPayments } from '@/api';
+import { apiContacts, apiPaymentPlans, apiPayments, apiSales } from '@/api';
 import { GetContactDto, GetContactPaymentPlanDto } from '@/common/dto';
 import { UseQueryResult } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
@@ -71,6 +71,7 @@ export type UseContactProfilePageProps = {
   onClickCreateResale: (currentPaymentPlan: GetContactPaymentPlanDto) => void;
   onSubmitPaymentPlan: SubmitHandler<CreateUpdatePaymentPlanType>;
   setClientDescription: Dispatch<SetStateAction<string>>;
+  onClickMoveToFinancing: ({ sale_id }: { sale_id: number }) => Promise<void>;
 } & UseContactCreateUpdateProps;
 
 const useContactProfilePage = (): UseContactProfilePageProps => {
@@ -140,6 +141,7 @@ const useContactProfilePage = (): UseContactProfilePageProps => {
   const updateContact = apiContacts.useUpdate();
   const addSpouseContact = apiContacts.useAddSpouse();
   const createPayment = apiPayments.useCreate();
+  const financeSale = apiSales.useUpdate();
 
   const onSubmit: SubmitHandler<ContactFormInput> = async (data) => {
     try {
@@ -288,7 +290,10 @@ const useContactProfilePage = (): UseContactProfilePageProps => {
           data.is_resale && data.total_amount
             ? parseFloat(data.total_amount.replaceAll(/[$,]/gi, ''))
             : undefined,
-        client_id: data.is_resale ? parseInt(data.client_id) : undefined,
+        client_id:
+          data.is_resale && data.client_id
+            ? parseInt(data.client_id)
+            : undefined,
       });
       if (!!sale) {
         toast.success(`Reventa creada satisfactoriamente.`, {
@@ -303,6 +308,29 @@ const useContactProfilePage = (): UseContactProfilePageProps => {
         });
         paymentPlanHookForm.reset();
         setOpenCreatePaymentPlanModal(false);
+      }
+    } catch (error: Error | unknown) {
+      ExceptionCatchResponse(error);
+    }
+  };
+
+  const onClickMoveToFinancing = async ({ sale_id }: { sale_id: number }) => {
+    try {
+      const sale = await financeSale.mutateAsync({
+        sale_id,
+        stage: 'financed',
+      });
+      if (!!sale) {
+        toast.success(`Financiamiento creado.`, {
+          position: 'top-right',
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'colored',
+        });
       }
     } catch (error: Error | unknown) {
       ExceptionCatchResponse(error);
@@ -340,6 +368,7 @@ const useContactProfilePage = (): UseContactProfilePageProps => {
     onClickCreateResale,
     onSubmitPaymentPlan,
     setClientDescription,
+    onClickMoveToFinancing,
   };
 };
 

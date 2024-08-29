@@ -25,12 +25,14 @@ const PaymentAccordion: FC<{
   bgColor: keyof typeof accordionBgColors;
   onClickCreatePayment?: (paymentPlanId: number) => void;
   onClickCreateResale?: (currentPaymentPlan: GetContactPaymentPlanDto) => void;
+  onClickMoveToFinancing?: ({ sale_id }: { sale_id: number }) => Promise<void>;
 }> = ({
   plan,
   hasPendingPayments,
   bgColor,
   onClickCreatePayment,
   onClickCreateResale,
+  onClickMoveToFinancing,
 }) => {
   const initialAmount =
     parseFloat(plan.total_amount) * plan.separation_rate -
@@ -88,11 +90,6 @@ const PaymentAccordion: FC<{
     }),
   ];
 
-  const pendingAmount = pendingPaymentFromApi.reduce((prev, curr) => {
-    const pendingAmount =
-      parseFloat(curr.payment_amount) - parseFloat(curr.amount_paid);
-    return prev + pendingAmount;
-  }, 0);
   const pendingPayments: ChipType[] = pendingPaymentFromApi.map(
     (planDetail) => {
       const pendingAmount =
@@ -201,13 +198,15 @@ const PaymentAccordion: FC<{
               <PendingPayment
                 onClickCreatePayment={onClickCreatePayment}
                 onClickCreateResale={onClickCreateResale}
+                onClickMoveToFinancing={onClickMoveToFinancing}
                 plan={plan}
                 pendingPaymentList={pendingPayments}
                 pendingAmount={`${plan.project.currency_type}${formatCurrency(
-                  pendingAmount
+                  parseFloat(plan.total_payment_amount) -
+                    parseFloat(plan.total_amount_paid)
                 )}`}
                 financingAmount={`${plan.project.currency_type}${formatCurrency(
-                  parseFloat(plan.total_amount) - initialAmount
+                  plan.total_financing
                 )}`}
               />
             ) : null}
