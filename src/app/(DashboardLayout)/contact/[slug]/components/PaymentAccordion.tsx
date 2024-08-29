@@ -138,13 +138,15 @@ const PaymentAccordion: FC<{
         </Box>
         <Box display={'flex'} justifyContent={'space-between'}>
           <Typography fontSize={'14px'} fontWeight={400}>
-            {plan.project.currency_type}
-            {formatCurrency(
-              parseFloat(nextPayment?.payment_amount || '0') -
-                parseFloat(nextPayment?.amount_paid || '0')
-            )}
-            &nbsp;a pagar el&nbsp;
-            {DateTime.fromISO(nextPayment?.payment_date || '').toLocaleString()}
+            {nextPayment?.payment_date
+              ? `${plan.project.currency_type}${formatCurrency(
+                  parseFloat(nextPayment?.payment_amount || '0') -
+                    parseFloat(nextPayment?.amount_paid || '0')
+                )} a pagar el 
+            ${DateTime.fromISO(
+              nextPayment?.payment_date || ''
+            ).toLocaleString()}`
+              : `No hay pagos del inicial pendientes.`}
           </Typography>
           <Typography fontSize={'14px'} fontWeight={400}>
             Balance a Financiar: {plan.project.currency_type}
