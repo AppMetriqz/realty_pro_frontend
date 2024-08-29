@@ -24,6 +24,7 @@ import {
 import { ExceptionCatchResponse } from '@/common/exceptions';
 import { toast } from 'react-toastify';
 import {
+  CreatePaymentPlanDto,
   GetContactDto,
   GetSellDto,
   PaymentPlanToAssignDto,
@@ -193,15 +194,17 @@ export default function usePage(): UsePageProps {
 
   const onSubmitSell: SubmitHandler<SellFormType> = async (data) => {
     try {
-      const sale = await assignSale.mutateAsync({
+      let sale_values = {
         project_id: selectedUnitToAssign?.project?.project_id,
         sale_id: selectedUnitToAssign?.sale_id,
         unit_id: selectedUnitToAssign?.unit?.unit_id,
-        client_id: parseInt(data.client_id),
+        client_id: data.client_id?parseInt(data.client_id):undefined,
         seller_id: parseInt(data.seller_id),
         commission: data.commission / 100,
         notes: data.notes,
-      });
+      }
+
+      const sale = await assignSale.mutateAsync(sale_values);
       if (!!sale) {
         toast.success(`Venta asignada.`, {
           position: 'top-right',
@@ -225,10 +228,14 @@ export default function usePage(): UsePageProps {
     if (sale.commission)
       sellHookForm.setValue('commission', sale.commission * 100);
     if (sale.notes) sellHookForm.setValue('notes', sale.notes);
-    if (sale.client)
+    if (sale.client) {
       sellHookForm.setValue('client_id', sale.client.contact_id.toString());
-    if (sale.seller)
+      sellHookForm.setValue('client', {...sale.client, client_id: sale.client?.contact_id});
+    }
+    if (sale.seller) {
       sellHookForm.setValue('seller_id', sale.seller.contact_id.toString());
+      sellHookForm.setValue('seller', {...sale.seller, seller_id: sale.seller?.contact_id});
+    }
     setSelectedUnitToAssign(sale);
     setOpenSellModal(true);
   };
@@ -253,27 +260,27 @@ export default function usePage(): UsePageProps {
     paymentPlanHookForm.reset();
   };
 
-  const onSubmitPaymentPlan: SubmitHandler<
-    CreateUpdatePaymentPlanType
-  > = async (data) => {
+  const onSubmitPaymentPlan: SubmitHandler<CreateUpdatePaymentPlanType> = async (data) => {
     try {
-      const sale = await createPaymentPlan.mutateAsync({
+      let sale_values:CreatePaymentPlanDto = {
         sale_id: data.sale_id,
         separation_amount: parseFloat(
-          data.separation_amount
-            ? data.separation_amount.replaceAll(/[$,]/gi, '')
-            : '0'
+            data.separation_amount
+                ? data.separation_amount.replaceAll(/[$,]/gi, '')
+                : '0'
         ),
         separation_date: data.separation_date,
         payment_plan_numbers: data.payment_plan_numbers,
         separation_rate: data.separation_rate / 100,
         is_resale: data.is_resale,
-        total_amount:
-          data.is_resale && data.total_amount
-            ? parseFloat(data.total_amount)
-            : undefined,
-        client_id: data.is_resale ? data.client_id : undefined,
-      });
+      }
+
+      if (data.is_resale){
+        sale_values.total_amount = data.total_amount ? parseFloat(data.total_amount) : undefined
+        sale_values.client_id = data.client_id
+      }
+
+      const sale = await createPaymentPlan.mutateAsync(sale_values);
       if (!!sale) {
         toast.success(`Plan de pago creado.`, {
           position: 'top-right',

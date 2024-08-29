@@ -20,7 +20,7 @@ export type UpdateSellDto = {
   sale_id?: string | number;
   project_id?: number | string;
   unit_id?: number | string;
-  client_id: number;
+  client_id?: number;
   seller_id: number;
   commission: number;
   notes?: string;
