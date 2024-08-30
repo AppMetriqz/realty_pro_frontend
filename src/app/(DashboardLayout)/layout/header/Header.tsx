@@ -7,6 +7,8 @@ import {
   Stack,
   IconButton,
   Typography,
+  CircularProgress,
+  Grid,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { IconMenu } from '@tabler/icons-react';
@@ -18,7 +20,6 @@ interface ItemType {
 
 const Header = ({ toggleMobileSidebar }: ItemType) => {
   const authUser = apiAuth.useCurrentUser();
-  console.log({ authUser });
   const AppBarStyled = styled(AppBar)(({ theme }) => ({
     boxShadow: 'none',
     paddingTop: 10,
@@ -52,11 +53,17 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
         <Box flexGrow={1} />
         <Stack spacing={1} direction="row" alignItems="center">
           <Stack spacing={0.5} pr={1} direction="column" alignItems="flex-end">
-            <Typography color={'#505050'} fontWeight={400}>
-              ¡Bienvenido&nbsp;
-              <span style={{ fontWeight: 700 }}>{authUser.first_name}</span>!
-              Realty Dominicana
-            </Typography>
+            {authUser.isLoading ? (
+              <Grid justifyContent={'center'} item xs={12}>
+                <CircularProgress sx={{ color: '#000' }} />
+              </Grid>
+            ) : (
+              <Typography color={'#505050'} fontWeight={400}>
+                ¡Bienvenido&nbsp;
+                <span style={{ fontWeight: 700 }}>{authUser.first_name}</span>!
+                Realty Dominicana
+              </Typography>
+            )}
           </Stack>
         </Stack>
       </ToolbarStyled>
