@@ -10,12 +10,15 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { IconMenu } from '@tabler/icons-react';
+import { apiAuth } from '@/api';
 
 interface ItemType {
   toggleMobileSidebar: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
 const Header = ({ toggleMobileSidebar }: ItemType) => {
+  const authUser = apiAuth.useCurrentUser();
+  console.log({ authUser });
   const AppBarStyled = styled(AppBar)(({ theme }) => ({
     boxShadow: 'none',
     paddingTop: 10,
@@ -50,7 +53,9 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
         <Stack spacing={1} direction="row" alignItems="center">
           <Stack spacing={0.5} pr={1} direction="column" alignItems="flex-end">
             <Typography color={'#505050'} fontWeight={400}>
-              ¡Bienvenidos! Realty Dominicana
+              ¡Bienvenido&nbsp;
+              <span style={{ fontWeight: 700 }}>{authUser.first_name}</span>!
+              Realty Dominicana
             </Typography>
           </Stack>
         </Stack>
