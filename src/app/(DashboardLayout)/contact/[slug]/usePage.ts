@@ -252,8 +252,13 @@ const useContactProfilePage = (): UseContactProfilePageProps => {
   const onClickCreateResale = (
     currentPaymentPlan: GetContactPaymentPlanDto
   ) => {
-    const { separation_amount, separation_rate, total_amount, sale_id } =
-      currentPaymentPlan;
+    const {
+      separation_amount,
+      separation_rate,
+      total_amount,
+      sale_id,
+      payment_plan_numbers,
+    } = currentPaymentPlan;
     if (total_amount)
       paymentPlanHookForm.setValue(
         'total_amount',
@@ -263,6 +268,11 @@ const useContactProfilePage = (): UseContactProfilePageProps => {
       paymentPlanHookForm.setValue(
         'separation_amount',
         formatCurrency(parseFloat(separation_amount))
+      );
+    if (payment_plan_numbers)
+      paymentPlanHookForm.setValue(
+        'payment_plan_numbers',
+        payment_plan_numbers
       );
     if (sale_id) paymentPlanHookForm.setValue('sale_id', sale_id);
     paymentPlanHookForm.setValue('is_resale', true);

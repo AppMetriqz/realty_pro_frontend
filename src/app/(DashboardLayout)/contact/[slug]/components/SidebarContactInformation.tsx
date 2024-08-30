@@ -23,7 +23,7 @@ type SidebarContactInformationProps = {
 const SidebarContactInformation: FC<SidebarContactInformationProps> = ({
   findContact,
   onClickEdit,
-  onClickAddSpouse
+  onClickAddSpouse,
 }) => {
   const userInformations: (UserInfoLabelProps & { id: string | number })[] = [
     {
@@ -60,7 +60,7 @@ const SidebarContactInformation: FC<SidebarContactInformationProps> = ({
     {
       id: 3,
       icon: <PhoneIcon />,
-      label: 'Telefonos:',
+      label: 'Teléfonos:',
       value: findContact.data?.phone_number_1 ?? '',
       extraContent: findContact.data?.phone_number_2 ? (
         <Typography fontWeight={500}>
@@ -85,7 +85,7 @@ const SidebarContactInformation: FC<SidebarContactInformationProps> = ({
     {
       id: 6,
       icon: <AddressIcon />,
-      label: 'Direccion:',
+      label: 'Dirección:',
       value: findContact.data?.address ?? '',
     },
     {
@@ -95,7 +95,7 @@ const SidebarContactInformation: FC<SidebarContactInformationProps> = ({
       value: findContact.data?.workplace ?? '',
       extraContent: (
         <>
-          <Typography fontWeight={400}>Ocupacion:</Typography>
+          <Typography fontWeight={400}>Ocupación:</Typography>
           {findContact.data?.workplace ? (
             <Typography mt="15px" fontWeight={500}>
               {findContact.data?.work_occupation}

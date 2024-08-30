@@ -53,7 +53,7 @@ const PaymentAccordion: FC<{
       bgColor: 'separation',
       content: (
         <Typography fontSize={'14px'} fontWeight={500} textAlign={'center'}>
-          {DateTime.fromISO(plan.separation_date).toLocaleString()} -&nbsp;
+          {DateTime.fromISO(plan.separation_date).toLocaleString()}-&nbsp;
           {plan.project.currency_type}
           {formatCurrency(parseFloat(plan.separation_amount))} - Pago de
           Separación
@@ -65,8 +65,9 @@ const PaymentAccordion: FC<{
       bgColor: 'paymentPlanCreated',
       content: (
         <Typography fontSize={'14px'} fontWeight={500} textAlign={'center'}>
-          {DateTime.fromISO(plan.created_at).toLocaleString()} - Plan de Pago
-          Creado ({plan.payment_plan_numbers} Meses) -&nbsp;
+          {DateTime.fromISO(plan.created_at).toLocaleString()}
+          &nbsp;- Plan de Pago Creado ({plan.payment_plan_numbers} Meses)
+          -&nbsp;
           {plan.project.currency_type}
           {formatCurrency(initialAmount)}
         </Typography>
@@ -79,11 +80,13 @@ const PaymentAccordion: FC<{
         content: (
           <Typography fontSize={'14px'} fontWeight={500} textAlign={'center'}>
             {DateTime.fromISO(
-              planDetail.paid_at ? planDetail.paid_at : planDetail.updated_at
-            ).toLocaleString()}
-            &nbsp; -&nbsp;{plan.project.currency_type}
-            {formatCurrency(parseFloat(planDetail.amount_paid))}&nbsp;- Pago de
-            cuota.
+              planDetail.payment_made_at
+                ? planDetail.payment_made_at
+                : planDetail.updated_at
+            ).toFormat('dd/LL/yyyy')}
+            &nbsp;-&nbsp;{plan.project.currency_type}
+            {formatCurrency(parseFloat(planDetail.amount_paid))}
+            &nbsp;-&nbsp; Pago de cuota.
           </Typography>
         ),
       };
