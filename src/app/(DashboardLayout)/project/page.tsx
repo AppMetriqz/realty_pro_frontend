@@ -14,6 +14,7 @@ import SearchInput from '@/common/components/UI/searchInput/SearchInput';
 const Project = () => {
   const usePageProps = usePage();
 
+
   return (
     <>
       <PageContainer title="Proyectos" description="este es Proyectos">
@@ -30,7 +31,7 @@ const Project = () => {
           flexDirection={'column'}
         >
           <Box sx={{ width: { md: '20%' } }}>
-            <SearchInput label="Buscar Proyecto" />
+            <SearchInput label="Buscar Proyecto" onChange={usePageProps.onSetProjectText} />
           </Box>
 
           <Grid mt={'40px'} container spacing={2.5}>
@@ -39,9 +40,9 @@ const Project = () => {
                 <CircularProgress sx={{ color: '#000' }} />
               </Grid>
             ) : usePageProps.listProps.findAllProject.isSuccess &&
-              usePageProps.listProps.findAllProject.data.rows.length ? (
+              usePageProps.listProps.findAllProject.data.length ? (
               _.map(
-                usePageProps.listProps.findAllProject.data.rows,
+                usePageProps.listProps.findAllProject.data,
                 (project: ProjectDto) => (
                   <Grid item xs={6} md={4} key={project.project_id}>
                     <PropertyCard

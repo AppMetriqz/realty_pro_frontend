@@ -24,23 +24,27 @@ export type UsePageProps = {
   };
   getCountry: (code: string) => string;
   onCloseCreateProjectModal: () => void;
+  projectText: string;
+  setProjectText: React.Dispatch<string>;
+  onSetProjectText: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 export default function usePage() {
   const [showCreateProject, setShowCreateProject] = useState(false);
   const resolver = useYupValidationResolver(createProjectValidationSchema);
 
+  const [projectText, setProjectText] = useState<string>('');
+
   const hookForm = useForm<ProjectFormInput>({
     resolver,
     defaultValues: projectDefaultValues,
   });
 
-  const findAllProject = apiProjects.useFindAll({
-    pageIndex: 0,
-    pageSize: 50,
-    sortOrder: 'DESC',
-    sortBy: 'created_at',
+  const findAllProject = apiProjects.useFindAllAutocomplete({
+    description: projectText,
+    limit: 20,
   });
+
   const createProject = apiProjects.useCreate();
 
   const findAllProjectFeatures = apiPropertyFeatures.useFindAll({
@@ -79,6 +83,11 @@ export default function usePage() {
     setShowCreateProject(false);
   };
 
+  const onSetProjectText = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setProjectText(event.target.value);
+  }
+
+
   return {
     onSubmit,
     hookForm,
@@ -89,5 +98,8 @@ export default function usePage() {
       findAllProjectFeatures,
     },
     onCloseCreateProjectModal,
+    projectText,
+    setProjectText,
+    onSetProjectText,
   };
 }
