@@ -6,68 +6,83 @@ import {
   useQuery,
   useQueryClient,
 } from '@tanstack/react-query';
-import { ApiPaginationDto, UserDto } from '@/common/dto';
+import {
+  CreateUpdateUserDto,
+  CreateUserDto,
+  GetUserDto,
+  SortByDto,
+} from '@/common/dto';
+import { QueriesOptions } from '@/common/constants';
 
-const path = '/users';
+export const users = 'users';
 
-export const useQueryUsers = ({ pageSize, pageIndex }: ApiPaginationDto) => {
-  return useQuery<UserDto[], Error>({
-    queryKey: ['user-list-paginated', pageSize, pageIndex],
-    queryFn: () =>
-      axiosInstance.get(`${path}?pageSize=${pageSize}&pageIndex=${pageIndex}`),
-    placeholderData: keepPreviousData,
-    staleTime: 2 * (1000 * 60),
-    gcTime: 2 * (1000 * 60),
+interface FindAllDto {
+  pageSize: string | number;
+  pageIndex: string | number;
+  sortOrder?: keyof typeof SortByDto;
+  sortBy?: string;
+}
+
+export const useFindAll = (params: FindAllDto) => {
+  return useQuery<{ rows: GetUserDto[]; count: number }, Error>({
+    queryKey: [`${users}FindAll`, params],
+    queryFn: () => axiosInstance.get(`/${users}`, { params }),
+    ...QueriesOptions,
   });
 };
 
-export const useQueryUsersById = (userId: string | number | null) => {
+export const useFindOne = (userId: string | number | null) => {
   let id = userId;
-  return useQuery<UserDto, Error>({
-    queryKey: ['usuario-ById', { ID_PortalB2BUsuario: id }],
-    queryFn: () => axiosInstance.get(`${path}/${id}`),
+  return useQuery<GetUserDto, Error>({
+    queryKey: [users, { ID_PortalB2BUsuario: id }],
+    queryFn: () => axiosInstance.get(`${users}/${id}`),
     enabled: !!id,
   });
 };
 
-export const useCreateUser = () => {
+export const useCreate = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationKey: ['userCreate'],
-    mutationFn: (data: UserDto) => axiosInstance.post(path, data),
+    mutationKey: [`${users}Create`],
+    mutationFn: (data: CreateUserDto) => axiosInstance.post(`${users}`, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['user-list-paginated'] });
+      queryClient.invalidateQueries({ queryKey: [`${users}FindAll`] });
     },
   });
 };
 
-export const useUpdateUser = () => {
+export const useUpdate = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationKey: ['userUpdate'],
-    mutationFn: (data: UserDto) =>
-      axiosInstance.put(`${path}/${data.ID_PortalB2BUsuario}`, data),
+    mutationKey: [`${users}Update`],
+    mutationFn: (data: CreateUpdateUserDto) =>
+      axiosInstance.put(`${users}/${data.user_id}`, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['user-list-paginated'] });
+      queryClient.invalidateQueries({ queryKey: [`${users}FindAll`] });
+      queryClient.invalidateQueries({ queryKey: [users] });
     },
   });
 };
 
-export const useDeleteUser = () => {
+export const useDelete = (id: string | number | string[] | null) => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationKey: ['userDelete'],
-    mutationFn: (id: number) => axiosInstance.delete(`${path}/${id}`),
+    mutationKey: [`${users}Delete`],
+    mutationFn: (data: { notes: string }) =>
+      axiosInstance.delete(`${users}/${id}`, {
+        data: { notes: data.notes },
+      }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['user-list-paginated'] });
+      queryClient.invalidateQueries({ queryKey: [`${users}FindAll`] });
+      queryClient.invalidateQueries({ queryKey: [users] });
     },
   });
 };
 
 export const apiUser = {
-  useQueryUsers,
-  useQueryUsersById,
-  useCreateUser,
-  useUpdateUser,
-  useDeleteUser,
+  useFindAll,
+  useFindOne,
+  useCreate,
+  useUpdate,
+  useDelete,
 };

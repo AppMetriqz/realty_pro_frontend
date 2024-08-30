@@ -38,7 +38,7 @@ export const SelectChipShared: FC<SelectChipSharedProps> = (props) => {
           onInputChange={props.onInputChange}
           onSelected={props.onSelected}
           options={props.options}
-          labelStyle={{ mb: '15px' }}
+          labelStyle={{ mb: '10px' }}
           style={{ width: 240 }}
         />
 

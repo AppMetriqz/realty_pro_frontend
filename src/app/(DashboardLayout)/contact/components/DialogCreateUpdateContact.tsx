@@ -55,7 +55,7 @@ export const DialogCreateUpdateContact = ({
               name={'type'}
               options={ContactType}
               hookForm={contactHookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
           <Grid item xs={12} md={4}>
@@ -64,7 +64,7 @@ export const DialogCreateUpdateContact = ({
               name={'first_name'}
               isRequired
               hookForm={contactHookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
           <Grid item xs={12} md={4}>
@@ -72,7 +72,7 @@ export const DialogCreateUpdateContact = ({
               label={'Apellido'}
               name={'last_name'}
               hookForm={contactHookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -80,7 +80,7 @@ export const DialogCreateUpdateContact = ({
               label={'Número de Telefono'}
               name={'phone_number_1'}
               hookForm={contactHookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
               textFieldProps={{
                 InputProps: { inputComponent: TextMaskCustom as any },
               }}
@@ -91,7 +91,7 @@ export const DialogCreateUpdateContact = ({
               label={'Número de Telefono 2'}
               name={'phone_number_2'}
               hookForm={contactHookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
               textFieldProps={{
                 InputProps: { inputComponent: TextMaskCustom as any },
               }}
@@ -102,7 +102,7 @@ export const DialogCreateUpdateContact = ({
               label={'Email'}
               name={'email'}
               hookForm={contactHookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -110,7 +110,7 @@ export const DialogCreateUpdateContact = ({
               label={'Número de identidad'}
               name={'national_id'}
               hookForm={contactHookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -118,7 +118,7 @@ export const DialogCreateUpdateContact = ({
               label={'Nacionalidad'}
               name={'nationality'}
               hookForm={contactHookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -127,7 +127,7 @@ export const DialogCreateUpdateContact = ({
               name={'contact_method'}
               options={ContactMethodType}
               hookForm={contactHookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
           <Grid item xs={12} md={12}>
@@ -136,7 +136,7 @@ export const DialogCreateUpdateContact = ({
               name={'date_of_birth'}
               hookForm={contactHookForm}
               textFieldProps={{ type: 'date' }}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -145,7 +145,7 @@ export const DialogCreateUpdateContact = ({
               name={'marital_status'}
               options={MaritalStatusType}
               hookForm={contactHookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -172,7 +172,7 @@ export const DialogCreateUpdateContact = ({
                   : []
               }
               hookForm={contactHookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
               disableClearable={false}
             />
           </Grid>
@@ -181,7 +181,7 @@ export const DialogCreateUpdateContact = ({
               label={'Lugar donde trabaja'}
               name={'workplace'}
               hookForm={contactHookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -189,7 +189,7 @@ export const DialogCreateUpdateContact = ({
               label={'Ocupación'}
               name={'work_occupation'}
               hookForm={contactHookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
           <Grid item xs={12} md={12}>
@@ -197,7 +197,7 @@ export const DialogCreateUpdateContact = ({
               label={'Dirección'}
               name={'address'}
               hookForm={contactHookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
               textFieldProps={{
                 multiline: true,
                 rows: 3,
@@ -210,7 +210,7 @@ export const DialogCreateUpdateContact = ({
               label={'Nota'}
               name={'notes'}
               hookForm={contactHookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
               textFieldProps={{
                 multiline: true,
                 rows: 6,

@@ -41,6 +41,7 @@ export type UseContactPageProps = {
   handleDeleteContactType: (contactType: DiffContactTypes) => void;
   contactDescription: string;
   onClickContactView: (id: string | number) => void;
+  onSetContactText: (e: React.ChangeEvent<HTMLInputElement>) => void;
 } & UseContactCreateUpdateProps;
 
 export default function useContactPage(): UseContactPageProps {
@@ -57,6 +58,7 @@ export default function useContactPage(): UseContactPageProps {
   const resolverCreateUpdateContact = useYupValidationResolver(
     createContactValidationSchema
   );
+  const [contactText, setContactText] = useState<string>('');
 
   const contactHookForm = useForm<ContactFormInput>({
     resolver: resolverCreateUpdateContact,
@@ -70,6 +72,7 @@ export default function useContactPage(): UseContactPageProps {
   const autocompleteContacts = apiContacts.useFindAllAutocomplete({
     description: contactDescription,
   });
+
   const allContacts = apiContacts.useFindAll({
     pageIndex: page,
     pageSize: rowsPerPage,
@@ -141,6 +144,10 @@ export default function useContactPage(): UseContactPageProps {
     router.push(`${routers.contact}/${id}`);
   };
 
+  const onSetContactText = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setContactText(event.target.value);
+  };
+
   return {
     openCreateEditContact,
     setOpenCreateEditContact,
@@ -161,5 +168,6 @@ export default function useContactPage(): UseContactPageProps {
     selectedContactTypes,
     handleDeleteContactType,
     onClickContactView,
+    onSetContactText,
   };
 }

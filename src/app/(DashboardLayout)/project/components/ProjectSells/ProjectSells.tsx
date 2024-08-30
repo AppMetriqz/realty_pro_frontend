@@ -170,6 +170,7 @@ const ProjectSells = () => {
                     <SearchInput
                       sx={{ maxWidth: '268px' }}
                       label="Buscar unidad"
+                      onChange={usePageProps.onSetUnitText}
                     />
                     <FormControl
                       sx={{

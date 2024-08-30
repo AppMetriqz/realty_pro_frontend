@@ -61,7 +61,7 @@ export const DialogAddSpouse = ({ open, onClose, usePageProps }: Props) => {
                   : []
               }
               hookForm={contactSpouseHookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
               disableClearable={false}
             />
           </Grid>

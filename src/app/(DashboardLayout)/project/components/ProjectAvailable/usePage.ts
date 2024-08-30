@@ -100,6 +100,7 @@ export type UsePageProjectAvailableProps = {
   setMultipleUpdateHasError: Dispatch<SetStateAction<boolean>>;
   onClickSaleMultipleUnits: () => void;
   onClickDeleteMultipleUnits: () => void;
+  onSetUnitText: (event: React.ChangeEvent<HTMLInputElement>) => void;
 } & UpdateUnitProjectProps;
 
 export default function usePage(): UsePageProjectAvailableProps {
@@ -127,6 +128,7 @@ export default function usePage(): UsePageProjectAvailableProps {
   >([]);
   const [sellerDescription, setSellerDescription] = useState('');
   const [clientDescription, setClientDescription] = useState('');
+  const [unitText, setUnitText] = useState<string>('');
 
   const deleteResolver = useYupValidationResolver(deleteValidationSchema);
   const caancelSellResolver = useYupValidationResolver(
@@ -560,6 +562,10 @@ export default function usePage(): UsePageProjectAvailableProps {
     }
   };
 
+  const onSetUnitText = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUnitText(event.target.value);
+  };
+
   return {
     unitDetails,
     availableUnits,
@@ -617,5 +623,6 @@ export default function usePage(): UsePageProjectAvailableProps {
     setMultipleUpdateHasError,
     onClickSaleMultipleUnits,
     onClickDeleteMultipleUnits,
+    onSetUnitText,
   };
 }

@@ -38,6 +38,7 @@ export type UsePageProjectAvailableProps = {
   setOpenDeleteModal: Dispatch<SetStateAction<boolean>>;
   showView: boolean;
   onSubmitDelete: SubmitHandler<DeleteFormType>;
+  onSetUnitText: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
 export default function usePage(): UsePageProjectAvailableProps {
@@ -56,6 +57,7 @@ export default function usePage(): UsePageProjectAvailableProps {
     unitName: string;
   } | null>(null);
   const [selectedStages, setSelectedStages] = useState<SaleStagesType[]>([]);
+  const [unitText, setUnitText] = useState<string>('');
 
   const deleteResolver = useYupValidationResolver(deleteValidationSchema);
 
@@ -155,6 +157,10 @@ export default function usePage(): UsePageProjectAvailableProps {
     setOpenDeleteModal(true);
   };
 
+  const onSetUnitText = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setUnitText(event.target.value);
+  };
+
   return {
     unitDetails,
     availableSales,
@@ -177,5 +183,6 @@ export default function usePage(): UsePageProjectAvailableProps {
     onSubmitDelete,
     onCloseDeleteModal,
     showView,
+    onSetUnitText,
   };
 }

@@ -54,7 +54,7 @@ export const Filters = ({ usePageProps }: FiltersProps) => {
                   ? usePageProps.projects.data
                   : []
               }
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
               style={{ width: 240 }}
             />
 

@@ -14,7 +14,6 @@ import SearchInput from '@/common/components/UI/searchInput/SearchInput';
 const Project = () => {
   const usePageProps = usePage();
 
-
   return (
     <>
       <PageContainer title="Proyectos" description="este es Proyectos">
@@ -31,7 +30,10 @@ const Project = () => {
           flexDirection={'column'}
         >
           <Box sx={{ width: { md: '20%' } }}>
-            <SearchInput label="Buscar Proyecto" onChange={usePageProps.onSetProjectText} />
+            <SearchInput
+              label="Buscar Proyecto"
+              onChange={usePageProps.onSetProjectText}
+            />
           </Box>
 
           <Grid mt={'40px'} container spacing={2.5}>

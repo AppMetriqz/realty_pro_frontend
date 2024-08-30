@@ -41,7 +41,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const SearchInput: FC<{ sx?: SxProps; label: string, onChange:(e: React.ChangeEvent<HTMLInputElement>) => void }> = ({ sx, label, onChange }) => {
+const SearchInput: FC<{
+  sx?: SxProps;
+  label: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}> = ({ sx, label, onChange }) => {
   return (
     <Search sx={sx}>
       <SearchIconWrapper>

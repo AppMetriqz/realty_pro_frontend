@@ -90,7 +90,7 @@ export const DialogEditMultipleUnit = <T,>({
                 isRequired
                 onBlur={onBlurPricePerMeter}
                 hookForm={multipleUnitHookForm}
-                labelStyle={{ mb: '15px' }}
+                labelStyle={{ mb: '10px' }}
               />
             </Grid>
           ) : (
@@ -101,7 +101,7 @@ export const DialogEditMultipleUnit = <T,>({
                 isRequired
                 onBlur={onBlurPrice}
                 hookForm={multipleUnitHookForm}
-                labelStyle={{ mb: '15px' }}
+                labelStyle={{ mb: '10px' }}
               />
             </Grid>
           )}
@@ -112,7 +112,7 @@ export const DialogEditMultipleUnit = <T,>({
               isRequired
               options={MultipleUnitStatus}
               hookForm={multipleUnitHookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -122,7 +122,7 @@ export const DialogEditMultipleUnit = <T,>({
               name={'condition'}
               isRequired
               hookForm={multipleUnitHookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
           {hasError ? (

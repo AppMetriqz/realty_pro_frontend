@@ -1,6 +1,6 @@
 import { uniqueId } from 'lodash';
 
-import routers, { UserPath } from '@/common/constants/routes';
+import routers from '@/common/constants/routes';
 import ChartIcon from '@/icons/ChartIcon';
 import PaymentIcon from '@/icons/PaymentIcon';
 import FinanceIcon from '@/icons/FinanceIcon';
@@ -49,17 +49,10 @@ export const NavigationMenuitems = [
 export const SettingsMenuitems = [
   {
     id: uniqueId(),
-    title: 'Mi Perfil',
-    icon: SettingsIcon,
-    href: routers.profile,
-    selectedArray: [routers.profile],
-  },
-  {
-    id: uniqueId(),
     title: 'Usuarios',
     icon: UsersIcon,
-    href: UserPath,
-    selectedArray: [UserPath],
+    href: routers.user,
+    selectedArray: [routers.user],
   },
   {
     id: uniqueId(),

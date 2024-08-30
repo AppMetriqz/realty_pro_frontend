@@ -123,7 +123,7 @@ export const DialogCreatePaymentPlan = ({
                 },
               }}
               hookForm={paymentPlanHookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -146,7 +146,7 @@ export const DialogCreatePaymentPlan = ({
               }}
               disabled={isResale}
               hookForm={paymentPlanHookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -171,7 +171,14 @@ export const DialogCreatePaymentPlan = ({
               hookForm={paymentPlanHookForm}
               textFieldProps={{
                 type: 'number',
-                InputProps: { endAdornment: 'meses' },
+                InputProps: {
+                  endAdornment: 'meses',
+                  onChange: (e) =>
+                    paymentPlanHookForm.setValue(
+                      'payment_plan_numbers',
+                      e.target.value || 0
+                    ),
+                },
               }}
               disabled={isResale}
               labelStyle={{ mb: '10px' }}
@@ -229,7 +236,7 @@ export const DialogCreatePaymentPlan = ({
                 {DateTime.fromISO(paymentPlanHookForm.watch('separation_date'))
                   .plus({
                     month: parseInt(
-                      paymentPlanHookForm.watch('payment_plan_numbers')
+                      paymentPlanHookForm.watch('payment_plan_numbers') || '0'
                     ),
                   })
                   .toLocaleString()}

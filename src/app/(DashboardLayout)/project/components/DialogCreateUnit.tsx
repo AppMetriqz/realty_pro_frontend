@@ -77,7 +77,7 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
               name={'name'}
               isRequired
               hookForm={hookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -87,7 +87,7 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
               name={'condition'}
               isRequired
               hookForm={hookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
           {isPlot ? null : (
@@ -99,7 +99,7 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
                   isRequired
                   hookForm={hookForm}
                   textFieldProps={{ type: 'number' }}
-                  labelStyle={{ mb: '15px' }}
+                  labelStyle={{ mb: '10px' }}
                 />
               </Grid>
               <Grid item xs={12} md={6}>
@@ -109,7 +109,7 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
                   isRequired
                   hookForm={hookForm}
                   textFieldProps={{ type: 'number' }}
-                  labelStyle={{ mb: '15px' }}
+                  labelStyle={{ mb: '10px' }}
                 />
               </Grid>
             </>
@@ -124,7 +124,7 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
                 type: 'number',
                 InputProps: { endAdornment: 'mts2' },
               }}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
           {isPlot ? (
@@ -135,7 +135,7 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
                 isRequired
                 hookForm={hookForm}
                 textFieldProps={{ type: 'number' }}
-                labelStyle={{ mb: '15px' }}
+                labelStyle={{ mb: '10px' }}
               />
             </Grid>
           ) : (
@@ -149,7 +149,7 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
                   type: 'number',
                   InputProps: { endAdornment: 'mts2' },
                 }}
-                labelStyle={{ mb: '15px' }}
+                labelStyle={{ mb: '10px' }}
               />
             </Grid>
           )}
@@ -173,7 +173,7 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
                 },
               }}
               hookForm={hookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -183,7 +183,7 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
               isRequired
               options={UnitStatus}
               hookForm={hookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
               disabled={hookForm.watch('status') === 'sold' && isEdit}
             />
           </Grid>
@@ -196,7 +196,7 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
                   isRequired
                   hookForm={hookForm}
                   textFieldProps={{ type: 'number' }}
-                  labelStyle={{ mb: '15px' }}
+                  labelStyle={{ mb: '10px' }}
                 />
               </Grid>
               <Grid item xs={12} md={6}>
@@ -206,7 +206,7 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
                   isRequired
                   hookForm={hookForm}
                   textFieldProps={{ type: 'number' }}
-                  labelStyle={{ mb: '15px' }}
+                  labelStyle={{ mb: '10px' }}
                 />
               </Grid>
             </>
@@ -216,7 +216,7 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
               label={'Descripción'}
               name={'description'}
               hookForm={hookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
               textFieldProps={{
                 multiline: true,
                 rows: 6,

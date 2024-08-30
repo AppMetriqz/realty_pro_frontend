@@ -27,9 +27,10 @@ interface FindContactPaymentPlan {
   status: string;
 }
 
-export interface FindAllAutocompleteDto {
+export type FindAllAutocompleteDto = {
   description: string;
-}
+  limit?: number;
+};
 
 export const useFindAll = (params: FindAllDto) => {
   return useQuery<{ rows: GetContactDto[]; count: number }, Error>({

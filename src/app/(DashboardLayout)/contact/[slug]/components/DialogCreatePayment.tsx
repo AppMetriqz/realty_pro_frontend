@@ -65,7 +65,7 @@ export const DialogCreatePayment = ({ open, onClose, usePageProps }: Props) => {
                 },
               }}
               hookForm={paymentHookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
           <Grid item xs={12} md={12}>
@@ -82,7 +82,7 @@ export const DialogCreatePayment = ({ open, onClose, usePageProps }: Props) => {
               label={'Nota'}
               name={'notes'}
               hookForm={paymentHookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
               textFieldProps={{
                 multiline: true,
                 rows: 6,

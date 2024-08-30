@@ -95,6 +95,7 @@ const Contact = () => {
                       <SearchInput
                         sx={{ maxWidth: '268px' }}
                         label="Buscar Contacto"
+                        onChange={usePageProps.onSetContactText}
                       />
                     </Box>
                     <Box

@@ -103,10 +103,13 @@ export const createPaymentPlanValidationSchema = yup.object({
     )
     .required(ErrorMsg.required),
   separation_date: yup.string().required(ErrorMsg.required),
-  payment_plan_numbers: yup.number().required(ErrorMsg.required),
+  payment_plan_numbers: yup
+    .number()
+    .min(1, 'El valor tiene que ser mayor a 0.')
+    .required(ErrorMsg.required),
   separation_rate: yup
     .number()
-    .min(0, 'El valor tiene que ser mayor a 0')
-    .max(100, 'El valor tiene que ser menor a 100')
+    .min(0, 'El valor tiene que ser mayor a 0.')
+    .max(100, 'El valor tiene que ser menor a 100.')
     .required(ErrorMsg.required),
 });

@@ -14,7 +14,6 @@ type Props = {
   usePageProps: any;
   type?: string;
   name: string;
-  validationMessage: string;
 };
 
 export const DialogDelete = ({
@@ -23,7 +22,6 @@ export const DialogDelete = ({
   usePageProps,
   type = 'Venta',
   name,
-  validationMessage,
 }: Props) => {
   const { deleteHookForm } = usePageProps;
   return (
@@ -50,15 +48,6 @@ export const DialogDelete = ({
         sx={{ display: 'flex', justifyContent: 'center', px: '20px' }}
       >
         <Grid container xs={12}>
-          <Grid sx={{ mb: 4 }} item xs={12} md={12}>
-            <TextFieldSharedController
-              label={`Escribir “${validationMessage}”`}
-              name={'deleteInput'}
-              isRequired
-              hookForm={deleteHookForm}
-              labelStyle={{ mb: '20px' }}
-            />
-          </Grid>
           <Grid item xs={12} md={12}>
             <TextFieldSharedController
               label={'Nota'}
@@ -73,17 +62,6 @@ export const DialogDelete = ({
               }}
             />
           </Grid>
-          <Typography
-            sx={{ width: '100%' }}
-            textAlign={'center'}
-            mt={3}
-            fontSize="16px"
-          >
-            Si borras esta {name}, cualquier&nbsp;
-            <span style={{ fontWeight: '600' }}>plan de pago</span> <br />
-            asociado con esta venta sera&nbsp;
-            <span style={{ fontWeight: '600' }}>cancelado</span>.
-          </Typography>
         </Grid>
       </DialogContent>
       <DialogActions sx={{ p: '20px' }}>

@@ -18,90 +18,90 @@ const keyName = 'name';
 
 export const Filters = ({ usePageProps }: FiltersProps) => {
   return (
-      <>
+    <>
+      <Box
+        display="flex"
+        // flexDirection={'column'}
+        width={'80%'}
+        gap={'20px'}
+        alignItems={'center'}
+      >
         <Box
-            display="flex"
-            // flexDirection={'column'}
-            width={'80%'}
-            gap={'20px'}
-            alignItems={'center'}
+          display="flex"
+          flexDirection={'column'}
+          // width={240}
+          ml={'40px'}
+          mb={'40px'}
+          gap={'20px'}
+          alignItems={'center'}
         >
           <Box
-              display="flex"
-              flexDirection={'column'}
-              // width={240}
-              ml={'40px'}
-              mb={'40px'}
-              gap={'20px'}
-              alignItems={'center'}
+            display="flex"
+            flexDirection={'row'}
+            alignItems={'center'}
+            gap={'50px'}
           >
-            <Box
-                display="flex"
-                flexDirection={'row'}
-                alignItems={'center'}
-                gap={'50px'}
-            >
-              <AutoCompleteSharedController
-                  keyId={keyId}
-                  keyName={keyName}
-                  placeholder={'Seleccionar Proyectos'}
-                  disableClearable={false}
-                  isNotValue={true}
-                  onInputChange={usePageProps.debouncedProjectText}
-                  onSelected={usePageProps.onSetSelectedProjects}
-                  options={
-                    usePageProps.projects.isSuccess
-                        ? usePageProps.projects.data
-                        : []
-                  }
-                  labelStyle={{ mb: '15px' }}
-                  style={{ width: 240 }}
+            <AutoCompleteSharedController
+              keyId={keyId}
+              keyName={keyName}
+              placeholder={'Seleccionar Proyectos'}
+              disableClearable={false}
+              isNotValue={true}
+              onInputChange={usePageProps.debouncedProjectText}
+              onSelected={usePageProps.onSetSelectedProjects}
+              options={
+                usePageProps.projects.isSuccess
+                  ? usePageProps.projects.data
+                  : []
+              }
+              labelStyle={{ mb: '10px' }}
+              style={{ width: 240 }}
+            />
+
+            <FormControl>
+              <FormLabel>Moneda</FormLabel>
+              <RadioGroup
+                row
+                value={usePageProps.currency}
+                onChange={usePageProps.handleChangeCurrency}
+              >
+                <FormControlLabel
+                  value="US"
+                  control={<Radio />}
+                  label="US$ Dollar"
+                />
+                <FormControlLabel
+                  value="RD"
+                  control={<Radio />}
+                  label="RD$ Peso"
+                />
+              </RadioGroup>
+            </FormControl>
+          </Box>
+
+          <Box
+            display="flex"
+            width={'100%'}
+            mt={'40px'}
+            gap={'10px'}
+            alignItems={'center'}
+          >
+            {usePageProps.selectedProjects.map((option) => (
+              <Chip
+                key={option[keyId]}
+                color="secondary"
+                label={option[keyName]}
+                deleteIcon={
+                  <CloseIcon
+                    onClick={() => usePageProps.handleRemoveProjects(option)}
+                  />
+                }
+                onDelete={() => usePageProps.handleRemoveProjects(option)}
               />
-
-              <FormControl>
-                <FormLabel>Moneda</FormLabel>
-                <RadioGroup
-                    row
-                    value={usePageProps.currency}
-                    onChange={usePageProps.handleChangeCurrency}
-                >
-                  <FormControlLabel
-                      value="US"
-                      control={<Radio />}
-                      label="US$ Dollar"
-                  />
-                  <FormControlLabel
-                      value="RD"
-                      control={<Radio />}
-                      label="RD$ Peso"
-                  />
-                </RadioGroup>
-              </FormControl>
-            </Box>
-
-            <Box
-                display="flex"
-                width={'100%'}
-                mt={'40px'}
-                gap={'10px'}
-                alignItems={'center'}
-            >
-              {usePageProps.selectedProjects.map((option) => (
-                  <Chip
-                      key={option[keyId]}
-                      color="secondary"
-                      label={option[keyName]}
-                      deleteIcon={
-                        <CloseIcon
-                            onClick={() => usePageProps.handleRemoveProjects(option)}
-                        />
-                      }
-                      onDelete={() => usePageProps.handleRemoveProjects(option)}
-                  />
-              ))}
-            </Box>
+            ))}
           </Box>
         </Box>
-      </>
+      </Box>
+    </>
   );
 };

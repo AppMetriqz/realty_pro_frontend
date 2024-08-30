@@ -12,9 +12,6 @@ export type SaleStagesType = {
 
 export type DeleteFormType = {
   notes: string;
-  deleteInput: string;
-  projectId?: number;
-  unit_ids?: string;
 };
 
 export type CardPropertyType = {

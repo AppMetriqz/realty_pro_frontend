@@ -81,3 +81,10 @@ export const PaymentPlanType = [
   },
   { label: 'Venta', value: 'sale' },
 ];
+
+export const UserRoles = [
+  { value: 1, label: 'Super Administrador' },
+  { value: 2, label: 'Administrador' },
+  { value: 3, label: 'Ejecutor' },
+  { value: 4, label: 'Visitante' },
+];

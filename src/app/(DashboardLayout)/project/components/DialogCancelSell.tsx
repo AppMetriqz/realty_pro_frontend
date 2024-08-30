@@ -54,7 +54,7 @@ export const DialogCancelSell = ({
               name={'notes'}
               isRequired
               hookForm={cancelSellHookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
               textFieldProps={{
                 multiline: true,
                 rows: 6,

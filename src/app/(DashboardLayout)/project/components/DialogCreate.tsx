@@ -51,7 +51,7 @@ export const DialogCreate = ({
               name={'name'}
               isRequired
               hookForm={hookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -62,7 +62,7 @@ export const DialogCreate = ({
               disabled={isEdit}
               isRequired={!isEdit}
               hookForm={hookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -73,7 +73,7 @@ export const DialogCreate = ({
               isRequired={!isEdit}
               options={CurrencyType}
               hookForm={hookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
           {hookForm.watch('type') === 'plot' ? null : (
@@ -85,7 +85,7 @@ export const DialogCreate = ({
                 isRequired={!isEdit}
                 hookForm={hookForm}
                 textFieldProps={{ type: 'number' }}
-                labelStyle={{ mb: '15px' }}
+                labelStyle={{ mb: '10px' }}
               />
             </Grid>
           )}
@@ -102,7 +102,7 @@ export const DialogCreate = ({
               )}
               options={Countries}
               hookForm={hookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -112,7 +112,7 @@ export const DialogCreate = ({
               disabled={isEdit}
               isRequired={!isEdit}
               hookForm={hookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -122,7 +122,7 @@ export const DialogCreate = ({
               disabled={isEdit}
               isRequired={!isEdit}
               hookForm={hookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -132,7 +132,7 @@ export const DialogCreate = ({
               disabled={isEdit}
               isRequired={!isEdit}
               hookForm={hookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
           <Grid item xs={12} md={12}>
@@ -142,7 +142,7 @@ export const DialogCreate = ({
               disabled={isEdit}
               isRequired={!isEdit}
               hookForm={hookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -152,7 +152,7 @@ export const DialogCreate = ({
               disabled={isEdit}
               isRequired={!isEdit}
               hookForm={hookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
@@ -162,7 +162,7 @@ export const DialogCreate = ({
               disabled={isEdit}
               isRequired={!isEdit}
               hookForm={hookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
           <Grid item xs={12} md={12}>
@@ -171,7 +171,7 @@ export const DialogCreate = ({
               name={'description'}
               isRequired
               hookForm={hookForm}
-              labelStyle={{ mb: '15px' }}
+              labelStyle={{ mb: '10px' }}
               textFieldProps={{
                 multiline: true,
                 rows: 6,
