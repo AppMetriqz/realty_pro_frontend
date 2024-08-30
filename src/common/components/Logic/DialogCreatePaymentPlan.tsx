@@ -82,7 +82,8 @@ export const DialogCreatePaymentPlan = ({
                 getOptionLabel={(option: GetContactDto) =>
                   `${option.first_name} ${option.last_name}`
                 }
-                label={'Cliente:'}
+                label={'Cliente'}
+                isRequired
                 onInputChange={(value) =>
                   usePageProps.setClientDescription(value)
                 }
@@ -104,8 +105,9 @@ export const DialogCreatePaymentPlan = ({
           ) : null}
           <Grid item xs={12} md={6}>
             <TextFieldSharedController
-              label={'Monto Total:'}
+              label={'Monto Total'}
               name={'total_amount'}
+              isRequired
               disabled={!isResale}
               onBlur={onBlurTotalAmount}
               textFieldProps={{
@@ -126,8 +128,9 @@ export const DialogCreatePaymentPlan = ({
           </Grid>
           <Grid item xs={12} md={6}>
             <TextFieldSharedController
-              label={'Monto de Separación:'}
+              label={'Monto de Separación'}
               name={'separation_amount'}
+              isRequired
               onBlur={onBlurSeparationAmount}
               textFieldProps={{
                 onChange: (e) => {
@@ -148,8 +151,9 @@ export const DialogCreatePaymentPlan = ({
           </Grid>
           <Grid item xs={12} md={6}>
             <TextFieldSharedController
-              label={'Porciento de Inicial:'}
+              label={'Porciento de Inicial'}
               name={'separation_rate'}
+              isRequired
               hookForm={paymentPlanHookForm}
               textFieldProps={{
                 type: 'number',
@@ -161,8 +165,9 @@ export const DialogCreatePaymentPlan = ({
           </Grid>
           <Grid item xs={12} md={6}>
             <TextFieldSharedController
-              label={'Cantidad de Cuotas:'}
+              label={'Cantidad de Cuotas'}
               name={'payment_plan_numbers'}
+              isRequired
               hookForm={paymentPlanHookForm}
               textFieldProps={{
                 type: 'number',
@@ -174,8 +179,9 @@ export const DialogCreatePaymentPlan = ({
           </Grid>
           <Grid item xs={12} md={12}>
             <TextFieldSharedController
-              label={'Fecha de Separación:'}
+              label={'Fecha de Separación'}
               name={'separation_date'}
+              isRequired
               hookForm={paymentPlanHookForm}
               textFieldProps={{ type: 'date' }}
               labelStyle={{ mb: '10px' }}

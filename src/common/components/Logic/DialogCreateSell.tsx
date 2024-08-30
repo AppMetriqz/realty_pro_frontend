@@ -58,7 +58,8 @@ export const DialogCreateSell = ({
               getOptionLabel={(option: GetContactDto) =>
                 `${option.first_name} ${option.last_name}`
               }
-              label={'Cliente:'}
+              label={'Cliente'}
+              isRequired
               onInputChange={(value) =>
                 usePageProps.setClientDescription(value)
               }
@@ -86,7 +87,8 @@ export const DialogCreateSell = ({
               getOptionLabel={(option: GetContactDto) =>
                 `${option.first_name} ${option.last_name}`
               }
-              label={'Vendedor:'}
+              label={'Vendedor'}
+              isRequired
               onInputChange={(value) =>
                 usePageProps.setSellerDescription(value)
               }
@@ -107,8 +109,9 @@ export const DialogCreateSell = ({
           </Grid>
           <Grid item xs={12} md={12}>
             <TextFieldSharedController
-              label={'Comisión:'}
+              label={'Comisión'}
               name={'commission'}
+              isRequired
               hookForm={sellHookForm}
               textFieldProps={{
                 type: 'number',
@@ -119,8 +122,9 @@ export const DialogCreateSell = ({
           </Grid>
           <Grid item xs={12}>
             <TextFieldSharedController
-              label={'Nota:'}
+              label={'Nota'}
               name={'notes'}
+              isRequired
               hookForm={sellHookForm}
               labelStyle={{ mb: '10px' }}
               textFieldProps={{

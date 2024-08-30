@@ -116,6 +116,7 @@ const baselightTheme = createTheme({
     MuiTextField: {
       styleOverrides: {
         root: {
+          '& .MuiFormHelperText-root': { marginLeft: 0 },
           input: {
             padding: '11px 14px',
           },

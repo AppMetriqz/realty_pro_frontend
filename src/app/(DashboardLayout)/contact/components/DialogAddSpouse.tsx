@@ -45,7 +45,8 @@ export const DialogAddSpouse = ({ open, onClose, usePageProps }: Props) => {
               getOptionLabel={(option: GetContactDto) =>
                 `${option.first_name} ${option.last_name}`
               }
-              label={'Conyuge:'}
+              label={'Conyuge'}
+              isRequired
               onInputChange={(value) =>
                 usePageProps.setContactDescription(value)
               }

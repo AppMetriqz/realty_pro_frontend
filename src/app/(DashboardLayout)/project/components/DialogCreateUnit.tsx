@@ -73,17 +73,19 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
         <Grid container spacing={5} xs={12}>
           <Grid item xs={12} md={6}>
             <TextFieldSharedController
-              label={'Nombre de la Unidad:'}
+              label={'Nombre de la Unidad'}
               name={'name'}
+              isRequired
               hookForm={hookForm}
               labelStyle={{ mb: '15px' }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <SelectSharedController
-              label={'Condición:'}
+              label={'Condición'}
               options={UnitCondicionType}
               name={'condition'}
+              isRequired
               hookForm={hookForm}
               labelStyle={{ mb: '15px' }}
             />
@@ -92,8 +94,9 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
             <>
               <Grid item xs={12} md={6}>
                 <TextFieldSharedController
-                  label={'Niveles:'}
+                  label={'Niveles'}
                   name={'levels_qty'}
+                  isRequired
                   hookForm={hookForm}
                   textFieldProps={{ type: 'number' }}
                   labelStyle={{ mb: '15px' }}
@@ -101,8 +104,9 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextFieldSharedController
-                  label={'Niveles en que se encuentra:'}
+                  label={'Niveles en que se encuentra'}
                   name={'level'}
+                  isRequired
                   hookForm={hookForm}
                   textFieldProps={{ type: 'number' }}
                   labelStyle={{ mb: '15px' }}
@@ -112,8 +116,9 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
           )}
           <Grid item xs={12} md={6}>
             <TextFieldSharedController
-              label={'Metros del Terreno:'}
+              label={'Metros del Terreno'}
               name={'meters_of_land'}
+              isRequired
               hookForm={hookForm}
               textFieldProps={{
                 type: 'number',
@@ -125,8 +130,9 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
           {isPlot ? (
             <Grid item xs={12} md={6}>
               <TextFieldSharedController
-                label={'Precio por metro:'}
+                label={'Precio por metro'}
                 name={'price_per_meter'}
+                isRequired
                 hookForm={hookForm}
                 textFieldProps={{ type: 'number' }}
                 labelStyle={{ mb: '15px' }}
@@ -135,8 +141,9 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
           ) : (
             <Grid item xs={12} md={6}>
               <TextFieldSharedController
-                label={'Metros de Construcción:'}
+                label={'Metros de Construcción'}
                 name={'meters_of_building'}
+                isRequired
                 hookForm={hookForm}
                 textFieldProps={{
                   type: 'number',
@@ -148,8 +155,9 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
           )}
           <Grid item xs={12} md={6}>
             <TextFieldSharedController
-              label={'Precio:'}
+              label={'Precio'}
               name={'price'}
+              isRequired
               disabled={isPlot}
               onBlur={onBlurPrice}
               textFieldProps={{
@@ -170,8 +178,9 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
           </Grid>
           <Grid item xs={12} md={6}>
             <SelectSharedController
-              label={'Estatus:'}
+              label={'Estatus'}
               name={'status'}
+              isRequired
               options={UnitStatus}
               hookForm={hookForm}
               labelStyle={{ mb: '15px' }}
@@ -182,8 +191,9 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
             <>
               <Grid item xs={12} md={6}>
                 <TextFieldSharedController
-                  label={'Habitaciones:'}
+                  label={'Habitaciones'}
                   name={'rooms'}
+                  isRequired
                   hookForm={hookForm}
                   textFieldProps={{ type: 'number' }}
                   labelStyle={{ mb: '15px' }}
@@ -191,8 +201,9 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
               </Grid>
               <Grid item xs={12} md={6}>
                 <TextFieldSharedController
-                  label={'Baños:'}
+                  label={'Baños'}
                   name={'bathrooms'}
+                  isRequired
                   hookForm={hookForm}
                   textFieldProps={{ type: 'number' }}
                   labelStyle={{ mb: '15px' }}
@@ -202,7 +213,7 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
           )}
           <Grid item xs={12} md={12}>
             <TextFieldSharedController
-              label={'Descripción:'}
+              label={'Descripción'}
               name={'description'}
               hookForm={hookForm}
               labelStyle={{ mb: '15px' }}

@@ -11,6 +11,7 @@ import ProjectFinance from '../components/ProjectFinance';
 import ProjectAvailable from '../components/ProjectAvailable/ProjectAvailable';
 import { useRouter } from 'next/navigation';
 import routers from '@/common/constants/routes';
+import { CircularProgress, Grid } from '@mui/material';
 
 const ProjectResumen = () => {
   const router = useRouter();
@@ -63,14 +64,18 @@ const ProjectResumen = () => {
     },
   ];
 
-  return (
+  return usePageProps.findProject.isLoading ? (
+    <Grid justifyContent={'center'} item xs={12}>
+      <CircularProgress sx={{ color: '#000' }} />
+    </Grid>
+  ) : (
     <>
       <PageContainer
-        title="Alto de las Aromas"
+        title={usePageProps.findProject.data?.name || ''}
         description="este es Alto de las Aromas"
       >
         <HeaderPage
-          name="Alto de las Aromas"
+          name={usePageProps.findProject.data?.name || ''}
           btnLabel="+ Nueva Unidad"
           onClick={() => usePageProps.setShowCreateUnit(true)}
           extraContent={

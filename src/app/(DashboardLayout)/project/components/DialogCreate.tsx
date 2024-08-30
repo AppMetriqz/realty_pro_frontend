@@ -47,25 +47,28 @@ export const DialogCreate = ({
         <Grid container spacing={5} xs={12}>
           <Grid item xs={12} md={6}>
             <TextFieldSharedController
-              label={'Nombre:'}
+              label={'Nombre'}
               name={'name'}
+              isRequired
               hookForm={hookForm}
               labelStyle={{ mb: '15px' }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <SelectSharedController
-              label={'Tipo de Proyecto:'}
+              label={'Tipo de Proyecto'}
               options={PropertyType}
               name={'type'}
+              isRequired
               hookForm={hookForm}
               labelStyle={{ mb: '15px' }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <SelectSharedController
-              label={'Moneda:'}
+              label={'Moneda'}
               name={'currency_type'}
+              isRequired
               options={CurrencyType}
               hookForm={hookForm}
               labelStyle={{ mb: '15px' }}
@@ -74,8 +77,9 @@ export const DialogCreate = ({
           {hookForm.watch('type') === 'plot' ? null : (
             <Grid item xs={12} md={6}>
               <TextFieldSharedController
-                label={'Cantidad de Niveles:'}
+                label={'Cantidad de Niveles'}
                 name={'levels_qty'}
+                isRequired
                 hookForm={hookForm}
                 textFieldProps={{ type: 'number' }}
                 labelStyle={{ mb: '15px' }}
@@ -86,7 +90,8 @@ export const DialogCreate = ({
             <AutoCompleteSharedController
               keyId={'country_code'}
               keyName={'label'}
-              label={'Pais:'}
+              label={'Pais'}
+              isRequired
               value={Countries.find(
                 (country) =>
                   country.country_code === hookForm.watch('country_code')
@@ -98,56 +103,63 @@ export const DialogCreate = ({
           </Grid>
           <Grid item xs={12} md={6}>
             <TextFieldSharedController
-              label={'Estado / Provincia:'}
+              label={'Estado / Provincia'}
               name={'state'}
+              isRequired
               hookForm={hookForm}
               labelStyle={{ mb: '15px' }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <TextFieldSharedController
-              label={'Ciudad / Delegación:'}
+              label={'Ciudad / Delegación'}
               name={'city'}
+              isRequired
               hookForm={hookForm}
               labelStyle={{ mb: '15px' }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <TextFieldSharedController
-              label={'Sector:'}
+              label={'Sector'}
               name={'sector'}
+              isRequired
               hookForm={hookForm}
               labelStyle={{ mb: '15px' }}
             />
           </Grid>
           <Grid item xs={12} md={12}>
             <TextFieldSharedController
-              label={'Dirección:'}
+              label={'Dirección'}
               name={'address'}
+              isRequired
               hookForm={hookForm}
               labelStyle={{ mb: '15px' }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <TextFieldSharedController
-              label={'Latitud(opcional):'}
+              label={'Latitud(opcional)'}
               name={'latitude'}
+              isRequired
               hookForm={hookForm}
               labelStyle={{ mb: '15px' }}
             />
           </Grid>
           <Grid item xs={12} md={6}>
             <TextFieldSharedController
-              label={'Longitud(opcional):'}
+              label={'Longitud(opcional)'}
               name={'longitude'}
+              isRequired
               hookForm={hookForm}
               labelStyle={{ mb: '15px' }}
             />
           </Grid>
           <Grid item xs={12} md={12}>
             <TextFieldSharedController
-              label={'Descripción:'}
+              label={'Descripción'}
               name={'description'}
+              isRequired
               hookForm={hookForm}
               labelStyle={{ mb: '15px' }}
               textFieldProps={{

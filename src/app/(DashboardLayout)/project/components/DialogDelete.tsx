@@ -52,16 +52,18 @@ export const DialogDelete = ({
         <Grid container xs={12}>
           <Grid sx={{ mb: 4 }} item xs={12} md={12}>
             <TextFieldSharedController
-              label={`Escribir “${validationMessage}”:`}
+              label={`Escribir “${validationMessage}”`}
               name={'deleteInput'}
+              isRequired
               hookForm={deleteHookForm}
               labelStyle={{ mb: '20px' }}
             />
           </Grid>
           <Grid item xs={12} md={12}>
             <TextFieldSharedController
-              label={'Nota:'}
+              label={'Nota'}
               name={'notes'}
+              isRequired
               hookForm={deleteHookForm}
               labelStyle={{ mb: '15px' }}
               textFieldProps={{
@@ -77,7 +79,7 @@ export const DialogDelete = ({
             mt={3}
             fontSize="16px"
           >
-            Si borras esta unidad, cualquier&nbsp;
+            Si borras esta {name}, cualquier&nbsp;
             <span style={{ fontWeight: '600' }}>plan de pago</span> <br />
             asociado con esta venta sera&nbsp;
             <span style={{ fontWeight: '600' }}>cancelado</span>.

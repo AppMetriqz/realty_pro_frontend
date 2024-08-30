@@ -62,7 +62,6 @@ export const unitDefaultValues: UnitFormInput = {
 
 export const createUnitValidationSchema = yup.object({
   name: yup.string().required(ErrorMsg.required),
-  description: yup.string().required(ErrorMsg.required),
   type: yup.string().required(ErrorMsg.required),
   condition: yup.string().required(ErrorMsg.required),
   levels_qty: yup.string().when('type', ([type], schema) => {
@@ -102,16 +101,10 @@ export const createUnitValidationSchema = yup.object({
       : schema.required(ErrorMsg.required);
   }),
   status: yup.string().required(ErrorMsg.required),
-  cover: yup.mixed().required(ErrorMsg.file),
-  property_feature_ids: yup
-    .array()
-    .min(1, ErrorMsg.arrayMin)
-    .required(ErrorMsg.required),
 });
 
 export const updateUnitValidationSchema = yup.object({
   name: yup.string().required(ErrorMsg.required),
-  description: yup.string().required(ErrorMsg.required),
   type: yup.string().required(ErrorMsg.required),
   condition: yup.string().required(ErrorMsg.required),
   levels_qty: yup.string().when('type', ([type], schema) => {
@@ -151,10 +144,6 @@ export const updateUnitValidationSchema = yup.object({
       : schema.required(ErrorMsg.required);
   }),
   status: yup.string().required(ErrorMsg.required),
-  property_feature_ids: yup
-    .array()
-    .min(1, ErrorMsg.arrayMin)
-    .required(ErrorMsg.required),
 });
 
 export const updateMultipleUnitValidationSchema = yup.object({});

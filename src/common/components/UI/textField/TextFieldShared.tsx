@@ -13,6 +13,7 @@ const primaryColor = Colors.primary;
 export interface TextFieldSharedControllerProps {
   name: string;
   label?: string;
+  isRequired?: boolean;
   disabled?: boolean;
   hookForm: UseFormReturn<any>;
   textFieldProps?: TextFieldProps;
@@ -33,26 +34,36 @@ export const TextFieldSharedLogin = styled((props: any) => (
 
 export const TextFieldShared = styled(TextField)({});
 
-export const TextFieldSharedController: FC<TextFieldSharedControllerProps> = (
-  props
-) => {
+export const TextFieldSharedController: FC<TextFieldSharedControllerProps> = ({
+  name,
+  label,
+  isRequired = false,
+  disabled,
+  hookForm,
+  textFieldProps,
+  labelStyle,
+  onBlur,
+}) => {
   return (
     <>
-      {!_.isUndefined(props.label) && _.size(props.label) > 0 && (
-        <Typography {...props.labelStyle}>{props.label}</Typography>
+      {!_.isUndefined(label) && _.size(label) > 0 && (
+        <Typography {...labelStyle}>
+          {label}:&nbsp;
+          {isRequired ? <span style={{ color: 'red' }}>*</span> : null}
+        </Typography>
       )}
       <Controller
-        name={props.name}
-        control={props.hookForm.control}
+        name={name}
+        control={hookForm.control}
         render={({ field, fieldState }) => (
           <TextFieldShared
             fullWidth
             autoComplete="off"
-            disabled={props.disabled}
+            disabled={disabled}
             {...field}
-            {...props.textFieldProps}
+            {...textFieldProps}
             {...getHelperText(fieldState.error)}
-            onBlur={props.onBlur}
+            onBlur={onBlur}
           />
         )}
       />

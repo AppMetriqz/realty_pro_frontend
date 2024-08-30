@@ -50,8 +50,9 @@ export const DialogCancelSell = ({
         <Grid container xs={12}>
           <Grid item xs={12} md={12}>
             <TextFieldSharedController
-              label={'Nota:'}
+              label={'Nota'}
               name={'notes'}
+              isRequired
               hookForm={cancelSellHookForm}
               labelStyle={{ mb: '15px' }}
               textFieldProps={{

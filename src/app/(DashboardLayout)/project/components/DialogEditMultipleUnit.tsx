@@ -85,8 +85,9 @@ export const DialogEditMultipleUnit = <T,>({
           {isPlot ? (
             <Grid item xs={12} md={6}>
               <TextFieldSharedController
-                label={'Precio por metro:'}
+                label={'Precio por metro'}
                 name={'price_per_meter'}
+                isRequired
                 onBlur={onBlurPricePerMeter}
                 hookForm={multipleUnitHookForm}
                 labelStyle={{ mb: '15px' }}
@@ -95,8 +96,9 @@ export const DialogEditMultipleUnit = <T,>({
           ) : (
             <Grid item xs={12} md={6}>
               <TextFieldSharedController
-                label={'Precio:'}
+                label={'Precio'}
                 name={'price'}
+                isRequired
                 onBlur={onBlurPrice}
                 hookForm={multipleUnitHookForm}
                 labelStyle={{ mb: '15px' }}
@@ -105,8 +107,9 @@ export const DialogEditMultipleUnit = <T,>({
           )}
           <Grid item xs={12} md={6}>
             <SelectSharedController
-              label={'Estatus:'}
+              label={'Estatus'}
               name={'status'}
+              isRequired
               options={MultipleUnitStatus}
               hookForm={multipleUnitHookForm}
               labelStyle={{ mb: '15px' }}
@@ -114,9 +117,10 @@ export const DialogEditMultipleUnit = <T,>({
           </Grid>
           <Grid item xs={12} md={6}>
             <SelectSharedController
-              label={'Condición:'}
+              label={'Condición'}
               options={UnitCondicionType}
               name={'condition'}
+              isRequired
               hookForm={multipleUnitHookForm}
               labelStyle={{ mb: '15px' }}
             />

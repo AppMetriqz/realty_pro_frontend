@@ -23,6 +23,7 @@ interface AutoCompleteSharedControllerProps {
   getOptionLabel?: (option: any) => string;
   value?: object | null;
   isNotValue?: boolean;
+  isRequired?: boolean;
   options: any[];
   isLoading?: boolean;
   style?: React.CSSProperties;
@@ -37,76 +38,93 @@ const AutoCompleteStyled = styled(Autocomplete)({});
 
 export const AutoCompleteSharedController: FC<
   AutoCompleteSharedControllerProps
-> = (props) => {
-  const id = props.keyId;
-  const name = props.keyName;
-  const keyValue = props.keyValue;
+> = ({
+  keyId,
+  keyName,
+  keyValue,
+  label,
+  disableClearable,
+  placeholder,
+  labelStyle,
+  isRequired = false,
+  getOptionLabel,
+  value,
+  isNotValue,
+  options,
+  isLoading,
+  style,
+  sx,
+  hookForm,
+  textFieldProps,
+  onInputChange,
+  onSelected: onSelectedValue,
+}) => {
+  const id = keyId;
+  const name = keyName;
 
-  const [selected, onSelected] = React.useState(props.value);
+  const [selected, onSelected] = React.useState(value);
 
   return (
     <>
-      {!_.isUndefined(props.label) && _.size(props.label) > 0 && (
-        <Typography {...props.labelStyle}>{props.label}</Typography>
+      {!_.isUndefined(label) && _.size(label) > 0 && (
+        <Typography {...labelStyle}>
+          {label}:&nbsp;
+          {isRequired ? <span style={{ color: 'red' }}>*</span> : null}
+        </Typography>
       )}
       <AutoCompleteStyled
-        options={props.options}
-        loading={props.isLoading}
-        style={props.style}
+        options={options}
+        loading={isLoading}
+        style={style}
         sx={{
-          ...props.sx,
+          ...sx,
           '& .MuiInputBase-root': { paddingY: '4px' },
         }}
         size={'medium'}
         disableClearable={
-          props.disableClearable !== undefined ? props.disableClearable : true
+          disableClearable !== undefined ? disableClearable : true
         }
         getOptionLabel={
-          props.getOptionLabel
-            ? props.getOptionLabel
-            : (option: any) => option[name]
+          getOptionLabel ? getOptionLabel : (option: any) => option[name]
         }
-        // isOptionEqualToValue={(option: any, value: any) =>
-        //   option[id] === value[id]
-        // }
         onInputChange={(event) => {
-          if (props.onInputChange) {
+          if (onInputChange) {
             const target = event?.target as HTMLInputElement;
-            props.onInputChange(target?.value ?? "");
+            onInputChange(target?.value ?? '');
           }
         }}
-        value={keyValue? props.hookForm?.watch(keyValue) : selected}
-        defaultValue={props.value}
+        value={keyValue ? hookForm?.watch(keyValue) : selected}
+        defaultValue={value}
         onChange={(event, newValue: any) => {
-          if (!props.isNotValue) {
+          if (!isNotValue) {
             onSelected(newValue);
           }
-          if (props.onSelected && newValue) {
-            props.onSelected(newValue);
+          if (onSelectedValue && newValue) {
+            onSelectedValue(newValue);
           }
           if (!_.isNull(newValue)) {
-            if (props.hookForm) {
-              props.hookForm.setValue(id, newValue[id]);
-              props.hookForm.clearErrors(id);
-              if (keyValue){
-                props.hookForm.setValue(keyValue, newValue);
+            if (hookForm) {
+              hookForm.setValue(id, newValue[id]);
+              hookForm.clearErrors(id);
+              if (keyValue) {
+                hookForm.setValue(keyValue, newValue);
               }
             }
           } else {
-            if (props.hookForm) {
-              props.hookForm.setValue(id, undefined);
+            if (hookForm) {
+              hookForm.setValue(id, undefined);
             }
           }
         }}
         renderInput={(params) => (
           <TextFieldShared
             {...params}
-            {...props.textFieldProps}
-            {...(props.hookForm
-              ? getHelperTextFormState(props.hookForm.formState, id)
+            {...textFieldProps}
+            {...(hookForm
+              ? getHelperTextFormState(hookForm.formState, id)
               : {})}
             fullWidth
-            placeholder={props.placeholder}
+            placeholder={placeholder}
             autoComplete="off"
           />
         )}

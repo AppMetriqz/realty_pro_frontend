@@ -51,7 +51,7 @@ export const DialogCreateUpdateContact = ({
         <Grid container spacing={5} xs={12}>
           <Grid item xs={12} md={4}>
             <SelectSharedController
-              label={'Tipo de contacto:'}
+              label={'Tipo de contacto'}
               name={'type'}
               options={ContactType}
               hookForm={contactHookForm}
@@ -60,15 +60,16 @@ export const DialogCreateUpdateContact = ({
           </Grid>
           <Grid item xs={12} md={4}>
             <TextFieldSharedController
-              label={'Nombre:'}
+              label={'Nombre'}
               name={'first_name'}
+              isRequired
               hookForm={contactHookForm}
               labelStyle={{ mb: '15px' }}
             />
           </Grid>
           <Grid item xs={12} md={4}>
             <TextFieldSharedController
-              label={'Apellido:'}
+              label={'Apellido'}
               name={'last_name'}
               hookForm={contactHookForm}
               labelStyle={{ mb: '15px' }}
@@ -76,7 +77,7 @@ export const DialogCreateUpdateContact = ({
           </Grid>
           <Grid item xs={12} md={6}>
             <TextFieldSharedController
-              label={'Número de Telefono:'}
+              label={'Número de Telefono'}
               name={'phone_number_1'}
               hookForm={contactHookForm}
               labelStyle={{ mb: '15px' }}
@@ -87,7 +88,7 @@ export const DialogCreateUpdateContact = ({
           </Grid>
           <Grid item xs={12} md={6}>
             <TextFieldSharedController
-              label={'Número de Telefono 2:'}
+              label={'Número de Telefono 2'}
               name={'phone_number_2'}
               hookForm={contactHookForm}
               labelStyle={{ mb: '15px' }}
@@ -98,7 +99,7 @@ export const DialogCreateUpdateContact = ({
           </Grid>
           <Grid item xs={12} md={6}>
             <TextFieldSharedController
-              label={'Email:'}
+              label={'Email'}
               name={'email'}
               hookForm={contactHookForm}
               labelStyle={{ mb: '15px' }}
@@ -106,7 +107,7 @@ export const DialogCreateUpdateContact = ({
           </Grid>
           <Grid item xs={12} md={6}>
             <TextFieldSharedController
-              label={'Número de identidad:'}
+              label={'Número de identidad'}
               name={'national_id'}
               hookForm={contactHookForm}
               labelStyle={{ mb: '15px' }}
@@ -114,7 +115,7 @@ export const DialogCreateUpdateContact = ({
           </Grid>
           <Grid item xs={12} md={6}>
             <TextFieldSharedController
-              label={'Nacionalidad:'}
+              label={'Nacionalidad'}
               name={'nationality'}
               hookForm={contactHookForm}
               labelStyle={{ mb: '15px' }}
@@ -122,7 +123,7 @@ export const DialogCreateUpdateContact = ({
           </Grid>
           <Grid item xs={12} md={6}>
             <SelectSharedController
-              label={'Vía de contacto:'}
+              label={'Vía de contacto'}
               name={'contact_method'}
               options={ContactMethodType}
               hookForm={contactHookForm}
@@ -131,7 +132,7 @@ export const DialogCreateUpdateContact = ({
           </Grid>
           <Grid item xs={12} md={12}>
             <TextFieldSharedController
-              label={'Fecha de Nacimiento:'}
+              label={'Fecha de Nacimiento'}
               name={'date_of_birth'}
               hookForm={contactHookForm}
               textFieldProps={{ type: 'date' }}
@@ -140,7 +141,7 @@ export const DialogCreateUpdateContact = ({
           </Grid>
           <Grid item xs={12} md={6}>
             <SelectSharedController
-              label={'Estdo Civil:'}
+              label={'Estdo Civil'}
               name={'marital_status'}
               options={MaritalStatusType}
               hookForm={contactHookForm}
@@ -156,7 +157,7 @@ export const DialogCreateUpdateContact = ({
               getOptionLabel={(option: GetContactDto) =>
                 `${option.first_name} ${option.last_name}`
               }
-              label={'Conyuge:'}
+              label={'Conyuge'}
               onInputChange={(value) =>
                 usePageProps.setContactDescription(value)
               }
@@ -177,7 +178,7 @@ export const DialogCreateUpdateContact = ({
           </Grid>
           <Grid item xs={12} md={6}>
             <TextFieldSharedController
-              label={'Lugar donde trabaja:'}
+              label={'Lugar donde trabaja'}
               name={'workplace'}
               hookForm={contactHookForm}
               labelStyle={{ mb: '15px' }}
@@ -185,7 +186,7 @@ export const DialogCreateUpdateContact = ({
           </Grid>
           <Grid item xs={12} md={6}>
             <TextFieldSharedController
-              label={'Ocupación:'}
+              label={'Ocupación'}
               name={'work_occupation'}
               hookForm={contactHookForm}
               labelStyle={{ mb: '15px' }}
@@ -193,7 +194,7 @@ export const DialogCreateUpdateContact = ({
           </Grid>
           <Grid item xs={12} md={12}>
             <TextFieldSharedController
-              label={'Dirección:'}
+              label={'Dirección'}
               name={'address'}
               hookForm={contactHookForm}
               labelStyle={{ mb: '15px' }}
@@ -206,7 +207,7 @@ export const DialogCreateUpdateContact = ({
           </Grid>
           <Grid item pb={5} xs={12} md={12}>
             <TextFieldSharedController
-              label={'Nota:'}
+              label={'Nota'}
               name={'notes'}
               hookForm={contactHookForm}
               labelStyle={{ mb: '15px' }}
