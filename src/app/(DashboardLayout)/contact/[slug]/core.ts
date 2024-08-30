@@ -117,6 +117,7 @@ export const createPaymentPlanValidationSchema = yup.object({
 export type CreateUpdatePaymentType = {
   payment_plan_id: number;
   separation_date: string;
+  payment_made_at: string;
   amount: string;
   notes: string;
 };
@@ -128,5 +129,6 @@ export const createPaymentDefaultValues = {
   payment_plan_id: 0,
   amount: '',
   separation_date: DateTime.now().toISODate(),
+  payment_made_at: DateTime.now().toISODate(),
   notes: '',
 };

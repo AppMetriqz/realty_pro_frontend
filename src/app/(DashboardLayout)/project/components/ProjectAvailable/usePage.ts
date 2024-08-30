@@ -477,6 +477,20 @@ export default function usePage(): UsePageProjectAvailableProps {
 
   const handleClickSell = async (id: string | number) => {
     setSelectedUnitId(id);
+    sellHookForm.setValue('client_id', '1');
+    sellHookForm.setValue('client', {
+      contact_id: 1,
+      client_id: 1,
+      first_name: 'Sin asignar',
+      last_name: '',
+    });
+    sellHookForm.setValue('seller_id', '2');
+    sellHookForm.setValue('seller', {
+      contact_id: 2,
+      seller_id: 2,
+      first_name: 'Realty',
+      last_name: 'Dominicana',
+    });
     setOpenSellModal(true);
   };
 

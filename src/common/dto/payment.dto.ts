@@ -1,6 +1,7 @@
 export type CreatePaymentDto = {
   payment_plan_id: number;
   amount: number;
+  payment_made_at?: string;
   notes: string;
 };
 

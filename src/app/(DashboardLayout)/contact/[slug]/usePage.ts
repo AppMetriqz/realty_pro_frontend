@@ -227,6 +227,7 @@ const useContactProfilePage = (): UseContactProfilePageProps => {
       const payment = await createPayment.mutateAsync({
         payment_plan_id: data.payment_plan_id,
         amount: parseFloat(data.amount.replaceAll(/[$,]/gi, '')),
+        payment_made_at: data.payment_made_at,
         notes: data.notes,
       });
       if (!!payment) {

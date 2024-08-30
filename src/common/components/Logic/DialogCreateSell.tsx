@@ -124,7 +124,6 @@ export const DialogCreateSell = ({
             <TextFieldSharedController
               label={'Nota'}
               name={'notes'}
-              isRequired
               hookForm={sellHookForm}
               labelStyle={{ mb: '10px' }}
               textFieldProps={{

@@ -70,10 +70,8 @@ export const DialogCreatePayment = ({ open, onClose, usePageProps }: Props) => {
           </Grid>
           <Grid item xs={12} md={12}>
             <TextFieldSharedController
-              label={'Fecha de Separación'}
-              name={'separation_date'}
-              isRequired
-              disabled
+              label={'Fecha de Pago'}
+              name={'payment_made_at'}
               hookForm={paymentHookForm}
               textFieldProps={{ type: 'date' }}
               labelStyle={{ mb: '10px' }}
@@ -83,7 +81,6 @@ export const DialogCreatePayment = ({ open, onClose, usePageProps }: Props) => {
             <TextFieldSharedController
               label={'Nota'}
               name={'notes'}
-              isRequired
               hookForm={paymentHookForm}
               labelStyle={{ mb: '15px' }}
               textFieldProps={{

@@ -32,6 +32,7 @@ interface AutoCompleteSharedControllerProps {
   textFieldProps?: TextFieldProps;
   onInputChange?: Dispatch<SetStateAction<string>>;
   onSelected?: Dispatch<SetStateAction<any>>;
+  disabled?: boolean;
 }
 
 const AutoCompleteStyled = styled(Autocomplete)({});
@@ -48,6 +49,7 @@ export const AutoCompleteSharedController: FC<
   labelStyle,
   isRequired = false,
   getOptionLabel,
+  disabled = false,
   value,
   isNotValue,
   options,
@@ -76,6 +78,7 @@ export const AutoCompleteSharedController: FC<
         options={options}
         loading={isLoading}
         style={style}
+        disabled={disabled}
         sx={{
           ...sx,
           '& .MuiInputBase-root': { paddingY: '4px' },

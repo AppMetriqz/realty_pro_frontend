@@ -59,7 +59,8 @@ export const DialogCreate = ({
               label={'Tipo de Proyecto'}
               options={PropertyType}
               name={'type'}
-              isRequired
+              disabled={isEdit}
+              isRequired={!isEdit}
               hookForm={hookForm}
               labelStyle={{ mb: '15px' }}
             />
@@ -68,7 +69,8 @@ export const DialogCreate = ({
             <SelectSharedController
               label={'Moneda'}
               name={'currency_type'}
-              isRequired
+              disabled={isEdit}
+              isRequired={!isEdit}
               options={CurrencyType}
               hookForm={hookForm}
               labelStyle={{ mb: '15px' }}
@@ -79,7 +81,8 @@ export const DialogCreate = ({
               <TextFieldSharedController
                 label={'Cantidad de Niveles'}
                 name={'levels_qty'}
-                isRequired
+                disabled={isEdit}
+                isRequired={!isEdit}
                 hookForm={hookForm}
                 textFieldProps={{ type: 'number' }}
                 labelStyle={{ mb: '15px' }}
@@ -91,7 +94,8 @@ export const DialogCreate = ({
               keyId={'country_code'}
               keyName={'label'}
               label={'Pais'}
-              isRequired
+              disabled={isEdit}
+              isRequired={!isEdit}
               value={Countries.find(
                 (country) =>
                   country.country_code === hookForm.watch('country_code')
@@ -105,7 +109,8 @@ export const DialogCreate = ({
             <TextFieldSharedController
               label={'Estado / Provincia'}
               name={'state'}
-              isRequired
+              disabled={isEdit}
+              isRequired={!isEdit}
               hookForm={hookForm}
               labelStyle={{ mb: '15px' }}
             />
@@ -114,7 +119,8 @@ export const DialogCreate = ({
             <TextFieldSharedController
               label={'Ciudad / Delegación'}
               name={'city'}
-              isRequired
+              disabled={isEdit}
+              isRequired={!isEdit}
               hookForm={hookForm}
               labelStyle={{ mb: '15px' }}
             />
@@ -123,7 +129,8 @@ export const DialogCreate = ({
             <TextFieldSharedController
               label={'Sector'}
               name={'sector'}
-              isRequired
+              disabled={isEdit}
+              isRequired={!isEdit}
               hookForm={hookForm}
               labelStyle={{ mb: '15px' }}
             />
@@ -132,7 +139,8 @@ export const DialogCreate = ({
             <TextFieldSharedController
               label={'Dirección'}
               name={'address'}
-              isRequired
+              disabled={isEdit}
+              isRequired={!isEdit}
               hookForm={hookForm}
               labelStyle={{ mb: '15px' }}
             />
@@ -141,7 +149,8 @@ export const DialogCreate = ({
             <TextFieldSharedController
               label={'Latitud(opcional)'}
               name={'latitude'}
-              isRequired
+              disabled={isEdit}
+              isRequired={!isEdit}
               hookForm={hookForm}
               labelStyle={{ mb: '15px' }}
             />
@@ -150,7 +159,8 @@ export const DialogCreate = ({
             <TextFieldSharedController
               label={'Longitud(opcional)'}
               name={'longitude'}
-              isRequired
+              disabled={isEdit}
+              isRequired={!isEdit}
               hookForm={hookForm}
               labelStyle={{ mb: '15px' }}
             />

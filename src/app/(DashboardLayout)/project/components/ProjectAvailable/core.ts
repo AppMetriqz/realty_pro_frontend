@@ -33,6 +33,7 @@ export const sellFormDefaultValues = {
   client_id: '',
   seller_id: '',
   price: '',
+  client: undefined,
   commission: 0,
   notes: '',
 };
