@@ -1,7 +1,7 @@
 'use client';
 import axiosInstance from '@/config/api/api.config';
 import { useMutation, useQuery, UseQueryResult } from '@tanstack/react-query';
-import { UserDto } from '@/common/dto';
+
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 
@@ -12,7 +12,7 @@ export const useSignIn = () => {
     mutationKey: ['signIn'],
     mutationFn: ({ email, password }: { email: string; password: string }) =>
       axiosInstance.post(`${path}/login`, { email, password }),
-    onSuccess: (data: UserDto | any, variables, context) => {
+    onSuccess: (data: any, variables, context) => {
       if (data.token) {
         Cookies.set('token', data.token);
       }
