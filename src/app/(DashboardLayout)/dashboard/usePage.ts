@@ -198,11 +198,11 @@ export default function usePage(): UsePageProps {
         project_id: selectedUnitToAssign?.project?.project_id,
         sale_id: selectedUnitToAssign?.sale_id,
         unit_id: selectedUnitToAssign?.unit?.unit_id,
-        client_id: data.client_id?parseInt(data.client_id):undefined,
+        client_id: data.client_id ? parseInt(data.client_id) : undefined,
         seller_id: parseInt(data.seller_id),
         commission: data.commission / 100,
         notes: data.notes,
-      }
+      };
 
       const sale = await assignSale.mutateAsync(sale_values);
       if (!!sale) {
@@ -230,11 +230,17 @@ export default function usePage(): UsePageProps {
     if (sale.notes) sellHookForm.setValue('notes', sale.notes);
     if (sale.client) {
       sellHookForm.setValue('client_id', sale.client.contact_id.toString());
-      sellHookForm.setValue('client', {...sale.client, client_id: sale.client?.contact_id});
+      sellHookForm.setValue('client', {
+        ...sale.client,
+        client_id: sale.client?.contact_id,
+      });
     }
     if (sale.seller) {
       sellHookForm.setValue('seller_id', sale.seller.contact_id.toString());
-      sellHookForm.setValue('seller', {...sale.seller, seller_id: sale.seller?.contact_id});
+      sellHookForm.setValue('seller', {
+        ...sale.seller,
+        seller_id: sale.seller?.contact_id,
+      });
     }
     setSelectedUnitToAssign(sale);
     setOpenSellModal(true);
@@ -260,24 +266,30 @@ export default function usePage(): UsePageProps {
     paymentPlanHookForm.reset();
   };
 
-  const onSubmitPaymentPlan: SubmitHandler<CreateUpdatePaymentPlanType> = async (data) => {
+  const onSubmitPaymentPlan: SubmitHandler<
+    CreateUpdatePaymentPlanType
+  > = async (data) => {
     try {
-      let sale_values:CreatePaymentPlanDto = {
+      let sale_values: CreatePaymentPlanDto = {
         sale_id: data.sale_id,
         separation_amount: parseFloat(
-            data.separation_amount
-                ? data.separation_amount.replaceAll(/[$,]/gi, '')
-                : '0'
+          data.separation_amount
+            ? data.separation_amount.replaceAll(/[$,]/gi, '')
+            : '0'
         ),
         separation_date: data.separation_date,
         payment_plan_numbers: data.payment_plan_numbers,
         separation_rate: data.separation_rate / 100,
         is_resale: data.is_resale,
-      }
+      };
 
-      if (data.is_resale){
-        sale_values.total_amount = data.total_amount ? parseFloat(data.total_amount) : undefined
+      if (data.is_resale) {
+        sale_values.total_amount = data.total_amount
+          ? parseFloat(data.total_amount)
+          : undefined;
         sale_values.client_id = data.client_id
+          ? parseInt(data.client_id)
+          : undefined;
       }
 
       const sale = await createPaymentPlan.mutateAsync(sale_values);
