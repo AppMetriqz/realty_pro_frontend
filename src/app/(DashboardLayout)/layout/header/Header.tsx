@@ -51,21 +51,24 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
         </IconButton>
 
         <Box flexGrow={1} />
-        <Stack spacing={1} direction="row" alignItems="center">
-          <Stack spacing={0.5} pr={1} direction="column" alignItems="flex-end">
-            {authUser.isLoading ? (
-              <Grid justifyContent={'center'} item xs={12}>
-                <CircularProgress sx={{ color: '#000' }} />
-              </Grid>
-            ) : (
-              <Typography color={'#505050'} fontWeight={400}>
-                ¡Bienvenido&nbsp;
-                <span style={{ fontWeight: 700 }}>{authUser.first_name}</span>!
-                Realty Dominicana
-              </Typography>
-            )}
-          </Stack>
-        </Stack>
+        {authUser? (
+            <Stack spacing={1} direction="row" alignItems="center">
+              <Stack spacing={0.5} pr={1} direction="column" alignItems="flex-end">
+                {authUser.isLoading ? (
+                    <Grid justifyContent={'center'} item xs={12}>
+                      <CircularProgress sx={{ color: '#000' }} />
+                    </Grid>
+                ) : (
+                    <Typography color={'#505050'} fontWeight={400}>
+                      ¡Bienvenido&nbsp;
+                      <span style={{ fontWeight: 700 }}>{authUser.first_name}</span>!
+                      Realty Dominicana
+                    </Typography>
+                )}
+              </Stack>
+            </Stack>
+        ):null}
+
       </ToolbarStyled>
     </AppBarStyled>
   );
