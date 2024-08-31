@@ -8,10 +8,11 @@ import usePage, {
 } from '@/app/(DashboardLayout)/payment-plan/usePage';
 import { Box } from '@mui/material';
 import TableShared from '@/common/components/UI/table/TableShared';
-import { HeadCellsPaymentPlan } from '@/app/(DashboardLayout)/payment-plan/core';
+import {HeadCellsPaymentPlan, HeadCellsPaymentPlanFinancing} from '@/app/(DashboardLayout)/payment-plan/core';
 import { GetPaymentPlanDto } from '@/common/dto';
 import { Status } from '@/app/(DashboardLayout)/payment-plan/components/Status';
 import { PaymentPlanType } from '@/common/constants';
+import _ from "lodash";
 
 const PaymentPlan = () => {
   const usePageProps: UsePageProps = usePage();
@@ -85,10 +86,7 @@ const PaymentPlan = () => {
                   ...items,
                   id: items.sale_id,
                   phone_number_1: items.client.phone_number_1,
-                  sale_type:
-                    PaymentPlanType.find(
-                      (p) => p.value === items.payment_plan.sale_type
-                    )?.label ?? '',
+                  sale_type: _.find(PaymentPlanType, {value:items.payment_plan.sale_type})?.label??"",
                 }))
               : []
           }
@@ -109,7 +107,7 @@ const PaymentPlan = () => {
           }
         >
           headTitle="Para Financiamiento"
-          headCells={HeadCellsPaymentPlan}
+          headCells={HeadCellsPaymentPlanFinancing}
           count={
             usePageProps.paymentPlanFinancing.isSuccess
               ? usePageProps.paymentPlanFinancing.data.count
@@ -121,10 +119,7 @@ const PaymentPlan = () => {
                   ...items,
                   id: items.sale_id,
                   phone_number_1: items.client.phone_number_1,
-                  sale_type:
-                    PaymentPlanType.find(
-                      (p) => p.value === items.payment_plan.sale_type
-                    )?.label ?? '',
+                  sale_type:_.find(PaymentPlanType, {value:items.sale_type})?.label??"",
                 }))
               : []
           }

@@ -25,7 +25,7 @@ interface FindAllDto {
   sortBy?: string;
   dateFrom?: string;
   dateTo?: string;
-  planFilterStats: string;
+  planFilterStats?: string;
   projectIds: string;
   currencyType?: keyof typeof CurrencyTypeDto;
 }
@@ -66,8 +66,17 @@ export const useFindAll = (params: FindAllDto) => {
   });
 };
 
+export const useFindAllFinancing = (params: FindAllDto) => {
+  return useQuery<{ count: number; rows: GetPaymentPlanDto[] }, Error>({
+    queryKey: [`${paymentPlans}FindAll`, params],
+    queryFn: () => axiosInstance.get(`/${paymentPlans}/financing`, { params }),
+    ...QueriesOptions,
+  });
+};
+
 export const apiPaymentPlans = {
   useFindAllStats,
   useFindAll,
+  useFindAllFinancing,
   useCreate,
 };

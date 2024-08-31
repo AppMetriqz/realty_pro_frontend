@@ -4,6 +4,7 @@ import {CurrencyTypeDto, GetPaymentPlanDto, GetPaymentPlanStatDto, ProjectDto} f
 import {UseQueryResult} from '@tanstack/react-query';
 import {useDebouncedCallback} from 'use-debounce';
 import _ from 'lodash';
+import {useFindAllFinancing} from "@/api/payment-plans";
 
 
 export interface UsePageProps {
@@ -79,10 +80,9 @@ export default function usePage() {
         currencyType: currency,
     });
 
-    const paymentPlanFinancing  = apiPaymentPlans.useFindAll({
+    const paymentPlanFinancing  = apiPaymentPlans.useFindAllFinancing({
         pageIndex: paymentPlanFinancingPageIndex,
         pageSize: paymentPlanFinancingPageSize,
-        planFilterStats:"financing_payment",
         projectIds: _.join(_.map(selectedProjects, 'project_id'), ','),
         currencyType: currency,
     });
