@@ -7,7 +7,7 @@ import {
   Grid,
   Typography,
 } from '@mui/material';
-import { PropertyFeaturesDto } from '@/common/dto';
+import { GetPropertyFeaturesDto } from '@/common/dto';
 import _ from 'lodash';
 import { getHelperTextFormState } from '@/common/utils/formHook';
 
@@ -51,7 +51,7 @@ export const ProjectFeatures = ({ usePageProps }: { usePageProps: any }) => {
         listProps.findAllProjectFeatures.isSuccess &&
         _.map(
           listProps.findAllProjectFeatures.data.rows,
-          (item: PropertyFeaturesDto) => (
+          (item: GetPropertyFeaturesDto) => (
             <Grid item xs={6} md={4} key={_.uniqueId(item.description)}>
               <FormControlLabel
                 control={

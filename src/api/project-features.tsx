@@ -1,10 +1,9 @@
 'use client';
 import axiosInstance from '@/config/api/api.config';
 import {
-  ProjectDto,
   SortByDto,
-  PropertyFeaturesDto,
-  PropertyTypeDto,
+  GetPropertyFeaturesDto,
+  CreateUpdatePropertyFeaturesDto,
 } from '@/common/dto';
 import {
   useMutation,
@@ -32,12 +31,12 @@ export interface FindAllAutocompleteDto {
 }
 
 export type ResultFindAllProjectFeatures = UseQueryResult<
-  { rows: PropertyFeaturesDto[]; count: number },
+  { rows: GetPropertyFeaturesDto[]; count: number },
   any
 >;
 
 export const useFindAll = (params: FindAllDto) => {
-  return useQuery<{ rows: PropertyFeaturesDto[]; count: number }, Error>({
+  return useQuery<{ rows: GetPropertyFeaturesDto[]; count: number }, Error>({
     queryKey: [`${projectFeatures}FindAll`, params],
     queryFn: () => axiosInstance.get(`/${projectFeatures}`, { params }),
     ...QueriesOptions,
@@ -46,7 +45,7 @@ export const useFindAll = (params: FindAllDto) => {
 };
 
 export const useFindAllAutocomplete = (params: FindAllAutocompleteDto) => {
-  return useQuery<ProjectDto[], FindAllAutocompleteDto>({
+  return useQuery<GetPropertyFeaturesDto[], FindAllAutocompleteDto>({
     queryKey: [`${projectFeatures}FindAllAutocomplete`, params],
     queryFn: () =>
       axiosInstance.get(`/${projectFeatures}/autocomplete`, { params }),
@@ -56,7 +55,7 @@ export const useFindAllAutocomplete = (params: FindAllAutocompleteDto) => {
 };
 
 export const useFindOne = (id: string | number) => {
-  return useQuery<PropertyFeaturesDto, Error>({
+  return useQuery<GetPropertyFeaturesDto, Error>({
     queryKey: [projectFeatures, id],
     queryFn: () => axiosInstance.get(`/${projectFeatures}/${id}`),
     enabled: !!id,
@@ -67,7 +66,7 @@ export const useCreate = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: [`${projectFeatures}Create`],
-    mutationFn: (data: PropertyFeaturesDto) =>
+    mutationFn: (data: CreateUpdatePropertyFeaturesDto) =>
       axiosInstance.post(`/${projectFeatures}`, data),
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -81,7 +80,7 @@ export const useUpdate = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: [`${projectFeatures}Update`],
-    mutationFn: (data: PropertyFeaturesDto) =>
+    mutationFn: (data: CreateUpdatePropertyFeaturesDto) =>
       axiosInstance.put(
         `/${projectFeatures}/${data.property_feature_id}`,
         data

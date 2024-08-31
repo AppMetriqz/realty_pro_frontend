@@ -1,9 +1,5 @@
 'use client';
-import {
-  Box,
-  CircularProgress,
-  Grid,
-} from '@mui/material';
+import { Box, CircularProgress, Grid } from '@mui/material';
 import React from 'react';
 import usePage from './usePage';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -12,69 +8,70 @@ import TableShared, {
   ColumnProps,
 } from '@/common/components/UI/table/TableShared';
 import MenuShared from '@/common/components/UI/menu/MenuShared';
-import {GetAllPropertyFeaturesDto, GetUserDto} from '@/common/dto';
+import { GetPropertyFeaturesDto, GetUserDto } from '@/common/dto';
 import PageContainer from '../components/container/PageContainer';
 import HeaderPage from '../components/shared/HeaderPage';
 import { DialogDelete } from '@/common/components/Logic/DialogDelete';
 import { DialogCreateEditUser } from './component/DialogCreateEditUser';
-import {DialogFreeDelete} from "@/common/components/Logic/DialogFreeDelete";
-
+import { DialogFreeDelete } from '@/common/components/Logic/DialogFreeDelete';
 
 const User = () => {
   const usePageProps = usePage();
 
-  const headCells: Array<ColumnProps<GetAllPropertyFeaturesDto & { id: number }>> = [
-    {
-      key: 'property_feature_id',
-      numeric: false,
-      disablePadding: true,
-      label: 'ID',
-    },
-    {
-      key: 'description',
-      numeric: false,
-      disablePadding: true,
-      label: 'Descripcción',
-    },
-    {
-      key: 'type',
-      numeric: false,
-      disablePadding: true,
-      label: 'Tipo',
-    },
-    {
-      key: 'property_feature_id',
-      numeric: false,
-      disablePadding: false,
-      label: 'Acciones',
-      render: (_, record: GetAllPropertyFeaturesDto & { id: number }) =>(
+  const headCells: Array<ColumnProps<GetPropertyFeaturesDto & { id: number }>> =
+    [
+      {
+        key: 'property_feature_id',
+        numeric: false,
+        disablePadding: true,
+        label: 'ID',
+      },
+      {
+        key: 'description',
+        numeric: false,
+        disablePadding: true,
+        label: 'Descripcción',
+      },
+      {
+        key: 'type',
+        numeric: false,
+        disablePadding: true,
+        label: 'Tipo',
+      },
+      {
+        key: 'property_feature_id',
+        numeric: false,
+        disablePadding: false,
+        label: 'Acciones',
+        render: (_, record: GetPropertyFeaturesDto & { id: number }) => (
           <MenuShared
-              actions={[
-                {
-                  id: record.property_feature_id,
-                  icon: <EditIcon fontSize="small" />,
-                  label: 'Editar',
-                  onClick: () => usePageProps.handleClickEdit(record),
-                },
-                {
-                  id: record.property_feature_id,
-                  icon: <DeleteIcon fontSize="small" />,
-                  label: 'Borrar',
-                  onClick: () => usePageProps.handleClickDelete(record)},
-              ]}
+            actions={[
+              {
+                id: record.property_feature_id,
+                icon: <EditIcon fontSize="small" />,
+                label: 'Editar',
+                onClick: () => usePageProps.handleClickEdit(record),
+              },
+              {
+                id: record.property_feature_id,
+                icon: <DeleteIcon fontSize="small" />,
+                label: 'Borrar',
+                onClick: () => usePageProps.handleClickDelete(record),
+              },
+            ]}
           />
-      ),
-    },
-  ];
+        ),
+      },
+    ];
 
   return (
     <>
       <PageContainer title="Settings" description="este es el settings">
         <HeaderPage
-            noBorder
-            name="Características de proyectos y unidades"
-            btnLabel="+ Nueva Características"
-            onClick={() => usePageProps.setOpenCreateEditModal(true)}
+          noBorder
+          name="Características de proyectos y unidades"
+          btnLabel="+ Nueva Características"
+          onClick={() => usePageProps.setOpenCreateEditModal(true)}
         />
         <Box px={5}>
           {usePageProps.propertyFeatureList.isLoading ? (
@@ -84,15 +81,17 @@ const User = () => {
           ) : (
             usePageProps.propertyFeatureList.isSuccess && (
               <>
-                <TableShared<GetAllPropertyFeaturesDto  & { id: number }>
+                <TableShared<GetPropertyFeaturesDto & { id: number }>
                   headTitle="Características"
                   headCells={headCells}
                   rowsPerPage={usePageProps.rowsPerPage}
                   changePageSize={usePageProps.changePageSize}
-                  rows={usePageProps.propertyFeatureList.data.rows.map((user, indx) => ({
-                    ...user,
-                    id: user.property_feature_id,
-                  }))}
+                  rows={usePageProps.propertyFeatureList.data.rows.map(
+                    (user, indx) => ({
+                      ...user,
+                      id: user.property_feature_id,
+                    })
+                  )}
                   orderByValue="description"
                   page={usePageProps.page}
                   setPage={usePageProps.setPage}
@@ -112,9 +111,9 @@ const User = () => {
       />
 
       <DialogFreeDelete
-          open={usePageProps.openDeleteModal}
-          onClose={usePageProps.onCloseDeleteModal}
-          usePageProps={usePageProps}
+        open={usePageProps.openDeleteModal}
+        onClose={usePageProps.onCloseDeleteModal}
+        usePageProps={usePageProps}
       />
     </>
   );

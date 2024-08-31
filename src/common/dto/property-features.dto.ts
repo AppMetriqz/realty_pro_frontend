@@ -1,6 +1,4 @@
-
-
-export enum PropertyFeaturesTypeDto{
+export enum PropertyFeaturesTypeDto {
   house = 'house',
   apartment = 'apartment',
   plot = 'plot',
@@ -8,7 +6,7 @@ export enum PropertyFeaturesTypeDto{
   all = 'all',
 }
 
-export interface GetAllPropertyFeaturesDto {
+export interface GetPropertyFeaturesDto {
   property_feature_id: number;
   description: string;
   type: keyof typeof PropertyFeaturesTypeDto;

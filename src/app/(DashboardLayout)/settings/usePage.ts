@@ -3,11 +3,15 @@ import { Dispatch, SetStateAction, useState } from 'react';
 import { useYupValidationResolver } from '@/common/utils/formHook';
 import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
 import {
-  propertyFeatureFormDefaultValues, propertyFeatureValidationSchema,
+  propertyFeatureFormDefaultValues,
+  propertyFeatureValidationSchema,
 } from './core';
 import { apiPropertyFeatures } from '@/api';
 import { UseQueryResult } from '@tanstack/react-query';
-import {CreateUpdatePropertyFeaturesDto, GetAllPropertyFeaturesDto} from '@/common/dto';
+import {
+  CreateUpdatePropertyFeaturesDto,
+  GetPropertyFeaturesDto,
+} from '@/common/dto';
 import { toast } from 'react-toastify';
 import { ExceptionCatchResponse } from '@/common/exceptions';
 
@@ -16,8 +20,8 @@ export type UsePageProjectAvailableProps = {
   changePageSize: (size: number) => void;
   page: number;
   setPage: Dispatch<SetStateAction<number>>;
-  handleClickEdit: (data: GetAllPropertyFeaturesDto) => void;
-  handleClickDelete: (data: GetAllPropertyFeaturesDto) => void;
+  handleClickEdit: (data: GetPropertyFeaturesDto) => void;
+  handleClickDelete: (data: GetPropertyFeaturesDto) => void;
   selectedPropertyFeatureToDelete: number | null;
   onCloseDeleteModal: () => void;
   onCloseCreateEditModal: () => void;
@@ -25,9 +29,16 @@ export type UsePageProjectAvailableProps = {
   setOpenDeleteModal: Dispatch<SetStateAction<boolean>>;
   onSubmitDelete: SubmitHandler<DeleteFormType>;
   setOpenCreateEditModal: Dispatch<SetStateAction<boolean>>;
-  propertyFeatureList: UseQueryResult<{ rows: GetAllPropertyFeaturesDto[]; count: number;}, Error>;
+  propertyFeatureList: UseQueryResult<
+    { rows: GetPropertyFeaturesDto[]; count: number },
+    Error
+  >;
   openCreateEditModal: boolean;
-  propertyFeatureHookForm: UseFormReturn<CreateUpdatePropertyFeaturesDto, any, undefined>;
+  propertyFeatureHookForm: UseFormReturn<
+    CreateUpdatePropertyFeaturesDto,
+    any,
+    undefined
+  >;
   onSubmitUser: SubmitHandler<CreateUpdatePropertyFeaturesDto>;
   isEdit: boolean;
 };
@@ -37,10 +48,13 @@ export default function usePage(): UsePageProjectAvailableProps {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openCreateEditModal, setOpenCreateEditModal] = useState(false);
-  const [selectedPropertyFeatureToDelete, setSelectedPropertyFeatureToDelete] = useState<number | null>(null);
+  const [selectedPropertyFeatureToDelete, setSelectedPropertyFeatureToDelete] =
+    useState<number | null>(null);
   const [isEdit, setIsEdit] = useState(false);
 
-  const createResolver = useYupValidationResolver(propertyFeatureValidationSchema);
+  const createResolver = useYupValidationResolver(
+    propertyFeatureValidationSchema
+  );
 
   const propertyFeatureHookForm = useForm<CreateUpdatePropertyFeaturesDto>({
     resolver: createResolver,
@@ -51,14 +65,19 @@ export default function usePage(): UsePageProjectAvailableProps {
     setRowsPerPage(size);
   };
 
-  const propertyFeatureList = apiPropertyFeatures.useFindAll({
-    pageIndex: page,
-    pageSize: rowsPerPage,
-    sortOrder: 'DESC',
-    sortBy: 'created_at',
-  }, true);
+  const propertyFeatureList = apiPropertyFeatures.useFindAll(
+    {
+      pageIndex: page,
+      pageSize: rowsPerPage,
+      sortOrder: 'DESC',
+      sortBy: 'created_at',
+    },
+    true
+  );
 
-  const deleteFeatures = apiPropertyFeatures.useDelete(selectedPropertyFeatureToDelete);
+  const deleteFeatures = apiPropertyFeatures.useDelete(
+    selectedPropertyFeatureToDelete
+  );
   const createFeatures = apiPropertyFeatures.useCreate();
   const updateFeatures = apiPropertyFeatures.useUpdate();
 
@@ -95,24 +114,30 @@ export default function usePage(): UsePageProjectAvailableProps {
     }
   };
 
-  const handleClickEdit = async (data: GetAllPropertyFeaturesDto) => {
-    propertyFeatureHookForm.setValue('property_feature_id', data.property_feature_id)
-    propertyFeatureHookForm.setValue('description', data.description)
-    propertyFeatureHookForm.setValue('type', data.type)
-    propertyFeatureHookForm.setValue('is_active', data.is_active)
+  const handleClickEdit = async (data: GetPropertyFeaturesDto) => {
+    propertyFeatureHookForm.setValue(
+      'property_feature_id',
+      data.property_feature_id
+    );
+    propertyFeatureHookForm.setValue('description', data.description);
+    propertyFeatureHookForm.setValue('type', data.type);
+    propertyFeatureHookForm.setValue('is_active', data.is_active);
     setIsEdit(true);
     setOpenCreateEditModal(true);
   };
 
-  const handleClickDelete = async (data: GetAllPropertyFeaturesDto) => {
+  const handleClickDelete = async (data: GetPropertyFeaturesDto) => {
     setSelectedPropertyFeatureToDelete(data.property_feature_id);
     setOpenDeleteModal(true);
   };
 
-
-  const onSubmitUser: SubmitHandler<CreateUpdatePropertyFeaturesDto> = async (data) => {
+  const onSubmitUser: SubmitHandler<CreateUpdatePropertyFeaturesDto> = async (
+    data
+  ) => {
     try {
-      const features = isEdit ? await updateFeatures.mutateAsync(data) : await createFeatures.mutateAsync(data);
+      const features = isEdit
+        ? await updateFeatures.mutateAsync(data)
+        : await createFeatures.mutateAsync(data);
       if (!!features) {
         toast.success(`Carasteristica ${isEdit ? 'Actualizado' : 'Creado'}.`, {
           position: 'top-right',
