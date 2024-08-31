@@ -2,14 +2,16 @@ import * as React from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogTitle from '@mui/material/DialogTitle';
 import DialogContent from '@mui/material/DialogContent';
-import { Grid,} from '@mui/material';
+import { Grid } from '@mui/material';
 import Button from '@mui/material/Button';
 import DialogActions from '@mui/material/DialogActions';
 
 import { TextFieldSharedController } from '@/common/components/UI/textField/TextFieldShared';
 import { handleOnClose } from '@/common/utils/dialog';
 import { SelectSharedController } from '@/common/components/UI/textField/SelectShared';
-import {PropertyType} from '@/common/constants';
+import { PropertyType } from '@/common/constants';
+
+export const FeatureTypes = [{ value: 'all', label: 'Todos' }, ...PropertyType];
 
 type Props = {
   isEdit?: boolean;
@@ -18,7 +20,7 @@ type Props = {
   usePageProps: any;
 };
 
-export const DialogCreateEditUser = ({
+export const DialogCreateEditSettings = ({
   isEdit = false,
   open,
   onClose,
@@ -42,28 +44,26 @@ export const DialogCreateEditUser = ({
         sx={{ display: 'flex', justifyContent: 'center', px: '40px' }}
       >
         <Grid container spacing={5} xs={12}>
-
           <Grid item xs={12} md={6}>
             <TextFieldSharedController
-                label={'Descripcción'}
-                name={'description'}
-                isRequired
-                hookForm={propertyFeatureHookForm}
-                labelStyle={{ mb: '10px' }}
+              label={'Descripcción'}
+              name={'description'}
+              isRequired
+              hookForm={propertyFeatureHookForm}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
 
           <Grid item xs={12} md={6}>
             <SelectSharedController
-                label={'Carasteristicas'}
-                name={'type'}
-                isRequired
-                options={[{value: "all", label: "Todos"}, ...PropertyType]}
-                hookForm={propertyFeatureHookForm}
-                labelStyle={{mb: '10px'}}
+              label={'Carasteristicas'}
+              name={'type'}
+              isRequired
+              options={FeatureTypes}
+              hookForm={propertyFeatureHookForm}
+              labelStyle={{ mb: '10px' }}
             />
           </Grid>
-
         </Grid>
       </DialogContent>
       <DialogActions sx={{ p: '40px' }}>

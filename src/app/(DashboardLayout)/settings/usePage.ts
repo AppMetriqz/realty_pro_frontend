@@ -88,7 +88,7 @@ export default function usePage(): UsePageProjectAvailableProps {
 
   const onCloseCreateEditModal = () => {
     setIsEdit(false);
-    setSelectedPropertyFeatureToDelete(null);
+    propertyFeatureHookForm.reset();
     setOpenCreateEditModal(false);
   };
 

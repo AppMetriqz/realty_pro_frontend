@@ -66,7 +66,9 @@ const PendingPayment: FC<PendingPaymentProps> = ({
           backgroundColor: '#FFF1E6',
           '&:hover': { backgroundColor: '#FFE3CD' },
         }}
-        disabled={pendingPaymentList.length > 0}
+        disabled={
+          pendingPaymentList.length > 0 || plan.sale.stage === 'financed'
+        }
         onClick={() => onClickMoveToFinancing?.({ sale_id: plan.sale.sale_id })}
       >
         Pasar a Financamiento ({financingAmount})

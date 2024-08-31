@@ -75,7 +75,7 @@ const ContactProfile = () => {
       ),
     },
     {
-      label: 'Financiado',
+      label: 'Financiados',
       id: 'funded',
       component: !!useContactProfilePageProps.findFinishedContactPaymentPlans
         .data?.length ? (

@@ -8,11 +8,13 @@ import TableShared, {
   ColumnProps,
 } from '@/common/components/UI/table/TableShared';
 import MenuShared from '@/common/components/UI/menu/MenuShared';
-import { GetPropertyFeaturesDto, GetUserDto } from '@/common/dto';
+import { GetPropertyFeaturesDto } from '@/common/dto';
 import PageContainer from '../components/container/PageContainer';
 import HeaderPage from '../components/shared/HeaderPage';
-import { DialogDelete } from '@/common/components/Logic/DialogDelete';
-import { DialogCreateEditUser } from './component/DialogCreateEditUser';
+import {
+  DialogCreateEditSettings,
+  FeatureTypes,
+} from './component/DialogCreateEditSettings';
 import { DialogFreeDelete } from '@/common/components/Logic/DialogFreeDelete';
 
 const User = () => {
@@ -37,6 +39,9 @@ const User = () => {
         numeric: false,
         disablePadding: true,
         label: 'Tipo',
+        render: (_, record: GetPropertyFeaturesDto & { id: number }) =>
+          FeatureTypes.find((feature) => feature.value === record.type)
+            ?.label || '-',
       },
       {
         key: 'property_feature_id',
@@ -103,7 +108,7 @@ const User = () => {
         </Box>
       </PageContainer>
 
-      <DialogCreateEditUser
+      <DialogCreateEditSettings
         isEdit={usePageProps.isEdit}
         open={usePageProps.openCreateEditModal}
         onClose={usePageProps.onCloseCreateEditModal}

@@ -76,10 +76,12 @@ export const useCreate = () => {
       axiosInstance.post(`/${projects}`, data, {
         headers: { 'Content-Type': 'multipart/form-data' },
       }),
-    onSuccess: async () => {
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [`${projects}FindAll`] });
       queryClient.invalidateQueries({
-        queryKey: [`${projects}FindAll`],
+        queryKey: [`${projects}FindAllAutocomplete`],
       });
+      queryClient.invalidateQueries({ queryKey: [projects] });
     },
   });
 };

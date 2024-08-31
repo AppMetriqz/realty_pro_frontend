@@ -75,7 +75,7 @@ const PaymentAccordion: FC<{
     },
     ...paidPaymentFromApi.map((planDetail): ChipType => {
       return {
-        id: planDetail.payment_number + 2,
+        id: planDetail.payment_number + 4,
         bgColor: 'separation',
         content: (
           <Typography fontSize={'14px'} fontWeight={500} textAlign={'center'}>
@@ -86,12 +86,32 @@ const PaymentAccordion: FC<{
             ).toFormat('dd/LL/yyyy')}
             &nbsp;-&nbsp;{plan.project.currency_type}
             {formatCurrency(parseFloat(planDetail.amount_paid))}
-            &nbsp;-&nbsp; Pago de cuota.
+            {parseFloat(planDetail.payout) > 0
+              ? ` (Abonó:
+            ${plan.project.currency_type}${formatCurrency(
+                  parseFloat(planDetail.payout)
+                )})`
+              : null}
+            &nbsp;-&nbsp;Pago de cuota.
           </Typography>
         ),
       };
     }),
   ];
+  if (plan.sale && plan.sale.stage === 'financed' && !!plan.sale.financed_at) {
+    paidPayment.push({
+      id: 4,
+      bgColor: 'paymentPlanCreated',
+      content: (
+        <Typography fontSize={'14px'} fontWeight={500} textAlign={'center'}>
+          {DateTime.fromISO(plan.sale.financed_at).toLocaleString()}
+          &nbsp;- Plan de Pago Financiado -&nbsp;
+          {plan.project.currency_type}
+          {formatCurrency(plan.total_financing)}
+        </Typography>
+      ),
+    });
+  }
 
   const pendingPayments: ChipType[] = pendingPaymentFromApi.map(
     (planDetail) => {
