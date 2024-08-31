@@ -6,7 +6,7 @@ import HeaderPage from '../../components/shared/HeaderPage';
 import ProjectTab from '../../project/components/ProjectTab';
 import useContactProfilePage from './usePage';
 import SaleTab from './components/SaleTab';
-import FinalizedTab from './components/FinalizedTab';
+import FundedTab from './components/FundedTab';
 import { DialogCreateUpdateContact } from '../components/DialogCreateUpdateContact';
 import { ContactFormInput } from '../core';
 import { DateTime } from 'luxon';
@@ -75,11 +75,11 @@ const ContactProfile = () => {
       ),
     },
     {
-      label: 'Finalizado',
-      id: 'finalized',
+      label: 'Financiado',
+      id: 'funded',
       component: !!useContactProfilePageProps.findFinishedContactPaymentPlans
         .data?.length ? (
-        <FinalizedTab
+        <FundedTab
           paymentPlan={
             useContactProfilePageProps.findFinishedContactPaymentPlans
           }

@@ -13,7 +13,6 @@ import { UseQueryResult } from '@tanstack/react-query';
 import { CreateUpdateUserDto, GetUserDto } from '@/common/dto';
 import { toast } from 'react-toastify';
 import { ExceptionCatchResponse } from '@/common/exceptions';
-import { UserRoles } from '@/common/constants';
 
 export type UsePageProjectAvailableProps = {
   deleteHookForm: UseFormReturn<DeleteFormType>;
@@ -98,9 +97,8 @@ export default function usePage(): UsePageProjectAvailableProps {
 
   const onCloseCreateEditModal = () => {
     setIsEdit(false);
-    setSelectedUserToDelete(null);
     setOpenCreateEditModal(false);
-    deleteHookForm.reset();
+    userHookForm.reset();
   };
 
   const onSubmitDelete: SubmitHandler<DeleteFormType> = async (data) => {

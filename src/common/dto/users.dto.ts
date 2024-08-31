@@ -22,7 +22,14 @@ export interface CreateUserDto {
   phone_number: string;
   national_id: string;
   email: string;
+  password?: string;
+}
+
+export interface UpdateUserPasswordDto {
+  user_id?: number;
+  oldPassword: string;
   password: string;
+  cpassword: string;
 }
 
 export interface CreateUpdateUserDto extends CreateUserDto {

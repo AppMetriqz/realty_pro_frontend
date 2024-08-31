@@ -1,17 +1,10 @@
 'use client';
-import CloseIcon from '@/icons/CloseIcon';
-import {
-  Box,
-  Chip,
-  ChipPropsColorOverrides,
-  CircularProgress,
-  Grid,
-  Typography,
-} from '@mui/material';
+import { Box, Chip, CircularProgress, Grid, Typography } from '@mui/material';
 import React, { ReactElement } from 'react';
 import usePage from './useUserPage';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import KeyIcon from '@mui/icons-material/Key';
 import TableShared, {
   ColumnProps,
 } from '@/common/components/UI/table/TableShared';

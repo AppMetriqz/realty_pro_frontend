@@ -4,7 +4,7 @@ import PaymentAccordion from './PaymentAccordion';
 import { UseQueryResult } from '@tanstack/react-query';
 import { GetContactPaymentPlanDto } from '@/common/dto';
 
-const FinalizedTab: FC<{
+const FundedTab: FC<{
   paymentPlan: UseQueryResult<GetContactPaymentPlanDto[], Error>;
 }> = ({ paymentPlan }) => {
   return (
@@ -27,4 +27,4 @@ const FinalizedTab: FC<{
   );
 };
 
-export default FinalizedTab;
+export default FundedTab;

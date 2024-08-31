@@ -14,7 +14,6 @@ export const userValidationSchema = yup.object({
   first_name: yup.string().required(ErrorMsg.required),
   last_name: yup.string().required(ErrorMsg.required),
   email: yup.string().required(ErrorMsg.required),
-  password: yup.string().required(ErrorMsg.required),
   role_id: yup.number().required(ErrorMsg.required),
 });
 
@@ -25,5 +24,4 @@ export const userFormDefaultValues: CreateUserDto = {
   phone_number: '',
   national_id: '',
   email: '',
-  password: '',
 };

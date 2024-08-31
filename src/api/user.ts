@@ -64,6 +64,19 @@ export const useUpdate = () => {
   });
 };
 
+export const useChangePassword = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: [`${users}ChangePassword`],
+    mutationFn: (data: { old_password: string; new_password: string }) =>
+      axiosInstance.post(`${users}change-password`, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [`${users}FindAll`] });
+      queryClient.invalidateQueries({ queryKey: [users] });
+    },
+  });
+};
+
 export const useDelete = (id: string | number | string[] | null) => {
   const queryClient = useQueryClient();
   return useMutation({
@@ -84,5 +97,6 @@ export const apiUser = {
   useFindOne,
   useCreate,
   useUpdate,
+  useChangePassword,
   useDelete,
 };
