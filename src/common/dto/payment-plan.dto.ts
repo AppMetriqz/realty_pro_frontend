@@ -1,5 +1,6 @@
 export type GetPaymentPlanDto = {
   payment_plan_detail_id: number;
+  payment_plan_id: number;
   sale_id: number;
   project_id: number;
   unit_id: number;
@@ -8,7 +9,10 @@ export type GetPaymentPlanDto = {
   payment_amount: number;
   payment_date: string;
   separation_amount: number;
+  total_amount_paid: number;
+  amount_paid: number;
   separation_date: string;
+  paid_at: string;
   payment_plan_numbers: number;
   separation_rate: number;
   status: string;

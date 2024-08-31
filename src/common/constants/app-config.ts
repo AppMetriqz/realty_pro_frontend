@@ -88,3 +88,11 @@ export const UserRoles = [
   { value: 3, label: 'Ejecutor' },
   { value: 4, label: 'Visitante' },
 ];
+
+export const PropertyFeaturesType = [
+  { value: 'house', label: 'Super Administrador' },
+  { value: 'apartment', label: 'Administrador' },
+  { value: 'plot', label: 'Ejecutor' },
+  { value: 'commercial', label: 'Visitante' },
+];
+

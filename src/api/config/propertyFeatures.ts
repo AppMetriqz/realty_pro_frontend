@@ -1,16 +1,13 @@
 'use client';
 import axiosInstance from '@/config/api/api.config';
 import {
-  ProjectDto,
   SortByDto,
-  PropertyFeaturesDto,
-  PropertyTypeDto,
+  GetAllPropertyFeaturesDto, PropertyFeaturesTypeDto, CreateUpdatePropertyFeaturesDto,
 } from '@/common/dto';
 import {
   useMutation,
   useQuery,
   useQueryClient,
-  UseQueryResult,
 } from '@tanstack/react-query';
 import { QueriesOptions } from '@/common/constants/react-query';
 import _ from 'lodash';
@@ -24,39 +21,23 @@ interface FindAllDto {
   sortBy?: string;
   dateFrom?: number;
   dateTo?: number;
-  type: string;
+  type?: keyof typeof PropertyFeaturesTypeDto;
 }
 
-export interface FindAllAutocompleteDto {
-  description: string;
-}
 
-export type ResultFindAllProjectFeatures = UseQueryResult<
-  { rows: PropertyFeaturesDto[]; count: number },
-  any
->;
 
-export const useFindAll = (params: FindAllDto) => {
-  return useQuery<{ rows: PropertyFeaturesDto[]; count: number }, any>({
+export const useFindAll = (params: FindAllDto, enabled?:boolean) => {
+  return useQuery<{ rows: GetAllPropertyFeaturesDto[]; count: number }, Error>({
     queryKey: [`${propertyFeatures}FindAll`, params],
     queryFn: () => axiosInstance.get(`/${propertyFeatures}`, { params }),
     ...QueriesOptions,
-    enabled: !_.isEmpty(params.type),
+    enabled: enabled? enabled : !_.isEmpty(params.type),
   });
 };
 
-export const useFindAllAutocomplete = (params: FindAllAutocompleteDto) => {
-  return useQuery<ProjectDto[], FindAllAutocompleteDto>({
-    queryKey: [`${propertyFeatures}FindAllAutocomplete`, params],
-    queryFn: () =>
-      axiosInstance.get(`/${propertyFeatures}/autocomplete`, { params }),
-    ...QueriesOptions,
-    enabled: _.size(params.description) > 1,
-  });
-};
 
 export const useFindOne = (id: string | number) => {
-  return useQuery<any, PropertyFeaturesDto>({
+  return useQuery<GetAllPropertyFeaturesDto, Error>({
     queryKey: [propertyFeatures, id],
     queryFn: () => axiosInstance.get(`/${propertyFeatures}/${id}`),
     enabled: !!id,
@@ -67,8 +48,7 @@ export const useCreate = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: [`${propertyFeatures}Create`],
-    mutationFn: (data: PropertyFeaturesDto) =>
-      axiosInstance.post(`/${propertyFeatures}`, data),
+    mutationFn: (data: CreateUpdatePropertyFeaturesDto) => axiosInstance.post(`/${propertyFeatures}`, data),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [`${propertyFeatures}FindAll`],
@@ -81,11 +61,7 @@ export const useUpdate = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: [`${propertyFeatures}Update`],
-    mutationFn: (data: PropertyFeaturesDto) =>
-      axiosInstance.put(
-        `/${propertyFeatures}/${data.property_feature_id}`,
-        data
-      ),
+    mutationFn: (data: CreateUpdatePropertyFeaturesDto) => axiosInstance.put(`/${propertyFeatures}/${data.property_feature_id}`, data),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [`${propertyFeatures}FindAll`],
@@ -94,10 +70,22 @@ export const useUpdate = () => {
   });
 };
 
+export const useDelete = (id: string | number | string[] | null) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: [`${propertyFeatures}Delete`],
+    mutationFn: () => axiosInstance.delete(`${propertyFeatures}/${id}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: [`${propertyFeatures}FindAll`] });
+      queryClient.invalidateQueries({ queryKey: [propertyFeatures] });
+    },
+  });
+};
+
 export const apiPropertyFeatures = {
   useFindAll,
-  useFindAllAutocomplete,
   useFindOne,
   useCreate,
   useUpdate,
+  useDelete,
 };
