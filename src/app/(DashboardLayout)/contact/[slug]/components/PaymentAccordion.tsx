@@ -85,11 +85,15 @@ const PaymentAccordion: FC<{
                 : planDetail.updated_at
             ).toFormat('dd/LL/yyyy')}
             &nbsp;-&nbsp;{plan.project.currency_type}
-            {formatCurrency(parseFloat(planDetail.amount_paid))}
-            {parseFloat(planDetail.payout) > 0
-              ? ` (Abonó:
+            {formatCurrency(parseFloat(planDetail.total_amount_paid))}
+            &nbsp;
+            {parseFloat(planDetail.total_amount_paid) -
+              parseFloat(planDetail.amount_paid) >
+            0
+              ? `- (Abonó:
             ${plan.project.currency_type}${formatCurrency(
-                  parseFloat(planDetail.payout)
+                  parseFloat(planDetail.total_amount_paid) -
+                    parseFloat(planDetail.amount_paid)
                 )})`
               : null}
             &nbsp;-&nbsp;Pago de cuota.

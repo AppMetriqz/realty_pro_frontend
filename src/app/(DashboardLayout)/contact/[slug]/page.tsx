@@ -77,11 +77,11 @@ const ContactProfile = () => {
     {
       label: 'Financiados',
       id: 'funded',
-      component: !!useContactProfilePageProps.findFinishedContactPaymentPlans
+      component: !!useContactProfilePageProps.findFinancedContactPaymentPlans
         .data?.length ? (
         <FundedTab
           paymentPlan={
-            useContactProfilePageProps.findFinishedContactPaymentPlans
+            useContactProfilePageProps.findFinancedContactPaymentPlans
           }
         />
       ) : (

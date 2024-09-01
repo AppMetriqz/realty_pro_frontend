@@ -56,11 +56,6 @@ export const createProjectValidationSchema = yup.object({
   address: yup.string().required(ErrorMsg.required),
   latitude: yup.number(),
   longitude: yup.number(),
-  cover: yup.mixed().required(ErrorMsg.file),
-  property_feature_ids: yup
-    .array()
-    .min(1, ErrorMsg.arrayMin)
-    .required(ErrorMsg.required),
 });
 
 export const updateProjectValidationSchema = yup.object({

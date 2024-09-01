@@ -56,17 +56,4 @@ export const createContactValidationSchema = yup.object({
   type: yup.string().required(ErrorMsg.required),
   first_name: yup.string().required(ErrorMsg.required),
   last_name: yup.string().required(ErrorMsg.required),
-  email: yup.string().email(ErrorMsg.email).required(ErrorMsg.required),
-  phone_number_1: yup
-    .string()
-    .length(17, ErrorMsg.phone)
-    .required(ErrorMsg.required),
-  national_id: yup.string().required(ErrorMsg.required),
-  nationality: yup.string().required(ErrorMsg.required),
-  contact_method: yup.string().required(ErrorMsg.required),
-  date_of_birth: yup.string().required(ErrorMsg.required),
-  address: yup.string().required(ErrorMsg.required),
-  workplace: yup.string().required(ErrorMsg.required),
-  work_occupation: yup.string().required(ErrorMsg.required),
-  marital_status: yup.string().required(ErrorMsg.required),
 });

@@ -54,6 +54,7 @@ export const DialogCreateUpdateContact = ({
               label={'Tipo de contacto'}
               name={'type'}
               options={ContactType}
+              isRequired
               hookForm={contactHookForm}
               labelStyle={{ mb: '10px' }}
             />
@@ -71,6 +72,7 @@ export const DialogCreateUpdateContact = ({
             <TextFieldSharedController
               label={'Apellido'}
               name={'last_name'}
+              isRequired
               hookForm={contactHookForm}
               labelStyle={{ mb: '10px' }}
             />

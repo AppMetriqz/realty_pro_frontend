@@ -45,7 +45,7 @@ export type UseContactProfilePageProps = {
   findContact: UseQueryResult<GetContactDto, Error>;
   onCloseCreateEditContact: () => void;
   findContactPaymentPlans: UseQueryResult<GetContactPaymentPlanDto[], Error>;
-  findFinishedContactPaymentPlans: UseQueryResult<
+  findFinancedContactPaymentPlans: UseQueryResult<
     GetContactPaymentPlanDto[],
     Error
   >;
@@ -120,10 +120,10 @@ const useContactProfilePage = (): UseContactProfilePageProps => {
   const findContactPaymentPlans = apiContacts.useFindPaymentPlans(slug, {
     status: 'sales',
   });
-  const findFinishedContactPaymentPlans = apiContacts.useFindPaymentPlans(
+  const findFinancedContactPaymentPlans = apiContacts.useFindPaymentPlans(
     slug,
     {
-      status: 'finished',
+      status: 'financed',
     }
   );
   const clientAutocompleteContacts = apiContacts.useFindAllAutocomplete({
@@ -360,7 +360,7 @@ const useContactProfilePage = (): UseContactProfilePageProps => {
     onCloseCreateEditContact,
     setOpenCreateEditContact,
     findContactPaymentPlans,
-    findFinishedContactPaymentPlans,
+    findFinancedContactPaymentPlans,
     openAddSpouse,
     setOpenAddSpouse,
     onCloseAddSpouse,

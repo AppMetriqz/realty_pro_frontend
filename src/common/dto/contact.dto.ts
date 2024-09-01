@@ -65,7 +65,7 @@ export type GetContactDto = {
 export type PaymentPlanDetailDto = {
   payment_amount: string;
   amount_paid: string;
-  payout: string;
+  total_amount_paid: string;
   payment_number: number;
   payment_date: string;
   sale_type: string;

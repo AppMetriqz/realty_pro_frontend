@@ -10,14 +10,43 @@ import Paper from '@mui/material/Paper';
 import EnhancedTableToolbar from './EnhancedTableToolbar';
 import EnhancedTableHead from './EnhancedTableHead';
 
+function extractNumber(value: string): number {
+  // Eliminar símbolos de moneda y otros caracteres no numéricos
+  const sanitizedValue = value.replace(/[^0-9.-]/g, '');
+  // Extraer el primer número encontrado en una cadena
+  const match = sanitizedValue.match(/-?\d+(\.\d+)?/);
+  return match ? parseFloat(match[0]) : NaN;
+}
+
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
+  const aValue = String(a[orderBy]);
+  const bValue = String(b[orderBy]);
+
+  // Extraer números y comparar numéricamente si ambos valores contienen números
+  const aNumber = extractNumber(aValue);
+  const bNumber = extractNumber(bValue);
+
+  // Comparar numéricamente si ambos valores contienen números
+  if (!isNaN(aNumber) && !isNaN(bNumber)) {
+    return bNumber - aNumber;
   }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
+
+  // Comparar como cadenas si ambos valores no contienen números
+  if (isNaN(aNumber) && isNaN(bNumber)) {
+    if (bValue < aValue) {
+      return -1;
+    }
+    if (bValue > aValue) {
+      return 1;
+    }
+    return 0;
   }
-  return 0;
+
+  // Comparar como numérico el valor que contiene un número y el que no
+  if (!isNaN(aNumber)) {
+    return -1; // El valor con número es mayor
+  }
+  return 1; // El valor sin número es menor
 }
 
 export type Order = 'asc' | 'desc';
