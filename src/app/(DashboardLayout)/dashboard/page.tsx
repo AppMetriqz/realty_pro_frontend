@@ -41,21 +41,21 @@ const Dashboard = () => {
       render: (_, record) =>
         record.created_at
           ? DateTime.fromISO(record.created_at).toLocaleString()
-          : '',
+          : '-',
     },
     {
       key: 'project',
       numeric: false,
       disablePadding: true,
       label: 'Proyecto',
-      render: (_, record) => (record.project ? record.project.name : ''),
+      render: (_, record) => (record.project ? record.project.name : '-'),
     },
     {
       key: 'unit',
       numeric: false,
       disablePadding: false,
       label: 'Unidad',
-      render: (_, record) => (record.unit ? record.unit.name : ''),
+      render: (_, record) => (record.unit ? record.unit.name : '-'),
     },
     {
       key: 'client',
@@ -65,7 +65,7 @@ const Dashboard = () => {
       render: (_, record) =>
         record.client
           ? `${record.client.first_name} ${record.client.last_name}`
-          : '',
+          : '-',
     },
     {
       key: 'created_at',
@@ -100,21 +100,23 @@ const Dashboard = () => {
       disablePadding: true,
       label: 'Fecha',
       render: (_, record: Partial<GetSellDto>) =>
-        DateTime.fromISO(record.created_at ?? '').toLocaleString(),
+        record.created_at
+          ? DateTime.fromISO(record.created_at).toLocaleString()
+          : '-',
     },
     {
       key: 'project',
       numeric: false,
       disablePadding: true,
       label: 'Proyecto',
-      render: (_, record: Partial<GetSellDto>) => record.project?.name || '',
+      render: (_, record: Partial<GetSellDto>) => record.project?.name || '-',
     },
     {
       key: 'unit',
       numeric: false,
       disablePadding: false,
       label: 'Unidad',
-      render: (_, record: Partial<GetSellDto>) => record.unit?.name || '',
+      render: (_, record: Partial<GetSellDto>) => record.unit?.name || '-',
     },
     {
       key: 'price',
@@ -122,7 +124,7 @@ const Dashboard = () => {
       disablePadding: false,
       label: 'Monto',
       render: (_, record: Partial<GetSellDto>) =>
-        formatCurrency(parseFloat(record.price ?? '0')),
+        record.price ? formatCurrency(parseFloat(record.price)) : '0',
     },
     {
       key: 'created_at',

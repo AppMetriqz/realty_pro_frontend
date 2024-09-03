@@ -111,7 +111,7 @@ const User = () => {
       label: 'Acciones',
       render: (_, record: Partial<GetUserDto> & { id: number }) =>
         record.role_id === 1 ? (
-          <></>
+          <>-</>
         ) : (
           <MenuShared
             actions={[

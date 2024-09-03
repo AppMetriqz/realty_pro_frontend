@@ -74,6 +74,13 @@ const PaymentAccordion: FC<{
       ),
     },
     ...paidPaymentFromApi.map((planDetail): ChipType => {
+      const hasPayout =
+        parseFloat(planDetail.total_amount_paid) -
+          parseFloat(planDetail.amount_paid) >
+        0;
+      const paymentAmount = hasPayout
+        ? parseFloat(planDetail.amount_paid)
+        : parseFloat(planDetail.total_amount_paid);
       return {
         id: planDetail.payment_number + 4,
         bgColor: 'separation',
@@ -85,18 +92,15 @@ const PaymentAccordion: FC<{
                 : planDetail.updated_at
             ).toFormat('dd/LL/yyyy')}
             &nbsp;-&nbsp;{plan.project.currency_type}
-            {formatCurrency(parseFloat(planDetail.total_amount_paid))}
-            &nbsp;
-            {parseFloat(planDetail.total_amount_paid) -
-              parseFloat(planDetail.amount_paid) >
-            0
-              ? `- (Abonó:
+            {formatCurrency(paymentAmount)}
+            &nbsp;Pago de cuota&nbsp;
+            {hasPayout
+              ? `+ (Abonó:
             ${plan.project.currency_type}${formatCurrency(
                   parseFloat(planDetail.total_amount_paid) -
                     parseFloat(planDetail.amount_paid)
                 )})`
               : null}
-            &nbsp;-&nbsp;Pago de cuota.
           </Typography>
         ),
       };
@@ -127,6 +131,7 @@ const PaymentAccordion: FC<{
         content: (
           <Typography fontSize={'14px'} fontWeight={500} textAlign={'center'}>
             {DateTime.fromISO(planDetail.payment_date).toLocaleString()} -&nbsp;
+            {plan.project.currency_type}
             {formatCurrency(parseFloat(planDetail.payment_amount))} Pago de
             cuota (Pendiente:&nbsp;
             {formatCurrency(pendingAmount)})

@@ -8,11 +8,14 @@ import usePage, {
 } from '@/app/(DashboardLayout)/payment-plan/usePage';
 import { Box } from '@mui/material';
 import TableShared from '@/common/components/UI/table/TableShared';
-import {HeadCellsPaymentPlan, HeadCellsPaymentPlanFinancing} from '@/app/(DashboardLayout)/payment-plan/core';
+import {
+  HeadCellsPaymentPlan,
+  HeadCellsPaymentPlanFinancing,
+} from '@/app/(DashboardLayout)/payment-plan/core';
 import { GetPaymentPlanDto } from '@/common/dto';
 import { Status } from '@/app/(DashboardLayout)/payment-plan/components/Status';
 import { PaymentPlanType } from '@/common/constants';
-import _ from "lodash";
+import _ from 'lodash';
 
 const PaymentPlan = () => {
   const usePageProps: UsePageProps = usePage();
@@ -85,8 +88,11 @@ const PaymentPlan = () => {
               ? usePageProps.paymentPlanPending.data.rows.map((items) => ({
                   ...items,
                   id: items.sale_id,
-                  phone_number_1: items.client.phone_number_1,
-                  sale_type: _.find(PaymentPlanType, {value:items.payment_plan.sale_type})?.label??"",
+                  phone_number_1: items.client.phone_number_1 || '-',
+                  sale_type:
+                    _.find(PaymentPlanType, {
+                      value: items.payment_plan.sale_type,
+                    })?.label ?? '',
                 }))
               : []
           }
@@ -119,7 +125,9 @@ const PaymentPlan = () => {
                   ...items,
                   id: items.sale_id,
                   phone_number_1: items.client.phone_number_1,
-                  sale_type:_.find(PaymentPlanType, {value:items.sale_type})?.label??"",
+                  sale_type:
+                    _.find(PaymentPlanType, { value: items.sale_type })
+                      ?.label ?? '',
                 }))
               : []
           }
