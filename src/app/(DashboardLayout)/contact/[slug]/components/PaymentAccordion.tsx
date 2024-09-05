@@ -80,7 +80,7 @@ const PaymentAccordion: FC<{
               {DateTime.fromISO(payment.payment_made_at).toFormat('dd/LL/yyyy')}
               &nbsp;-&nbsp;{plan.project.currency_type}
               {formatCurrency(payment.amount)}
-              &nbsp;Pago de cuota
+              &nbsp;Pago
             </Typography>
             {payment.notes ? (
               <Typography
