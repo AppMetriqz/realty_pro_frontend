@@ -9,6 +9,7 @@ import _ from 'lodash';
 export type PaymentPlanDto = Partial<GetPaymentPlanDto> & {
   id: number;
   phone_number_1: string;
+  clientName: string;
   sale_type: string;
 };
 
@@ -26,6 +27,14 @@ export const HeadCellsPaymentPlan: Array<ColumnProps<PaymentPlanDto>> = [
     label: 'ID',
     render: (_, record: Partial<PaymentPlanDto>) =>
       record.payment_plan_detail_id ?? 0,
+  },
+  {
+    key: 'clientName',
+    numeric: false,
+    disablePadding: true,
+    label: 'Cliente',
+    render: (_, record: Partial<PaymentPlanDto>) =>
+        record.clientName ?? "",
   },
   {
     key: 'remaining_time',
@@ -110,6 +119,14 @@ export const HeadCellsPaymentPlanFinancing: Array<ColumnProps<PaymentPlanDto>> =
       label: 'ID',
       render: (_, record: Partial<PaymentPlanDto>) =>
         record.payment_plan_id ?? 0,
+    },
+    {
+      key: 'clientName',
+      numeric: false,
+      disablePadding: true,
+      label: 'Cliente',
+      render: (_, record: Partial<PaymentPlanDto>) =>
+          record.clientName ?? "",
     },
     {
       key: 'remaining_time',

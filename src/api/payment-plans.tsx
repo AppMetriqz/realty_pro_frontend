@@ -1,7 +1,6 @@
 'use client';
 import axiosInstance from '@/config/api/api.config';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { QueriesOptions } from '@/common/constants/react-query';
 import { desktop } from './desktop';
 import {
   GetPaymentPlanStatDto,
@@ -30,20 +29,12 @@ interface FindAllDto {
   currencyType?: keyof typeof CurrencyTypeDto;
 }
 
-export const useFindAllStats = (params: FindAllStatsDto) => {
-  return useQuery<GetPaymentPlanStatDto, Error>({
-    queryKey: [`${paymentPlans}`, params],
-    queryFn: () => axiosInstance.get(`/${paymentPlans}/stats`, { params }),
-    ...QueriesOptions,
-  });
-};
-
 export const useCreate = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: [`${paymentPlans}Create`],
     mutationFn: (data: CreatePaymentPlanDto) =>
-      axiosInstance.post(`/${paymentPlans}`, data),
+        axiosInstance.post(`/${paymentPlans}`, data),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [`${desktop}-sales-to-assign`],
@@ -58,11 +49,25 @@ export const useCreate = () => {
   });
 };
 
+export const useFindAllStats = (params: FindAllStatsDto) => {
+  return useQuery<GetPaymentPlanStatDto, Error>({
+    queryKey: [`${paymentPlans}`, params],
+    queryFn: () => axiosInstance.get(`/${paymentPlans}/stats`, { params }),
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
+    gcTime:0,
+    staleTime: 0,
+  });
+};
+
 export const useFindAll = (params: FindAllDto) => {
   return useQuery<{ count: number; rows: GetPaymentPlanDto[] }, Error>({
     queryKey: [`${paymentPlans}FindAll`, params],
     queryFn: () => axiosInstance.get(`/${paymentPlans}`, { params }),
-    ...QueriesOptions,
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
+    gcTime:0,
+    staleTime: 0,
   });
 };
 
@@ -70,7 +75,10 @@ export const useFindAllFinancing = (params: FindAllDto) => {
   return useQuery<{ count: number; rows: GetPaymentPlanDto[] }, Error>({
     queryKey: [`${paymentPlans}FindAll`, params],
     queryFn: () => axiosInstance.get(`/${paymentPlans}/financing`, { params }),
-    ...QueriesOptions,
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
+    gcTime:0,
+    staleTime: 0,
   });
 };
 
