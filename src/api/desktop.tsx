@@ -95,7 +95,10 @@ export const useGoogleCalendar = (params: FindCalendarDto) => {
   return useQuery<GoogleCalendarDto, Error>({
     queryKey: [`${desktop}-calendar`, params],
     queryFn: () => axiosInstance.get(`/${desktop}/google/calendar`, { params }),
-    ...QueriesOptions,
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
+    gcTime:0,
+    staleTime: 0,
   });
 };
 
@@ -103,7 +106,10 @@ export const useSale = () => {
   return useQuery<SaleStatDto[], Error>({
     queryKey: [`${desktop}-sales`],
     queryFn: () => axiosInstance.get(`/${desktop}/sales`),
-    ...QueriesOptions,
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
+    gcTime:0,
+    staleTime: 0,
   });
 };
 
@@ -111,7 +117,10 @@ export const useSalesToAssign = (params: FindAllDto) => {
   return useQuery<SalesToAssignDto, Error>({
     queryKey: [`${desktop}-sales-to-assign`, params],
     queryFn: () => axiosInstance.get(`/${desktop}/sales-to-assign`, { params }),
-    ...QueriesOptions,
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
+    gcTime:0,
+    staleTime: 0,
   });
 };
 
@@ -120,7 +129,10 @@ export const usePaymentPlansToAssign = (params: FindAllDto) => {
     queryKey: [`${desktop}-payment-plans-to-assign`, params],
     queryFn: () =>
       axiosInstance.get(`/${desktop}/payment-plans-to-assign`, { params }),
-    ...QueriesOptions,
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
+    gcTime:0,
+    staleTime: 0,
   });
 };
 
