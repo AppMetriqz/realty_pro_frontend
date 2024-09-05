@@ -44,9 +44,6 @@ const PaymentAccordion: FC<{
   const pendingPaymentFromApi = plan.payment_plan_details.filter(
     (p) => p.status === 'pending'
   );
-  const paidPaymentFromApi = plan.payment_plan_details.filter(
-    (p) => p.status === 'paid'
-  );
   const paidPayment: ChipType[] = [
     {
       id: 1,
@@ -73,35 +70,28 @@ const PaymentAccordion: FC<{
         </Typography>
       ),
     },
-    ...paidPaymentFromApi.map((planDetail): ChipType => {
-      const hasPayout =
-        parseFloat(planDetail.total_amount_paid) -
-          parseFloat(planDetail.amount_paid) >
-        0;
-      const paymentAmount = hasPayout
-        ? parseFloat(planDetail.amount_paid)
-        : parseFloat(planDetail.total_amount_paid);
+    ...plan.payments.map((payment): ChipType => {
       return {
-        id: planDetail.payment_number + 4,
+        id: payment.payment_id + 4,
         bgColor: 'separation',
         content: (
-          <Typography fontSize={'14px'} fontWeight={500} textAlign={'center'}>
-            {DateTime.fromISO(
-              planDetail.payment_made_at
-                ? planDetail.payment_made_at
-                : planDetail.updated_at
-            ).toFormat('dd/LL/yyyy')}
-            &nbsp;-&nbsp;{plan.project.currency_type}
-            {formatCurrency(paymentAmount)}
-            &nbsp;Pago de cuota&nbsp;
-            {hasPayout
-              ? `+ (Abonó:
-            ${plan.project.currency_type}${formatCurrency(
-                  parseFloat(planDetail.total_amount_paid) -
-                    parseFloat(planDetail.amount_paid)
-                )})`
-              : null}
-          </Typography>
+          <>
+            <Typography fontSize={'14px'} fontWeight={500} textAlign={'center'}>
+              {DateTime.fromISO(payment.payment_made_at).toFormat('dd/LL/yyyy')}
+              &nbsp;-&nbsp;{plan.project.currency_type}
+              {formatCurrency(payment.amount)}
+              &nbsp;Pago de cuota
+            </Typography>
+            {payment.notes ? (
+              <Typography
+                fontSize={'14px'}
+                fontWeight={500}
+                textAlign={'center'}
+              >
+                <span style={{ fontWeight: 700 }}>Nota:</span> {payment.notes}
+              </Typography>
+            ) : null}
+          </>
         ),
       };
     }),

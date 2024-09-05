@@ -76,6 +76,14 @@ export type PaymentPlanDetailDto = {
   payment_made_at: string;
 };
 
+export type PaymentType = {
+  payment_id: number;
+  amount: number;
+  payment_made_at: string;
+  created_at: string;
+  notes: string | null;
+};
+
 export type GetContactPaymentPlanDto = {
   payment_plan_id: number;
   project_id: number;
@@ -121,4 +129,5 @@ export type GetContactPaymentPlanDto = {
     };
   };
   payment_plan_details: PaymentPlanDetailDto[];
+  payments: PaymentType[];
 };
