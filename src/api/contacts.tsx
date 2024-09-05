@@ -48,7 +48,10 @@ export const useFindPaymentPlans = (
     queryKey: [`${contacts}PaymentPlans`, params],
     queryFn: () =>
       axiosInstance.get(`/${contacts}/payment-plans/${contact_id}`, { params }),
-    ...QueriesOptions,
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
+    gcTime: 0,
+    staleTime: 0,
   });
 };
 
