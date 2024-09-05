@@ -42,7 +42,15 @@ const SidebarContactInformation: FC<SidebarContactInformationProps> = ({
         MaritalStatusType.find(
           (status) => status.value === findContact.data?.marital_status
         )?.label ?? '',
-      extraContent: findContact.data?.spouse?.contact_id ? undefined : (
+      extraContent: findContact.data?.spouse?.contact_id ? (
+        <>
+          <Typography fontWeight={400}>Conyuge:</Typography>
+          <Typography mt="15px" fontWeight={500}>
+            {findContact.data?.spouse?.first_name}&nbsp;
+            {findContact.data?.spouse?.last_name}
+          </Typography>
+        </>
+      ) : (
         <Button
           variant="text"
           sx={{
