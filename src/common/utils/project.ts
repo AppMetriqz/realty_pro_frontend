@@ -13,7 +13,7 @@ export const mapProjectToProperty = (project: ProjectDto) => {
   return {
     id: project.project_id,
     name: project.name,
-    creationDate: DateTime.fromISO(project.created_at).toLocaleString(),
+    creationDate: DateTime.fromISO(project.created_at).toFormat('dd/LL/yyyy'),
     imageSrc: project.cover_path
       ? `${BASE_URL}/${project.cover_path}`
       : '/images/products/no_image.png',

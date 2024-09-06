@@ -229,7 +229,7 @@ export const DialogCreatePaymentPlan = ({
               <span style={{ fontWeight: 700 }}>
                 {DateTime.fromISO(paymentPlanHookForm.watch('separation_date'))
                   .plus({ month: 1 })
-                  .toLocaleString()}
+                  .toFormat('dd/LL/yyyy')}
               </span>
               &nbsp; y finalizando&nbsp;
               <span style={{ fontWeight: 700 }}>
@@ -239,7 +239,7 @@ export const DialogCreatePaymentPlan = ({
                       paymentPlanHookForm.watch('payment_plan_numbers') || '0'
                     ),
                   })
-                  .toLocaleString()}
+                  .toFormat('dd/LL/yyyy')}
               </span>
               .
             </Typography>

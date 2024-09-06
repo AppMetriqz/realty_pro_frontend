@@ -33,8 +33,7 @@ export const HeadCellsPaymentPlan: Array<ColumnProps<PaymentPlanDto>> = [
     numeric: false,
     disablePadding: true,
     label: 'Cliente',
-    render: (_, record: Partial<PaymentPlanDto>) =>
-        record.clientName ?? "",
+    render: (_, record: Partial<PaymentPlanDto>) => record.clientName ?? '',
   },
   {
     key: 'remaining_time',
@@ -68,7 +67,7 @@ export const HeadCellsPaymentPlan: Array<ColumnProps<PaymentPlanDto>> = [
     label: 'Fecha de pago',
     render: (_, record: Partial<PaymentPlanDto>) =>
       record.payment_date
-        ? DateTime.fromISO(record.payment_date).toLocaleString()
+        ? DateTime.fromISO(record.payment_date).toFormat('dd/LL/yyyy')
         : '-',
   },
   {
@@ -125,8 +124,7 @@ export const HeadCellsPaymentPlanFinancing: Array<ColumnProps<PaymentPlanDto>> =
       numeric: false,
       disablePadding: true,
       label: 'Cliente',
-      render: (_, record: Partial<PaymentPlanDto>) =>
-          record.clientName ?? "",
+      render: (_, record: Partial<PaymentPlanDto>) => record.clientName ?? '',
     },
     {
       key: 'remaining_time',
@@ -160,7 +158,7 @@ export const HeadCellsPaymentPlanFinancing: Array<ColumnProps<PaymentPlanDto>> =
       label: 'Fecha de pago',
       render: (_, record: Partial<PaymentPlanDto>) =>
         record.paid_at
-          ? DateTime.fromISO(record.paid_at).toLocaleString()
+          ? DateTime.fromISO(record.paid_at).toFormat('dd/LL/yyyy')
           : '-',
     },
     {
