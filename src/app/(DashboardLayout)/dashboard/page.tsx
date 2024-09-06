@@ -40,7 +40,7 @@ const Dashboard = () => {
       label: 'Fecha',
       render: (_, record) =>
         record.created_at
-          ? DateTime.fromISO(record.created_at).toLocaleString()
+          ? DateTime.fromISO(record.created_at).toFormat('dd/LL/yyyy')
           : '-',
     },
     {
@@ -101,7 +101,7 @@ const Dashboard = () => {
       label: 'Fecha',
       render: (_, record: Partial<GetSellDto>) =>
         record.created_at
-          ? DateTime.fromISO(record.created_at).toLocaleString()
+          ? DateTime.fromISO(record.created_at).toFormat('dd/LL/yyyy')
           : '-',
     },
     {

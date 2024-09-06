@@ -45,7 +45,7 @@ const mapSellToSellTable = (sell: GetSellDto): SellTableData => {
         </>
       ),
     price: formatCurrency(parseFloat(sell.price) || 0),
-    creationDate: DateTime.fromISO(sell.created_at).toLocaleString(),
+    creationDate: DateTime.fromISO(sell.created_at).toFormat('dd/LL/yyyy'),
     stage: SaleStages.find((stage) => stage.value === sell.stage)?.label ?? '',
     actions: sell.unit.unit_id,
   };

@@ -42,7 +42,7 @@ export const Status = ({usePageProps}: FiltersProps) => {
             >
                 <BoxStatus currency={usePageProps.currency} total={paymentPlanStats.overdue_payments.total} qty={paymentPlanStats.overdue_payments.qty} text={"Pagos Atrasados"} color={"#F9A0A0"}/>
                 <BoxStatus currency={usePageProps.currency} total={paymentPlanStats.pending_payments.total} qty={paymentPlanStats.pending_payments.qty} text={"Pagos Pendiente"} color={"#C2E6FA"}/>
-                <BoxStatus currency={usePageProps.currency} total={paymentPlanStats.financing_payments.total} qty={paymentPlanStats.financing_payments.qty} text={"Para Finanzamiento"} color={"#81E7AC"}/>
+                <BoxStatus currency={usePageProps.currency} total={paymentPlanStats.financing_payments.total} qty={paymentPlanStats.financing_payments.qty} text={"Para Financiamiento"} color={"#81E7AC"}/>
 
             </Box>
         </>

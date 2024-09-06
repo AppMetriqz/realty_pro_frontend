@@ -102,7 +102,7 @@ const User = () => {
       disablePadding: false,
       label: 'Fecha de creación',
       render: (_, record: Partial<GetUserDto>) =>
-        DateTime.fromISO(record.created_at ?? '').toLocaleString(),
+        DateTime.fromISO(record.created_at ?? '').toFormat('dd/LL/yyyy'),
     },
     {
       key: 'id',

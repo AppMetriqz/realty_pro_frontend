@@ -34,7 +34,7 @@ export const mapPaymentPlansToAssignTable = (
     project: sale.project.name,
     unit: sale.unit.name,
     client: `${sale.client.first_name} ${sale.client.last_name}`,
-    date: DateTime.fromISO(sale.created_at).toLocaleString(),
+    date: DateTime.fromISO(sale.created_at).toFormat('dd/LL/yyyy'),
     actions: sale.sale_id,
   };
 };

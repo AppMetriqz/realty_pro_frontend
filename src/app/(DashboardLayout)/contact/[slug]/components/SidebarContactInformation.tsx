@@ -87,7 +87,9 @@ const SidebarContactInformation: FC<SidebarContactInformationProps> = ({
       icon: <CakeIcon />,
       label: 'Fecha de Nacimiento:',
       value: findContact.data?.date_of_birth
-        ? DateTime.fromISO(findContact.data?.date_of_birth).toLocaleString()
+        ? DateTime.fromISO(findContact.data?.date_of_birth).toFormat(
+            'dd/LL/yyyy'
+          )
         : '',
     },
     {
@@ -137,7 +139,9 @@ const SidebarContactInformation: FC<SidebarContactInformationProps> = ({
         >
           Perfil creado&nbsp;
           {findContact.data?.created_at
-            ? DateTime.fromISO(findContact.data?.created_at).toLocaleString()
+            ? DateTime.fromISO(findContact.data?.created_at).toFormat(
+                'dd/LL/yyyy'
+              )
             : ''}
         </Typography>
         <Button

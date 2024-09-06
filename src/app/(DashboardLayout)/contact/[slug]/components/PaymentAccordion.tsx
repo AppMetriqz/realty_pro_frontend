@@ -50,7 +50,7 @@ const PaymentAccordion: FC<{
       bgColor: 'separation',
       content: (
         <Typography fontSize={'14px'} fontWeight={500} textAlign={'center'}>
-          {DateTime.fromISO(plan.separation_date).toLocaleString()}-&nbsp;
+          {DateTime.fromISO(plan.separation_date).toFormat('dd/LL/yyyy')}-&nbsp;
           {plan.project.currency_type}
           {formatCurrency(parseFloat(plan.separation_amount))} - Pago de
           Separación
@@ -62,7 +62,7 @@ const PaymentAccordion: FC<{
       bgColor: 'paymentPlanCreated',
       content: (
         <Typography fontSize={'14px'} fontWeight={500} textAlign={'center'}>
-          {DateTime.fromISO(plan.created_at).toLocaleString()}
+          {DateTime.fromISO(plan.created_at).toFormat('dd/LL/yyyy')}
           &nbsp;- Plan de Pago Creado ({plan.payment_plan_numbers} Meses)
           -&nbsp;
           {plan.project.currency_type}
@@ -102,7 +102,7 @@ const PaymentAccordion: FC<{
       bgColor: 'paymentPlanCreated',
       content: (
         <Typography fontSize={'14px'} fontWeight={500} textAlign={'center'}>
-          {DateTime.fromISO(plan.sale.financed_at).toLocaleString()}
+          {DateTime.fromISO(plan.sale.financed_at).toFormat('dd/LL/yyyy')}
           &nbsp;- Plan de Pago Financiado -&nbsp;
           {plan.project.currency_type}
           {formatCurrency(plan.total_financing)}
@@ -120,7 +120,8 @@ const PaymentAccordion: FC<{
         id: planDetail.payment_number,
         content: (
           <Typography fontSize={'14px'} fontWeight={500} textAlign={'center'}>
-            {DateTime.fromISO(planDetail.payment_date).toLocaleString()} -&nbsp;
+            {DateTime.fromISO(planDetail.payment_date).toFormat('dd/LL/yyyy')}{' '}
+            -&nbsp;
             {plan.project.currency_type}
             {formatCurrency(parseFloat(planDetail.payment_amount))} Pago de
             cuota (Pendiente:&nbsp;
@@ -162,9 +163,9 @@ const PaymentAccordion: FC<{
                   parseFloat(nextPayment?.payment_amount || '0') -
                     parseFloat(nextPayment?.amount_paid || '0')
                 )} a pagar el 
-            ${DateTime.fromISO(
-              nextPayment?.payment_date || ''
-            ).toLocaleString()}`
+            ${DateTime.fromISO(nextPayment?.payment_date || '').toFormat(
+              'dd/LL/yyyy'
+            )}`
               : `No hay pagos del inicial pendientes.`}
           </Typography>
           <Typography fontSize={'14px'} fontWeight={400}>

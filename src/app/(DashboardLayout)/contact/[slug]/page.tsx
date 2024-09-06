@@ -31,7 +31,7 @@ const ContactProfile = () => {
             'date_of_birth',
             DateTime.fromISO(
               useContactProfilePageProps.findContact.data?.date_of_birth
-            ).toISODate() ?? ''
+            ).toFormat('dd/LL/yyyy') ?? ''
           );
         } else if (key === 'spouse') {
           useContactProfilePageProps.contactHookForm.setValue(
