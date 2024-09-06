@@ -13,7 +13,8 @@ export const LineBarChart = ({usePageProps}: FiltersProps) => {
     const payments_received = usePageProps.lineBarOptions.payments_received;
     const pending_payments = usePageProps.lineBarOptions.pending_payments;
     const total_capacity = usePageProps.lineBarOptions.total_capacity;
-    const total = payments_received + pending_payments + total_capacity;
+    const total_capacity_diff = total_capacity - (payments_received + pending_payments)
+    const total = payments_received + pending_payments
 
     return (
         <>
@@ -50,7 +51,7 @@ export const LineBarChart = ({usePageProps}: FiltersProps) => {
                 />
                 <Box
                     sx={{
-                        width: `${(total_capacity / total)*100}%`,
+                        width: `${(total_capacity_diff / total)*100}%`,
                         backgroundColor: '#E7E7E7'
                     }}
                 />
