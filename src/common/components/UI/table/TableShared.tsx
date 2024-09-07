@@ -18,19 +18,20 @@ function extractNumber(value: string): number {
   return match ? parseFloat(match[0]) : NaN;
 }
 
+// Helper function to get the string representation of a value
+function getComparableValue(value: any): string {
+  if (typeof value === 'object' && value !== null) {
+    // Assume that the object has a property named 'value' to compare
+    return value['name'] !== undefined ? String(value['name']) : '';
+  }
+
+  return String(value);
+}
+
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   // Extract the values based on the property key
   const aValue = a[orderBy];
   const bValue = b[orderBy];
-
-  // Helper function to get the string representation of a value
-  function getComparableValue(value: any): string {
-    if (typeof value === 'object' && value !== null) {
-      // Assume that the object has a property named 'value' to compare
-      return value['name'] !== undefined ? String(value['name']) : '';
-    }
-    return String(value);
-  }
 
   const aComparableValue = getComparableValue(aValue);
   const bComparableValue = getComparableValue(bValue);

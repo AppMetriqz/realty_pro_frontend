@@ -60,6 +60,12 @@ const PaymentPlan = () => {
                     PaymentPlanType.find(
                       (p) => p.value === items.payment_plan.sale_type
                     )?.label ?? '',
+                  remaining_time: {
+                    ...items.remaining_time,
+                    name: `${
+                      items.remaining_time.days
+                    } dias y ${items.remaining_time.hours.toFixed(0)} horas`,
+                  },
                 }))
               : []
           }
@@ -99,6 +105,12 @@ const PaymentPlan = () => {
                     _.find(PaymentPlanType, {
                       value: items.payment_plan.sale_type,
                     })?.label ?? '',
+                  remaining_time: {
+                    ...items.remaining_time,
+                    name: `${
+                      items.remaining_time.days
+                    } dias y ${items.remaining_time.hours.toFixed(0)} horas`,
+                  },
                 }))
               : []
           }
@@ -137,6 +149,12 @@ const PaymentPlan = () => {
                   sale_type:
                     _.find(PaymentPlanType, { value: items.sale_type })
                       ?.label ?? '',
+                  remaining_time: {
+                    ...items.remaining_time,
+                    name: `${
+                      items.remaining_time.days
+                    } dias y ${items.remaining_time.hours.toFixed(0)} horas`,
+                  },
                 }))
               : []
           }
