@@ -103,6 +103,7 @@ export default function usePage(): UsePageProjectAvailableProps {
   };
 
   const availableSales = apiSales.useFindAll({
+    searchText:unitText,
     pageIndex: page,
     pageSize: rowsPerPage,
     sortOrder: 'DESC',

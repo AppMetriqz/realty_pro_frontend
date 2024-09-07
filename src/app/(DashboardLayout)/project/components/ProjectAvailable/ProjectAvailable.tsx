@@ -31,7 +31,7 @@ import {
   mapUnitToProperty,
 } from '@/common/utils/unit';
 import { DialogDelete } from '../DialogDelete';
-import { DialogCreateSell } from '../../../../../common/components/Logic/DialogCreateSell';
+import { DialogCreateSell } from '@/common/components/Logic/DialogCreateSell';
 import { DialogCreateUnit } from '../DialogCreateUnit';
 import { UnitFormInput } from '../../[slug]/core';
 import { DialogEditMultipleUnit } from '../DialogEditMultipleUnit';
@@ -245,12 +245,7 @@ const ProjectAvailable: FC<{
               />
             </Grid>
           </>
-        ) : usePageProps.availableUnits.isLoading ? (
-          <Grid justifyContent={'center'} item xs={12}>
-            <CircularProgress sx={{ color: '#000' }} />
-          </Grid>
         ) : (
-          usePageProps.availableUnits.isSuccess && (
             <>
               <Box display="flex" flexDirection={'column'}>
                 <Box
@@ -310,16 +305,19 @@ const ProjectAvailable: FC<{
                       />
                     ))}
                   </Box>
-                  <Box display="flex" width={'20%'} justifyContent={'flex-end'}>
-                    <Typography fontWeight={600}>
-                      {usePageProps.availableUnits.data.rows.length} Unidad
-                      {usePageProps.availableUnits.data.rows.length > 1
-                        ? 'es'
-                        : ''}
-                    </Typography>
-                  </Box>
+                  {usePageProps.availableUnits.isSuccess? (
+                      <Box display="flex" width={'20%'} justifyContent={'flex-end'}>
+                        <Typography fontWeight={600}>
+                          {usePageProps.availableUnits.data.rows.length} Unidad
+                          {usePageProps.availableUnits.data.rows.length > 1
+                              ? 'es'
+                              : ''}
+                        </Typography>
+                      </Box>
+                  ):null}
                 </Box>
               </Box>
+            {usePageProps.availableUnits.isSuccess && (
               <TableShared<AvailableTableData>
                 headTitle="Unidades disponibles"
                 headCells={headCells}
@@ -360,8 +358,8 @@ const ProjectAvailable: FC<{
                 page={usePageProps.page}
                 setPage={usePageProps.setPage}
               />
-            </>
-          )
+          )}
+          </>
         )}
       </Box>
       <DialogDelete

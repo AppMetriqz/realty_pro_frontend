@@ -207,6 +207,7 @@ export default function usePage(): UsePageProjectAvailableProps {
   };
 
   const availableUnits = apiUnits.useFindAll({
+    searchText:unitText,
     pageIndex: page,
     pageSize: rowsPerPage,
     sortOrder: 'DESC',

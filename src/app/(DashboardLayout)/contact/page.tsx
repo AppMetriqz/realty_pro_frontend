@@ -14,6 +14,7 @@ import { mapContactToTableRow } from '@/common/utils/contact';
 import { GetContactDto } from '@/common/dto';
 import { DialogCreateUpdateContact } from './components/DialogCreateUpdateContact';
 import { Filters } from './components/Filters';
+import HeaderSearch from "@/common/components/UI/headerSearch/HeaderSearch";
 
 const Contact = () => {
   const usePageProps = useContactPage();
@@ -72,6 +73,13 @@ const Contact = () => {
           display={'flex'}
           flexDirection={'column'}
         >
+
+          <HeaderSearch
+              label="Contacto"
+              onChange={usePageProps.onSetContactText}
+              list={usePageProps.allContacts}
+          />
+
           {usePageProps.allContacts.isLoading ? (
             <Grid justifyContent={'center'} item xs={12}>
               <CircularProgress sx={{ color: '#000' }} />
@@ -79,39 +87,6 @@ const Contact = () => {
           ) : (
             usePageProps.allContacts.isSuccess && (
               <>
-                <Box display="flex" flexDirection={'column'}>
-                  <Box
-                    display="flex"
-                    justifyContent={'space-between'}
-                    alignItems={'center'}
-                    mb="40px"
-                  >
-                    <Box
-                      display="flex"
-                      width={'100%'}
-                      gap={'20px'}
-                      alignItems={'center'}
-                    >
-                      <SearchInput
-                        sx={{ maxWidth: '268px' }}
-                        label="Buscar Contacto"
-                        onChange={usePageProps.onSetContactText}
-                      />
-                    </Box>
-                    <Box
-                      display="flex"
-                      width={'20%'}
-                      justifyContent={'flex-end'}
-                    >
-                      <Typography fontWeight={600}>
-                        {usePageProps.allContacts.data.rows.length} Contacto
-                        {usePageProps.allContacts.data.rows.length > 1
-                          ? ''
-                          : 's'}
-                      </Typography>
-                    </Box>
-                  </Box>
-                </Box>
                 <TableShared<ContactData>
                   headTitle="Contactos disponibles"
                   headCells={headCells}

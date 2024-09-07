@@ -147,12 +147,7 @@ const ProjectSells = () => {
               />
             </Grid>
           </>
-        ) : usePageProps.availableSales.isLoading ? (
-          <Grid justifyContent={'center'} item xs={12}>
-            <CircularProgress sx={{ color: '#000' }} />
-          </Grid>
         ) : (
-          usePageProps.availableSales.isSuccess && (
             <>
               <Box display="flex" flexDirection={'column'}>
                 <Box
@@ -212,16 +207,19 @@ const ProjectSells = () => {
                       />
                     ))}
                   </Box>
-                  <Box display="flex" width={'20%'} justifyContent={'flex-end'}>
-                    <Typography fontWeight={600}>
-                      {usePageProps.availableSales.data.rows.length} Venta
-                      {usePageProps.availableSales.data.rows.length > 1
-                        ? ''
-                        : 's'}
-                    </Typography>
-                  </Box>
+                  {usePageProps.availableSales.isSuccess? (
+                      <Box display="flex" width={'20%'} justifyContent={'flex-end'}>
+                        <Typography fontWeight={600}>
+                          {usePageProps.availableSales.data.rows.length} Venta
+                          {usePageProps.availableSales.data.rows.length > 1
+                              ? 'es'
+                              : ''}
+                        </Typography>
+                      </Box>
+                  ):null}
                 </Box>
               </Box>
+              {usePageProps.availableSales.isSuccess && (
               <TableShared<SellTableData>
                 headTitle="Ventas"
                 headCells={headCells}
@@ -235,8 +233,8 @@ const ProjectSells = () => {
                 setPage={usePageProps.setPage}
                 count={usePageProps.availableSales.data.count}
               />
+              )}
             </>
-          )
         )}
       </Box>
       <DialogDelete
