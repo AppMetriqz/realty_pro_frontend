@@ -178,15 +178,8 @@ const TableShared = <T extends { id: string | number }>({
     selected ? selected.map((s) => s.id).indexOf(item.id) !== -1 : false;
 
   // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
-
   const visibleRows = React.useMemo(
-    () =>
-      stableSort<T>(rows, getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage
-      ),
+    () => stableSort<T>(rows, getComparator(order, orderBy)),
     [rows, order, orderBy, page, rowsPerPage]
   );
 
@@ -268,11 +261,6 @@ const TableShared = <T extends { id: string | number }>({
                   </TableRow>
                 );
               })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 53 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
             </TableBody>
           </Table>
         </TableContainer>
