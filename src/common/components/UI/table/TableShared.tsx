@@ -19,34 +19,38 @@ function extractNumber(value: string): number {
 }
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-  const aValue = String(a[orderBy]);
-  const bValue = String(b[orderBy]);
+  // Extract the values based on the property key
+  const aValue = a[orderBy];
+  const bValue = b[orderBy];
 
-  // Extraer números y comparar numéricamente si ambos valores contienen números
-  const aNumber = extractNumber(aValue);
-  const bNumber = extractNumber(bValue);
+  // Helper function to get the string representation of a value
+  function getComparableValue(value: any): string {
+    if (typeof value === 'object' && value !== null) {
+      // Assume that the object has a property named 'value' to compare
+      return value['name'] !== undefined ? String(value['name']) : '';
+    }
+    return String(value);
+  }
 
-  // Comparar numéricamente si ambos valores contienen números
+  const aComparableValue = getComparableValue(aValue);
+  const bComparableValue = getComparableValue(bValue);
+
+  // Extract numbers from the comparable values
+  const aNumber = extractNumber(aComparableValue);
+  const bNumber = extractNumber(bComparableValue);
+
+  // Compare numerically if both are numbers
   if (!isNaN(aNumber) && !isNaN(bNumber)) {
     return bNumber - aNumber;
   }
 
-  // Comparar como cadenas si ambos valores no contienen números
+  // Compare lexicographically if neither is a number
   if (isNaN(aNumber) && isNaN(bNumber)) {
-    if (bValue < aValue) {
-      return -1;
-    }
-    if (bValue > aValue) {
-      return 1;
-    }
-    return 0;
+    return bComparableValue.localeCompare(aComparableValue);
   }
 
-  // Comparar como numérico el valor que contiene un número y el que no
-  if (!isNaN(aNumber)) {
-    return -1; // El valor con número es mayor
-  }
-  return 1; // El valor sin número es menor
+  // If one value is numeric and the other is not
+  return isNaN(aNumber) ? 1 : -1;
 }
 
 export type Order = 'asc' | 'desc';

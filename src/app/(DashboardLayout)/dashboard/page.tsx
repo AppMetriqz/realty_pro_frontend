@@ -186,7 +186,7 @@ const Dashboard = () => {
                 }))
               : []
           }
-          orderByValue="unit"
+          orderByValue="created_at"
           rowsPerPage={usePageProps.salesToAssignPageSize}
           changePageSize={usePageProps.setSalesToAssignPageSize}
           page={usePageProps.salesToAssignPageIndex}
@@ -208,6 +208,10 @@ const Dashboard = () => {
               ? usePageProps.paymentPlansToAssign.data.rows.map((plan) => ({
                   ...plan,
                   id: plan.sale_id,
+                  client: {
+                    ...plan.client,
+                    name: `${plan.client.first_name} ${plan.client.last_name}`,
+                  },
                 }))
               : []
           }
