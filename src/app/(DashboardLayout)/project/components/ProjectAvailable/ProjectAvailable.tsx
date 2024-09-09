@@ -386,6 +386,7 @@ const ProjectAvailable: FC<{
         usePageProps={usePageProps}
         open={usePageProps.openEditOneUnitModal}
         onClose={usePageProps.onCloseEditOneUnitModal}
+        isStatusDisabled={usePageProps.unitDetails.data?.status === 'sold'}
       />
       <DialogEditMultipleUnit<AvailableTableData>
         selectedUnits={usePageProps.selectedUnits}

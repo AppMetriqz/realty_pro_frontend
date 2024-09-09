@@ -172,6 +172,7 @@ export default function usePage(): UsePageProjectAvailableProps {
     pageSize: 500,
     type: unitHookForm.watch('type'),
   });
+
   const onChangeStatus = (e: SelectChangeEvent) => {
     const unitObject = UnitStatus.find((unit) => unit.value === e.target.value);
     if (!!unitObject) {
@@ -247,6 +248,8 @@ export default function usePage(): UsePageProjectAvailableProps {
         });
         unitHookForm.reset();
         multipleUnitHookForm.reset();
+        setSelectedUnits([]);
+        setSelectedUnitId(null);
         setOpenEditOneUnitModal(false);
         setOpenEditMultipleUnitModal(false);
       }
@@ -259,22 +262,20 @@ export default function usePage(): UsePageProjectAvailableProps {
     if (!showView) {
       setSelectedUnitId(null);
     }
+    setSelectedUnits([]);
     setOpenDeleteModal(false);
     deleteHookForm.reset();
   };
 
   const onCloseCancelSellModal = () => {
-    if (!showView) {
-      setSelectedUnitId(null);
-    }
+    setSelectedUnitId(null);
     setOpenCancelSellModal(false);
     cancelSellHookForm.reset();
   };
 
   const onCloseSellModal = () => {
-    if (!showView) {
-      setSelectedUnitId(null);
-    }
+    setSelectedUnitId(null);
+    setSelectedUnits([]);
     setOpenSellModal(false);
     sellHookForm.reset();
   };
@@ -288,9 +289,8 @@ export default function usePage(): UsePageProjectAvailableProps {
   };
 
   const onCloseEditMultipleUnitModal = () => {
-    if (!showView) {
-      setSelectedUnitId(null);
-    }
+    setSelectedUnitId(null);
+    setSelectedUnits([]);
     setOpenEditMultipleUnitModal(false);
     multipleUnitHookForm.reset();
   };
@@ -317,6 +317,7 @@ export default function usePage(): UsePageProjectAvailableProps {
           theme: 'colored',
         });
         deleteHookForm.reset();
+        setSelectedUnits([]);
         setSelectedUnitId(null);
         setOpenDeleteModal(false);
       }
@@ -358,6 +359,7 @@ export default function usePage(): UsePageProjectAvailableProps {
           });
           multipleUnitHookForm.reset();
           setOpenEditMultipleUnitModal(false);
+          setSelectedUnits([]);
         }
       } else {
         setMultipleUpdateHasError(true);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Box,
   AppBar,
@@ -12,14 +12,14 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { IconMenu } from '@tabler/icons-react';
-import { apiAuth } from '@/api';
+import { CurrentUserContext } from '@/context/CurrentUserContext';
 
 interface ItemType {
   toggleMobileSidebar: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
 const Header = ({ toggleMobileSidebar }: ItemType) => {
-  const authUser = apiAuth.useCurrentUser();
+  const { isLoading, authUser } = useContext(CurrentUserContext);
   const AppBarStyled = styled(AppBar)(({ theme }) => ({
     boxShadow: 'none',
     paddingTop: 10,
@@ -51,7 +51,7 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
         </IconButton>
 
         <Box flexGrow={1} />
-        {authUser ? (
+        {!isLoading && authUser ? (
           <Stack spacing={1} direction="row" alignItems="center">
             <Stack
               spacing={0.5}
@@ -59,20 +59,18 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
               direction="column"
               alignItems="flex-end"
             >
-              {authUser.isLoading ? (
-                <Grid justifyContent={'center'} item xs={12}>
-                  <CircularProgress sx={{ color: '#000' }} />
-                </Grid>
-              ) : (
-                <Typography color={'#505050'} fontWeight={400}>
-                  ¡Bienvenido&nbsp;
-                  <span style={{ fontWeight: 700 }}>{authUser.first_name}</span>
-                  ! Realty Dominicana
-                </Typography>
-              )}
+              <Typography color={'#505050'} fontWeight={400}>
+                ¡Bienvenido&nbsp;
+                <span style={{ fontWeight: 700 }}>{authUser?.first_name}</span>!
+                Realty Dominicana
+              </Typography>
             </Stack>
           </Stack>
-        ) : null}
+        ) : (
+          <Grid justifyContent={'center'} item xs={12}>
+            <CircularProgress sx={{ color: '#000' }} />
+          </Grid>
+        )}
       </ToolbarStyled>
     </AppBarStyled>
   );

@@ -7,6 +7,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ToastContainer } from 'react-toastify';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { CurrentUserProvider } from '@/context/CurrentUserContext';
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 2 } },
@@ -25,7 +26,7 @@ export default function RootLayout({
             {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
             <CssBaseline />
             <LocalizationProvider dateAdapter={AdapterDayjs}>
-              {children}
+              <CurrentUserProvider>{children}</CurrentUserProvider>
             </LocalizationProvider>
           </ThemeProvider>
         </QueryClientProvider>

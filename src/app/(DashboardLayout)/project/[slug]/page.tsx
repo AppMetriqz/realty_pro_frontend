@@ -92,6 +92,7 @@ const ProjectResumen = () => {
         usePageProps={usePageProps}
         open={usePageProps.showCreateUnit}
         onClose={usePageProps.onCloseCreateUnitModal}
+        isStatusDisabled={false}
       />
     </>
   );

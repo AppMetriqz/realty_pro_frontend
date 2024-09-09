@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRouter, redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import routes from '@/common/constants/routes';
 import useAuthentication from '../utils/useAuthentication';
 

@@ -1,4 +1,5 @@
 'use client';
+import { GetUserDto } from '@/common/dto';
 import axiosInstance from '@/config/api/api.config';
 import { useMutation, useQuery, UseQueryResult } from '@tanstack/react-query';
 
@@ -25,7 +26,8 @@ export const useCurrentUser = () => {
   if (Cookies.get('token')) {
     isEnabled = true;
   }
-  const user = useQuery<UseQueryResult, any, any>({
+
+  const user = useQuery<GetUserDto, Error>({
     queryKey: ['currentUser'],
     queryFn: () => axiosInstance.get(`${path}/user`),
     staleTime: 10 * 80000,
@@ -33,6 +35,11 @@ export const useCurrentUser = () => {
     retry: 3,
     enabled: isEnabled,
   });
+
+  let data: UseQueryResult<GetUserDto, Error> & { isAuth: boolean } = {
+    ...user,
+    isAuth: false,
+  };
 
   const router = useRouter();
 
@@ -42,14 +49,10 @@ export const useCurrentUser = () => {
   }
 
   if (user.data && user.data?.user_id) {
-    user.data.isAuth = true;
+    data = { ...user, isAuth: true };
   }
 
-  if (user.isSuccess && !user.isError) {
-    return user.data;
-  }
-
-  return null;
+  return data;
 };
 
 export const apiAuth = {

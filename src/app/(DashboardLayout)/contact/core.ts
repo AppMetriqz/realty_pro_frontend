@@ -1,14 +1,13 @@
 import * as yup from 'yup';
 import { ErrorMsg } from '@/common/constants/app-config';
 
-
 export interface SpouseDto {
-  contact_id:number,
-  first_name: string,
-  last_name: string,
-  email: string,
-  phone_number_1: string,
-  national_id: string
+  contact_id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone_number_1: string;
+  national_id: string;
 }
 
 export interface ContactFormInput {
@@ -49,7 +48,7 @@ export const contactDefaultValues: ContactFormInput = {
   work_occupation: '',
   address: '',
   notes: '',
-  spouse:undefined
+  spouse: undefined,
 };
 
 export const createContactValidationSchema = yup.object({

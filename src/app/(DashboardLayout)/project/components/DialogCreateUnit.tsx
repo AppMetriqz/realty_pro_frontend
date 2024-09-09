@@ -23,6 +23,7 @@ type Props<T> = {
   open: boolean;
   onClose: (open: boolean) => void;
   usePageProps: T;
+  isStatusDisabled: boolean;
 };
 
 export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
@@ -30,6 +31,7 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
   open,
   onClose,
   usePageProps,
+  isStatusDisabled,
 }: Props<T>) => {
   const { hookForm } = usePageProps;
   const isPlot =
@@ -184,7 +186,7 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
               options={UnitStatus}
               hookForm={hookForm}
               labelStyle={{ mb: '10px' }}
-              disabled={hookForm.watch('status') === 'sold' && isEdit}
+              disabled={isStatusDisabled}
             />
           </Grid>
           {isPlot ? null : (
