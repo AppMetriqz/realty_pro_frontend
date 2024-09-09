@@ -73,11 +73,14 @@ export default function useContactPage(): UseContactPageProps {
     description: contactDescription,
   });
 
+  console.log("contactText", contactText)
+
   const allContacts = apiContacts.useFindAll({
     pageIndex: page,
     pageSize: rowsPerPage,
     sortOrder: 'DESC',
     sortBy: 'created_at',
+    searchText:contactText,
     type: selectedContactTypes
       .map((contactType) => contactType.value)
       .join(','),

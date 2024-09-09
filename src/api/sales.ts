@@ -25,6 +25,7 @@ interface FindAllDto {
   dateTo?: number;
   stage?: string | string[];
   projectId: string | string[];
+  searchText?: string;
 }
 
 export interface FindAllAutocompleteDto {

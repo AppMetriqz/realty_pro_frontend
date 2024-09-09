@@ -21,6 +21,7 @@ interface FindAllDto {
   dateFrom?: number;
   dateTo?: number;
   type: string;
+  searchText?: string;
 }
 
 interface FindContactPaymentPlan {

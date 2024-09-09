@@ -21,6 +21,7 @@ interface FindAllDto {
   pageIndex: string | number;
   sortOrder?: keyof typeof SortByDto;
   sortBy?: string;
+  searchText?: string;
 }
 
 export const useFindAll = (params: FindAllDto) => {

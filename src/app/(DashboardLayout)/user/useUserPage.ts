@@ -58,8 +58,9 @@ export default function usePage(): UsePageProjectAvailableProps {
     userName: string;
   } | null>(null);
   const [isEdit, setIsEdit] = useState(false);
-  const [unitText, setUserText] = useState<string>('');
   const [showPassword, setShowPassword] = useState(false);
+  const [userText, setUserText] = useState<string>('');
+ // const [userText, setUserText] = useState<string>('');
 
   const deleteResolver = useYupValidationResolver(deleteValidationSchema);
   const createResolver = useYupValidationResolver(userValidationSchema);
@@ -79,6 +80,7 @@ export default function usePage(): UsePageProjectAvailableProps {
   };
 
   const allUsers = apiUser.useFindAll({
+    searchText: userText,
     pageIndex: page,
     pageSize: rowsPerPage,
     sortOrder: 'DESC',

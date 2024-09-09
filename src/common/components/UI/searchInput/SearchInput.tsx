@@ -41,7 +41,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-const SearchInput: FC<{
+const HeaderSearch: FC<{
   sx?: SxProps;
   label: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -60,4 +60,4 @@ const SearchInput: FC<{
   );
 };
 
-export default SearchInput;
+export default HeaderSearch;

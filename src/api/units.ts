@@ -19,6 +19,7 @@ interface FindAllDto {
   dateTo?: number;
   status?: string;
   projectId?: string | string[] | number;
+  searchText?: string;
 }
 
 export interface FindAllAutocompleteDto {
