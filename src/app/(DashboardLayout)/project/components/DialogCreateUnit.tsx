@@ -183,7 +183,9 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
               label={'Estatus'}
               name={'status'}
               isRequired
-              options={UnitStatus}
+              options={UnitStatus.filter((unit) =>
+                isEdit ? unit.value !== 'sold' : true
+              )}
               hookForm={hookForm}
               labelStyle={{ mb: '10px' }}
               disabled={isStatusDisabled}
