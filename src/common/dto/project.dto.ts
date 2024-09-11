@@ -17,7 +17,7 @@ export interface ProjectDto {
   cover_path: string;
   unit_from_price?: string;
   unit_to_price?: string;
-  cover: string | Buffer;
+  cover: string;
   is_active?: boolean;
   created_at: string;
   updated_at: string;
