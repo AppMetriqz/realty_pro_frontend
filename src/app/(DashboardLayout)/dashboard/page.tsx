@@ -188,7 +188,7 @@ const Dashboard = () => {
           }
           orderByValue="created_at"
           rowsPerPage={usePageProps.salesToAssignPageSize}
-          changePageSize={usePageProps.setSalesToAssignPageSize}
+          changePageSize={usePageProps.changeSaleToAssignPageSize}
           page={usePageProps.salesToAssignPageIndex}
           setPage={usePageProps.setSalesToAssignPageIndex}
         />
@@ -217,7 +217,7 @@ const Dashboard = () => {
           }
           orderByValue="project"
           rowsPerPage={usePageProps.paymentPlansToAssignPageSize}
-          changePageSize={usePageProps.setPaymentPlansToAssignPageSize}
+          changePageSize={usePageProps.changePaymentPlansToAssignPageSize}
           page={usePageProps.paymentPlansToAssignPageIndex}
           setPage={usePageProps.setPaymentPlansToAssignPageIndex}
         />

@@ -37,9 +37,7 @@ export interface UsePageProps {
   handleChangeTimes: (e: SelectChangeEvent) => void;
   handleGoogleCalendarLogin: () => void;
   setSalesToAssignPageIndex: Dispatch<SetStateAction<number>>;
-  setSalesToAssignPageSize: Dispatch<SetStateAction<number>>;
   setPaymentPlansToAssignPageIndex: Dispatch<SetStateAction<number>>;
-  setPaymentPlansToAssignPageSize: Dispatch<SetStateAction<number>>;
   googleCalendar: UseQueryResult<GoogleCalendarDto, Error>;
   salesToAssign: UseQueryResult<SalesToAssignDto, Error>;
   paymentPlansToAssign: UseQueryResult<PaymentPlansToAssignDto, Error>;
@@ -47,10 +45,10 @@ export interface UsePageProps {
   isLoadingCalendar: boolean;
   lineOptions: any;
   salesToAssignPageIndex: number;
-  salesToAssignPageSize: number;
+  salesToAssignPageSize: { value: number; label: string };
   paymentPlansToAssignPageIndex: number;
   openSellModal: boolean;
-  paymentPlansToAssignPageSize: number;
+  paymentPlansToAssignPageSize: { value: number; label: string };
   onSubmitSell: SubmitHandler<SellFormType>;
   onCloseSellModal: () => void;
   onClickAssignSell: (sale: Partial<GetSellDto> & { id: number }) => void;
@@ -73,6 +71,8 @@ export interface UsePageProps {
   selectedPaymentToAssign:
     | (Partial<PaymentPlanToAssignDto> & { id: number })
     | null;
+  changeSaleToAssignPageSize: (size: number) => void;
+  changePaymentPlansToAssignPageSize: (size: number) => void;
 }
 
 export default function usePage(): UsePageProps {
@@ -89,13 +89,15 @@ export default function usePage(): UsePageProps {
 
   const [salesToAssignPageIndex, setSalesToAssignPageIndex] =
     useState<number>(0);
-  const [salesToAssignPageSize, setSalesToAssignPageSize] =
-    useState<number>(10);
+  const [salesToAssignPageSize, setSalesToAssignPageSize] = useState({
+    label: '50',
+    value: 50,
+  });
 
   const [paymentPlansToAssignPageIndex, setPaymentPlansToAssignPageIndex] =
     useState<number>(0);
   const [paymentPlansToAssignPageSize, setPaymentPlansToAssignPageSize] =
-    useState<number>(10);
+    useState({ label: '50', value: 50 });
 
   const [isGoogleCalendarLogin, setIsGoogleCalendarLogin] =
     useState<boolean>(false);
@@ -129,11 +131,15 @@ export default function usePage(): UsePageProps {
 
   const salesToAssign = apiDesktop.useSalesToAssign({
     pageIndex: salesToAssignPageIndex,
-    pageSize: salesToAssignPageSize,
+    pageSize:
+      salesToAssignPageSize.value === -1 ? 100000 : salesToAssignPageSize.value,
   });
   const paymentPlansToAssign = apiDesktop.usePaymentPlansToAssign({
     pageIndex: paymentPlansToAssignPageIndex,
-    pageSize: paymentPlansToAssignPageSize,
+    pageSize:
+      paymentPlansToAssignPageSize.value === -1
+        ? 100000
+        : paymentPlansToAssignPageSize.value,
   });
 
   const assignSale = apiSales.useUpdate();
@@ -312,6 +318,20 @@ export default function usePage(): UsePageProps {
     }
   };
 
+  const changeSaleToAssignPageSize = (size: number) => {
+    setSalesToAssignPageSize({
+      value: size,
+      label: size === -1 ? 'Todos' : size.toString(),
+    });
+  };
+
+  const changePaymentPlansToAssignPageSize = (size: number) => {
+    setPaymentPlansToAssignPageSize({
+      value: size,
+      label: size === -1 ? 'Todos' : size.toString(),
+    });
+  };
+
   return {
     handleChangeTimes,
     times,
@@ -320,9 +340,7 @@ export default function usePage(): UsePageProps {
     setSalesToAssignPageIndex,
     setPaymentPlansToAssignPageIndex,
     salesToAssignPageSize,
-    setSalesToAssignPageSize,
     paymentPlansToAssignPageSize,
-    setPaymentPlansToAssignPageSize,
     salesToAssignPageIndex,
     paymentPlansToAssignPageIndex,
     handleGoogleCalendarLogin,
@@ -345,5 +363,7 @@ export default function usePage(): UsePageProps {
     onClickPaymentPlan,
     onSubmitPaymentPlan,
     selectedPaymentToAssign,
+    changeSaleToAssignPageSize,
+    changePaymentPlansToAssignPageSize,
   };
 }
