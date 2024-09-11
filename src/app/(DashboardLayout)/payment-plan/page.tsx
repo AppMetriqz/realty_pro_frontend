@@ -18,7 +18,7 @@ import { PaymentPlanType } from '@/common/constants';
 import _ from 'lodash';
 
 const PaymentPlan = () => {
-  const usePageProps: UsePageProps = usePage();
+  const usePageProps = usePage();
 
   return (
     <PageContainer
@@ -71,7 +71,7 @@ const PaymentPlan = () => {
           }
           orderByValue="created_at"
           rowsPerPage={usePageProps.paymentPlanOverduePageSize}
-          changePageSize={usePageProps.setPaymentPlanOverduePageSize}
+          changePageSize={usePageProps.changePaymentPlanOverduePageSize}
           page={usePageProps.paymentPlanOverduePageIndex}
           setPage={usePageProps.setPaymentPlanOverduePageIndex}
         />
@@ -116,7 +116,7 @@ const PaymentPlan = () => {
           }
           orderByValue="created_at"
           rowsPerPage={usePageProps.paymentPlanPendingPageSize}
-          changePageSize={usePageProps.setPaymentPlanPendingPageSize}
+          changePageSize={usePageProps.changePaymentPlanPendingPageSize}
           page={usePageProps.paymentPlanPendingPageIndex}
           setPage={usePageProps.setPaymentPlanPendingPageIndex}
         />
@@ -160,7 +160,7 @@ const PaymentPlan = () => {
           }
           orderByValue="created_at"
           rowsPerPage={usePageProps.paymentPlanFinancingPageSize}
-          changePageSize={usePageProps.setPaymentPlanFinancingPageSize}
+          changePageSize={usePageProps.changePaymentPlanFinancingPageSize}
           page={usePageProps.paymentPlanFinancingPageIndex}
           setPage={usePageProps.setPaymentPlanFinancingPageIndex}
         />
