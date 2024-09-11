@@ -53,7 +53,7 @@ export const CurrentUserProvider: FC<{ children: ReactNode }> = ({
   const currentUser = apiAuth.useCurrentUser();
   const [permissions, setPermissions] =
     useState<PermissionType>(defaultPermission);
-
+  console.log({ currentUser });
   useEffect(() => {
     if (!currentUser.isLoading && currentUser.data) {
       if (currentUser.data.role_id === 1 || currentUser.data.role_id === 2) {

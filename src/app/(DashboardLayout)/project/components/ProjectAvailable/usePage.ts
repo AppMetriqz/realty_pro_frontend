@@ -59,7 +59,7 @@ export type UsePageProjectAvailableProps = {
   selectedUnitId: string | number | string[] | null;
   onClickEditUnitFromView: () => void;
   goBack: () => void;
-  rowsPerPage: number;
+  rowsPerPage: { value: number; label: string };
   changePageSize: (size: number) => void;
   page: number;
   setPage: Dispatch<SetStateAction<number>>;
@@ -108,7 +108,7 @@ export default function usePage(): UsePageProjectAvailableProps {
   const [currentUnitStatuses, setCurrentUnitStatuses] =
     useState<UnitStatusType[]>(UnitStatus);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState({ label: '50', value: 50 });
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openSellModal, setOpenSellModal] = useState(false);
   const [openCancelSellModal, setOpenCancelSellModal] = useState(false);
@@ -204,13 +204,16 @@ export default function usePage(): UsePageProjectAvailableProps {
   };
 
   const changePageSize = (size: number) => {
-    setRowsPerPage(size);
+    setRowsPerPage({
+      value: size,
+      label: size === -1 ? 'Todos' : size.toString(),
+    });
   };
 
   const availableUnits = apiUnits.useFindAll({
     searchText: unitText,
     pageIndex: page,
-    pageSize: rowsPerPage,
+    pageSize: rowsPerPage.value === -1 ? 100000 : rowsPerPage.value,
     sortOrder: 'DESC',
     sortBy: 'created_at',
     status: selectedStatuses.length

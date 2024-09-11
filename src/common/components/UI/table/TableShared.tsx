@@ -99,7 +99,7 @@ export type TableSharedProps<T> = {
   rows: T[];
   headCells: Array<ColumnProps<T>>;
   orderByValue: keyof T;
-  rowsPerPage: number;
+  rowsPerPage: { value: number; label: string };
   changePageSize: (size: number) => void;
   page: number;
   count?: number;
@@ -270,14 +270,19 @@ const TableShared = <T extends { id: string | number }>({
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[
+            { label: '50', value: 50 },
+            { label: '100', value: 100 },
+            { label: '200', value: 200 },
+            { label: 'Todos', value: -1 },
+          ]}
           component="div"
           count={count ?? rows.length}
-          labelDisplayedRows={({ from, to, count }) =>
-            `${from}–${to} de ${count !== -1 ? count : `más de ${to}`}`
-          }
+          labelDisplayedRows={({ from, to, count }) => {
+            return `${from}–${to} de ${count !== -1 ? count : `más de ${to}`}`;
+          }}
           labelRowsPerPage={'Filas por página:'}
-          rowsPerPage={rowsPerPage}
+          rowsPerPage={rowsPerPage.value}
           page={page}
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}

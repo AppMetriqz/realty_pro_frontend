@@ -32,6 +32,7 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
     width: '100%',
     color: theme.palette.text.secondary,
   }));
+  console.log(!isLoading && !!authUser);
 
   return (
     <AppBarStyled position="sticky" color="default">
@@ -51,7 +52,7 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
         </IconButton>
 
         <Box flexGrow={1} />
-        {!isLoading && authUser ? (
+        {!isLoading && !!authUser ? (
           <Stack spacing={1} direction="row" alignItems="center">
             <Stack
               spacing={0.5}

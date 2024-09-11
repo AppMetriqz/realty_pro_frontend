@@ -17,7 +17,7 @@ export interface UnitDto {
   bathrooms?: string;
   price: number;
   status: string;
-  cover?: Buffer;
+  cover?: string;
   is_active?: boolean;
   created_at: string;
   updated_at: string;

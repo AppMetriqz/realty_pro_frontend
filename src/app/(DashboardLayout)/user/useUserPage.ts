@@ -16,7 +16,7 @@ import { ExceptionCatchResponse } from '@/common/exceptions';
 
 export type UsePageProjectAvailableProps = {
   deleteHookForm: UseFormReturn<DeleteFormType>;
-  rowsPerPage: number;
+  rowsPerPage: { value: number; label: string };
   changePageSize: (size: number) => void;
   page: number;
   setPage: Dispatch<SetStateAction<number>>;
@@ -50,7 +50,7 @@ export type UsePageProjectAvailableProps = {
 
 export default function usePage(): UsePageProjectAvailableProps {
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState({ label: '50', value: 50 });
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [openCreateEditModal, setOpenCreateEditModal] = useState(false);
   const [selectedUserToDelete, setSelectedUserToDelete] = useState<{
@@ -60,7 +60,7 @@ export default function usePage(): UsePageProjectAvailableProps {
   const [isEdit, setIsEdit] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [userText, setUserText] = useState<string>('');
- // const [userText, setUserText] = useState<string>('');
+  // const [userText, setUserText] = useState<string>('');
 
   const deleteResolver = useYupValidationResolver(deleteValidationSchema);
   const createResolver = useYupValidationResolver(userValidationSchema);
@@ -76,13 +76,16 @@ export default function usePage(): UsePageProjectAvailableProps {
   });
 
   const changePageSize = (size: number) => {
-    setRowsPerPage(size);
+    setRowsPerPage({
+      value: size,
+      label: size === -1 ? 'Todos' : size.toString(),
+    });
   };
 
   const allUsers = apiUser.useFindAll({
     searchText: userText,
     pageIndex: page,
-    pageSize: rowsPerPage,
+    pageSize: rowsPerPage.value === -1 ? 100000 : rowsPerPage.value,
     sortOrder: 'DESC',
     sortBy: 'created_at',
   });

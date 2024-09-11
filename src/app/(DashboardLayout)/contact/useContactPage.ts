@@ -30,8 +30,8 @@ export type UseContactPageProps = {
   setOpenCreateEditContact: Dispatch<SetStateAction<boolean>>;
   page: number;
   setPage: Dispatch<SetStateAction<number>>;
-  rowsPerPage: number;
-  setRowsPerPage: Dispatch<SetStateAction<number>>;
+  rowsPerPage: { value: number; label: string };
+  setRowsPerPage: Dispatch<SetStateAction<{ value: number; label: string }>>;
   allContacts: UseQueryResult<{ rows: GetContactDto[]; count: number }, Error>;
   changePageSize: (size: number) => void;
   onCloseCreateEditContact: () => void;
@@ -54,7 +54,7 @@ export default function useContactPage(): UseContactPageProps {
   const [contactDescription, setContactDescription] = useState('');
   const [openCreateEditContact, setOpenCreateEditContact] = useState(false);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerPage, setRowsPerPage] = useState({ label: '50', value: 50 });
   const resolverCreateUpdateContact = useYupValidationResolver(
     createContactValidationSchema
   );
@@ -66,21 +66,22 @@ export default function useContactPage(): UseContactPageProps {
   });
 
   const changePageSize = (size: number) => {
-    setRowsPerPage(size);
+    setRowsPerPage({
+      value: size,
+      label: size === -1 ? 'Todos' : size.toString(),
+    });
   };
 
   const autocompleteContacts = apiContacts.useFindAllAutocomplete({
     description: contactDescription,
   });
 
-  console.log("contactText", contactText)
-
   const allContacts = apiContacts.useFindAll({
     pageIndex: page,
-    pageSize: rowsPerPage,
+    pageSize: rowsPerPage.value === -1 ? 100000 : rowsPerPage.value,
     sortOrder: 'DESC',
     sortBy: 'created_at',
-    searchText:contactText,
+    searchText: contactText,
     type: selectedContactTypes
       .map((contactType) => contactType.value)
       .join(','),
