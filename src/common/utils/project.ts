@@ -14,9 +14,7 @@ export const mapProjectToProperty = (project: ProjectDto) => {
     id: project.project_id,
     name: project.name,
     creationDate: DateTime.fromISO(project.created_at).toFormat('dd/LL/yyyy'),
-    imageSrc: project.cover_path
-      ? `${BASE_URL}/${project.cover_path}`
-      : '/images/products/no_image.png',
+    imageSrc: project.cover ? project.cover : '/images/products/no_image.png',
     type: project.type,
     currency_type: project.currency_type,
     unit_from_price: project.unit_from_price ? project.unit_from_price : '0',
@@ -30,9 +28,7 @@ export const mapProjectToProperty = (project: ProjectDto) => {
 export const mapProjectToCardProperty = (project: ProjectSummaryDto) => {
   return {
     name: project.name,
-    imageSrc: project.cover_path
-      ? `${BASE_URL}/${project.cover_path}`
-      : '/images/products/no_image.png',
+    imageSrc: project.cover ? project.cover : '/images/products/no_image.png',
     address: `${project.sector}, ${project.city}, ${getCountry(
       project.country_code
     )}`,

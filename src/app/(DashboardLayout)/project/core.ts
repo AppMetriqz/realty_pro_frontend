@@ -17,7 +17,7 @@ export interface ProjectFormInput {
   latitude: number;
   longitude: number;
 
-  cover: File;
+  cover: string;
 
   property_feature_ids: number[];
 }

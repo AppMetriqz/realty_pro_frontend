@@ -15,9 +15,7 @@ export const mapUnitToProperty = (
     id: unit.unit_id,
     name: unit.name,
     creationDate: DateTime.fromISO(unit.created_at).toFormat('dd/LL/yyyy'),
-    imageSrc: unit.cover_path
-      ? `${BASE_URL}/${unit.cover_path}`
-      : '/images/products/no_image.png',
+    imageSrc: unit.cover ? unit.cover : '/images/products/no_image.png',
     type: unit.type,
     price: formatCurrency(parseFloat(unit.price)),
     rooms: unit.rooms ?? undefined,

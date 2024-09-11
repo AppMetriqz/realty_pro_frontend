@@ -17,7 +17,7 @@ export interface ProjectDto {
   cover_path: string;
   unit_from_price?: string;
   unit_to_price?: string;
-  cover: File;
+  cover: string | Buffer;
   is_active?: boolean;
   created_at: string;
   updated_at: string;
@@ -33,6 +33,7 @@ export interface ProjectSummaryDto {
   unit_to_price: string;
   city: string;
   sector: string;
+  cover: string;
   cover_path: string;
   address: string;
   type: string;

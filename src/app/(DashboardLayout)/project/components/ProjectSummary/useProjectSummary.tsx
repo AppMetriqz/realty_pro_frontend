@@ -44,6 +44,7 @@ const useProjectSummary = () => {
       const project = await updateProject.mutateAsync({
         ...data,
         property_feature_ids: data.property_feature_ids.join(','),
+        cover: data.cover,
       });
       if (!!project) {
         toast.success(`Proyecto: ${data.name} actualizado.`, {

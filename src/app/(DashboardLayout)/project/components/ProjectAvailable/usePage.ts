@@ -13,7 +13,6 @@ import {
 } from './core';
 import { UnitStatus } from '@/common/constants';
 import { apiContacts, apiPropertyFeatures, apiSales, apiUnits } from '@/api';
-import { UseQueryResult } from '@tanstack/react-query';
 import { GetContactDto, GetUnitDto } from '@/common/dto';
 import { useParams } from 'next/navigation';
 import { toast } from 'react-toastify';
@@ -28,6 +27,7 @@ import {
 } from '../../[slug]/core';
 import { ResultFindAllProjectFeatures } from '@/api/project-features';
 import { CancelUnitSaleType, SellFormType } from '@/common/types/SellTypes';
+import { UseQueryResult } from '@tanstack/react-query';
 
 export type UpdateUnitProjectProps = {
   hookForm: UseFormReturn<UnitFormInput>;
@@ -208,7 +208,7 @@ export default function usePage(): UsePageProjectAvailableProps {
   };
 
   const availableUnits = apiUnits.useFindAll({
-    searchText:unitText,
+    searchText: unitText,
     pageIndex: page,
     pageSize: rowsPerPage,
     sortOrder: 'DESC',
@@ -235,6 +235,7 @@ export default function usePage(): UsePageProjectAvailableProps {
         unit_id: selectedUnitId,
         price: Number(data.price.replace(/[^0-9.-]+/g, '')),
         property_feature_ids: data.property_feature_ids.join(','),
+        cover: data.cover,
       });
       if (!!project) {
         toast.success(`Unidad: ${data.name} creada.`, {

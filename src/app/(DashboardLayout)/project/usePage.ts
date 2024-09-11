@@ -58,6 +58,7 @@ export default function usePage() {
       const project = await createProject.mutateAsync({
         ...data,
         property_feature_ids: data.property_feature_ids.join(','),
+        cover: data.cover
       });
       if (!!project) {
         toast.success(`Proyecto: ${data.name} creado.`, {
@@ -85,8 +86,7 @@ export default function usePage() {
 
   const onSetProjectText = (event: React.ChangeEvent<HTMLInputElement>) => {
     setProjectText(event.target.value);
-  }
-
+  };
 
   return {
     onSubmit,

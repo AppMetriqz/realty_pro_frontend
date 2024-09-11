@@ -11,8 +11,8 @@ import { useYupValidationResolver } from '@/common/utils/formHook';
 import { toast } from 'react-toastify';
 import { ExceptionCatchResponse } from '@/common/exceptions';
 import { useParams } from 'next/navigation';
-import { UseQueryResult } from '@tanstack/react-query';
 import { ProjectDto } from '@/common/dto';
+import { UseQueryResult } from '@tanstack/react-query';
 
 export type CreateUnitProjectProps = {
   hookForm: UseFormReturn<UnitFormInput>;
@@ -57,6 +57,7 @@ export default function usePage() {
         ...data,
         price: Number(data.price.replace(/[^0-9.-]+/g, '')),
         property_feature_ids: data.property_feature_ids.join(','),
+        cover: data.cover,
       });
       if (!!project) {
         toast.success(`Unidad: ${data.name} creada.`, {

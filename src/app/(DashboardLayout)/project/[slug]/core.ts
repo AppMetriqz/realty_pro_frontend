@@ -19,7 +19,7 @@ export interface UnitFormInput {
   price: string;
   status: string;
 
-  cover?: File;
+  cover?: string;
 
   property_feature_ids: number[];
 }

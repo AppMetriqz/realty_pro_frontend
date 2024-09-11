@@ -17,7 +17,7 @@ export interface UnitDto {
   bathrooms?: string;
   price: number;
   status: string;
-  cover?: File;
+  cover?: Buffer;
   is_active?: boolean;
   created_at: string;
   updated_at: string;
@@ -32,6 +32,7 @@ export interface GetUnitDto {
   description: string;
   type: keyof typeof PropertyTypeDto;
   condition: string;
+  cover: string;
   cover_path: string;
   currency_type: string;
   levels_qty?: string;
@@ -44,7 +45,6 @@ export interface GetUnitDto {
   bathrooms?: string;
   price: string;
   status: string;
-  cover?: File;
   sale?: {
     sale_id: number;
   };
