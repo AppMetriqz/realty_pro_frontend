@@ -71,6 +71,7 @@ export const useCreate = () => {
       });
       queryClient.invalidateQueries({ queryKey: [`${sales}FindAll`] });
       queryClient.invalidateQueries({ queryKey: [`${units}FindAll`] });
+      queryClient.invalidateQueries({ queryKey: [units] });
     },
   });
 };
@@ -90,6 +91,7 @@ export const useCreateAll = () => {
       });
       queryClient.invalidateQueries({ queryKey: [`${sales}FindAll`] });
       queryClient.invalidateQueries({ queryKey: [`${units}FindAll`] });
+      queryClient.invalidateQueries({ queryKey: [units] });
     },
   });
 };

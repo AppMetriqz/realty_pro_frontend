@@ -246,77 +246,77 @@ const ProjectAvailable: FC<{
             </Grid>
           </>
         ) : (
-            <>
-              <Box display="flex" flexDirection={'column'}>
+          <>
+            <Box display="flex" flexDirection={'column'}>
+              <Box
+                display="flex"
+                justifyContent={'space-between'}
+                alignItems={'center'}
+                mb="40px"
+              >
                 <Box
                   display="flex"
-                  justifyContent={'space-between'}
+                  width={'80%'}
+                  gap={'20px'}
                   alignItems={'center'}
-                  mb="40px"
                 >
-                  <Box
-                    display="flex"
-                    width={'80%'}
-                    gap={'20px'}
-                    alignItems={'center'}
+                  <SearchInput
+                    sx={{ maxWidth: '268px' }}
+                    label="Buscar unidad"
+                    onChange={usePageProps.onSetUnitText}
+                  />
+                  <FormControl
+                    sx={{
+                      maxWidth: '222px',
+                      '.MuiSelect-select': { padding: '13px 32px' },
+                    }}
+                    fullWidth
                   >
-                    <SearchInput
-                      sx={{ maxWidth: '268px' }}
-                      label="Buscar unidad"
-                      onChange={usePageProps.onSetUnitText}
-                    />
-                    <FormControl
-                      sx={{
-                        maxWidth: '222px',
-                        '.MuiSelect-select': { padding: '13px 32px' },
-                      }}
-                      fullWidth
+                    <InputLabel id="demo-simple-select-label">
+                      Seleccionar Estatus
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={''}
+                      label="Seleccionar Estatus"
+                      onChange={usePageProps.onChangeStatus}
                     >
-                      <InputLabel id="demo-simple-select-label">
-                        Seleccionar Estatus
-                      </InputLabel>
-                      <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={''}
-                        label="Seleccionar Estatus"
-                        onChange={usePageProps.onChangeStatus}
-                      >
-                        {usePageProps.currentUnitStatuses.map((status) => (
-                          <MenuItem key={status.value} value={status.value}>
-                            {status.label}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                    {usePageProps.selectedStatuses.map((status) => (
-                      <Chip
-                        key={status.value}
-                        color="secondary"
-                        label={status.label}
-                        deleteIcon={
-                          <CloseIcon
-                            onClick={() =>
-                              usePageProps.handleDeleteStatus(status)
-                            }
-                          />
-                        }
-                        onDelete={() => usePageProps.handleDeleteStatus(status)}
-                      />
-                    ))}
-                  </Box>
-                  {usePageProps.availableUnits.isSuccess? (
-                      <Box display="flex" width={'20%'} justifyContent={'flex-end'}>
-                        <Typography fontWeight={600}>
-                          {usePageProps.availableUnits.data.rows.length} Unidad
-                          {usePageProps.availableUnits.data.rows.length > 1
-                              ? 'es'
-                              : ''}
-                        </Typography>
-                      </Box>
-                  ):null}
+                      {usePageProps.currentUnitStatuses.map((status) => (
+                        <MenuItem key={status.value} value={status.value}>
+                          {status.label}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                  {usePageProps.selectedStatuses.map((status) => (
+                    <Chip
+                      key={status.value}
+                      color="secondary"
+                      label={status.label}
+                      deleteIcon={
+                        <CloseIcon
+                          onClick={() =>
+                            usePageProps.handleDeleteStatus(status)
+                          }
+                        />
+                      }
+                      onDelete={() => usePageProps.handleDeleteStatus(status)}
+                    />
+                  ))}
                 </Box>
+                {usePageProps.availableUnits.isSuccess ? (
+                  <Box display="flex" width={'20%'} justifyContent={'flex-end'}>
+                    <Typography fontWeight={600}>
+                      {usePageProps.availableUnits.data.rows.length} Unidad
+                      {usePageProps.availableUnits.data.rows.length > 1
+                        ? 'es'
+                        : ''}
+                    </Typography>
+                  </Box>
+                ) : null}
               </Box>
+            </Box>
             {usePageProps.availableUnits.isSuccess && (
               <TableShared<AvailableTableData>
                 headTitle="Unidades disponibles"
@@ -358,7 +358,7 @@ const ProjectAvailable: FC<{
                 page={usePageProps.page}
                 setPage={usePageProps.setPage}
               />
-          )}
+            )}
           </>
         )}
       </Box>

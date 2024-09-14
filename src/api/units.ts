@@ -147,6 +147,7 @@ export const useCancelSaleUnit = () => {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`${units}FindAll`] });
+      queryClient.invalidateQueries({ queryKey: [units] });
     },
   });
 };
