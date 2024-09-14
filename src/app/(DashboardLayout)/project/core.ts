@@ -10,6 +10,7 @@ export interface ProjectFormInput {
   levels_qty?: string;
   country_code: string;
   state: string;
+  status: string;
   city: string;
   sector: string;
   address: string;
