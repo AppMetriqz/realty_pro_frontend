@@ -3,18 +3,20 @@ import { FormHelperText, Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import ImageIcon from '@/icons/ImageIcon';
 import { getHelperTextFormState } from '@/common/utils/formHook';
-import { BASE_URL } from '@/config/api/api.config';
+import { isFile, resizeImage } from '@/common/utils/imageHelpers';
 
 const keyId = 'cover';
 
 export const Cover = ({ usePageProps }: { usePageProps: any }) => {
   const { hookForm } = usePageProps;
 
-  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     if (event.target.files && event.target.files.length > 0) {
       const selectedFile = event.target.files[0];
-      hookForm.setValue(keyId, selectedFile);
-      hookForm.setValue('cover_path', '');
+      const resizedSelectedFile = await resizeImage(selectedFile, 351, 196);
+      hookForm.setValue(keyId, resizedSelectedFile);
     }
   };
 
@@ -32,16 +34,13 @@ export const Cover = ({ usePageProps }: { usePageProps: any }) => {
         sx={{
           background:
             hookForm.watch(keyId) || !!hookForm.watch('cover_path')
-              ? `url(${
-                  !!hookForm.watch('cover_path')
-                    ? `${BASE_URL}/${hookForm
-                        .watch('cover_path')
-                        .replaceAll(/[\/\\]/g, `/`)}`
-                    : `${URL.createObjectURL(hookForm.watch(keyId))}`
-                })`
+              ? isFile(hookForm.watch(keyId))
+                ? `url(${URL.createObjectURL(hookForm.watch(keyId))})`
+                : `url(${hookForm.watch(keyId)})`
               : 'rgba(231, 231, 231, 0.25)',
           backgroundRepeat: 'no-repeat',
           backgroundPosition: 'center',
+          backgroundSize: 'contain',
           objectFit: 'cover',
           borderRadius: '8px',
           boxShadow: 'none',

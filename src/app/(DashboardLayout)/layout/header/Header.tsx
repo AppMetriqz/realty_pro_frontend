@@ -32,7 +32,6 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
     width: '100%',
     color: theme.palette.text.secondary,
   }));
-  console.log(!isLoading && !!authUser);
 
   return (
     <AppBarStyled position="sticky" color="default">
@@ -52,7 +51,11 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
         </IconButton>
 
         <Box flexGrow={1} />
-        {!isLoading && !!authUser ? (
+        {isLoading ? (
+          <Grid justifyContent={'center'} item xs={12}>
+            <CircularProgress sx={{ color: '#000' }} />
+          </Grid>
+        ) : !!authUser ? (
           <Stack spacing={1} direction="row" alignItems="center">
             <Stack
               spacing={0.5}
@@ -67,11 +70,7 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
               </Typography>
             </Stack>
           </Stack>
-        ) : (
-          <Grid justifyContent={'center'} item xs={12}>
-            <CircularProgress sx={{ color: '#000' }} />
-          </Grid>
-        )}
+        ) : null}
       </ToolbarStyled>
     </AppBarStyled>
   );
