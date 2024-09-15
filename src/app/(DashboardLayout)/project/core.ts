@@ -76,8 +76,4 @@ export const updateProjectValidationSchema = yup.object({
   address: yup.string().required(ErrorMsg.required),
   latitude: yup.number(),
   longitude: yup.number(),
-  property_feature_ids: yup
-    .array()
-    .min(1, ErrorMsg.arrayMin)
-    .required(ErrorMsg.required),
 });
