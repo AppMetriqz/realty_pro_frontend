@@ -107,6 +107,9 @@ export const useUpdate = () => {
       queryClient.invalidateQueries({
         queryKey: [`${contacts}PaymentPlans`],
       });
+      queryClient.invalidateQueries({
+        queryKey: [`${projects}FindAllAutocomplete`],
+      });
       queryClient.invalidateQueries({ queryKey: [`${projects}FindAll`] });
       queryClient.invalidateQueries({ queryKey: [projects] });
       queryClient.invalidateQueries({
@@ -122,6 +125,9 @@ export const useDelete = (id: number) => {
     mutationKey: [`${projects}Delete`],
     mutationFn: () => axiosInstance.delete(`/${projects}/${id}`),
     onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [`${projects}FindAllAutocomplete`],
+      });
       queryClient.invalidateQueries({ queryKey: [`${projects}FindAll`] });
     },
   });
