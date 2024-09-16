@@ -10,6 +10,7 @@ export const BASE_URL = isProduction ? BASE_URL_PRO : BASE_URL_DEV;
 const axiosInstance = axios.create({
   baseURL: BASE_URL,
   timeout: 15000,
+  withCredentials:true,
   headers: {
     Accept: 'application/json',
     'Content-Type': 'application/json;charset=utf-8',
