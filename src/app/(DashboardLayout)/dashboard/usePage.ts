@@ -196,7 +196,7 @@ export default function usePage(): UsePageProps {
   const handleGoogleCalendarLogin = async () => {
     setIsLoadingCalendar(true);
     const result = await googleCalendarLogin.mutateAsync();
-    window.open(result);
+    window.open(result, '_self');
     setIsLoadingCalendar(false);
   };
 
