@@ -152,7 +152,7 @@ export default function usePage(): UsePageProps {
         setIsGoogleCalendarLogin(!googleCalendar.data.isNeedLogin);
         setIsLoadingCalendar(false);
       }
-      console.log("v0.1.5")
+      console.log("v0.1.6")
     })();
   }, [googleCalendar.isSuccess, googleCalendar.data]);
 
