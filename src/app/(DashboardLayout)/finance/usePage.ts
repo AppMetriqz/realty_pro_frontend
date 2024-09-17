@@ -91,7 +91,7 @@ export default function usePage(project_id?:number) {
       const xAxisLine = {
         categories: _.map(lineData, (item) => {
           const monthName = DateTime.fromObject({ month: item.month }).toFormat(
-            'LLLL'
+            'LLLL',{locale:'es'}
           );
           return `${monthName} ${item.year}`;
         }),

@@ -9,7 +9,7 @@ import {
 import { UseQueryResult } from '@tanstack/react-query';
 import { LineOptions } from '@/app/(DashboardLayout)/components/chart/chartsOptions';
 import _ from 'lodash';
-import { DateTime } from 'luxon';
+import { DateTime, Settings } from 'luxon';
 import { SelectChangeEvent } from '@mui/material/Select';
 import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
 import { SellFormType } from '@/common/types/SellTypes';
@@ -31,6 +31,7 @@ import {
 } from '@/common/dto';
 import { apiPaymentPlans } from '@/api/payment-plans';
 import { formatCurrency } from '@/common/utils/numericHelpers';
+
 
 export interface UsePageProps {
   times: keyof typeof CalendarEnumDto;
@@ -167,7 +168,7 @@ export default function usePage(): UsePageProps {
       const xAxisLine = {
         categories: _.map(lineData, (item) => {
           const monthName = DateTime.fromObject({ month: item.month }).toFormat(
-            'LLLL'
+            'LLLL', {locale:'es'}
           );
           return `${monthName} ${item.year}`;
         }),
