@@ -97,6 +97,9 @@ export const useUpdate = () => {
     onSuccess: (res, variables) => {
       queryClient.invalidateQueries({ queryKey: [`${contacts}FindAll`] });
       queryClient.invalidateQueries({ queryKey: [contacts] });
+      queryClient.invalidateQueries({
+        queryKey: [`${contacts}FindAllAutocomplete`],
+      });
     },
   });
 };
