@@ -8,7 +8,6 @@ import { ToastContainer } from 'react-toastify';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { CurrentUserProvider } from '@/context/CurrentUserContext';
-import { AdvancedImage } from '@cloudinary/react';
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 2 } },
