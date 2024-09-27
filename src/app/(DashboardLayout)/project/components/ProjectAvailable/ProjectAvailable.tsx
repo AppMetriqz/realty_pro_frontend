@@ -92,51 +92,51 @@ const ProjectAvailable: FC<{
     isSold: boolean,
     record: AvailableTableData
   ): ActionType[] => {
-    const actionArray = [
+    const actionArray: ActionType[] = [
       {
         id: record.id,
         icon: <VisibilityIcon fontSize="small" />,
         label: 'Ver',
         onClick: () => usePageProps.handleClickView(record.id),
       },
-      permissions.unit.canSale || permissions.unit.canCancel
-        ? {
-            id: record.id,
-            icon: isSold ? (
-              <DoDisturbOffIcon fontSize="small" />
-            ) : (
-              <SellIcon fontSize="small" />
-            ),
-            label: isSold ? 'Cancelar Venta' : 'Vender',
-            onClick: isSold
-              ? () => usePageProps.handleClickCancelSale(record.id)
-              : () => usePageProps.handleClickSell(record.id),
-          }
-        : undefined,
-    ].filter((x) => !!x);
+      ...(permissions.unit.canSale || permissions.unit.canCancel
+        ? [
+            {
+              id: record.id,
+              icon: isSold ? (
+                <DoDisturbOffIcon fontSize="small" />
+              ) : (
+                <SellIcon fontSize="small" />
+              ),
+              label: isSold ? 'Cancelar Venta' : 'Vender',
+              onClick: isSold
+                ? () => usePageProps.handleClickCancelSale(record.id)
+                : () => usePageProps.handleClickSell(record.id),
+            },
+          ]
+        : []),
+    ];
+
     if (!isSold) {
-      actionArray.push.apply(
-        actionArray,
-        [
-          permissions.unit.canEdit
-            ? {
-                id: record.id,
-                icon: <EditIcon fontSize="small" />,
-                label: 'Editar',
-                onClick: () => usePageProps.handleClickEdit(record.id),
-              }
-            : undefined,
-          permissions.unit.canDelete
-            ? {
-                id: record.id,
-                icon: <DeleteIcon fontSize="small" />,
-                label: 'Borrar',
-                onClick: () => usePageProps.handleClickDelete(record.id),
-              }
-            : undefined,
-        ].filter((x) => !!x)
-      );
+      if (permissions.unit.canEdit) {
+        actionArray.push({
+          id: record.id,
+          icon: <EditIcon fontSize="small" />,
+          label: 'Editar',
+          onClick: () => usePageProps.handleClickEdit(record.id),
+        });
+      }
+
+      if (permissions.unit.canDelete) {
+        actionArray.push({
+          id: record.id,
+          icon: <DeleteIcon fontSize="small" />,
+          label: 'Borrar',
+          onClick: () => usePageProps.handleClickDelete(record.id),
+        });
+      }
     }
+
     return actionArray;
   };
 
