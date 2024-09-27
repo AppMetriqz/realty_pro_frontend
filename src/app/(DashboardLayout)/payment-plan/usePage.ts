@@ -61,19 +61,19 @@ export default function usePage(): UsePageProps {
   const [paymentPlanOverduePageSize, setPaymentPlanOverduePageSize] = useState<{
     value: number;
     label: string;
-  }>({ label: 'Todos', value: -1 });
+  }>({ label: '50', value: 50 });
 
   const [paymentPlanPendingPageIndex, setPaymentPlanPendingPageIndex] =
     useState<number>(0);
   const [paymentPlanPendingPageSize, setPaymentPlanPendingPageSize] = useState<{
     value: number;
     label: string;
-  }>({ label: 'Todos', value: -1 });
+  }>({ label: '50', value: 50 });
 
   const [paymentPlanFinancingPageIndex, setPaymentPlanFinancingPageIndex] =
     useState<number>(0);
   const [paymentPlanFinancingPageSize, setPaymentPlanFinancingPageSize] =
-    useState<{ value: number; label: string }>({ label: 'Todos', value: -1 });
+    useState<{ value: number; label: string }>({ label: '50', value: 50 });
 
   const [projectText, setProjectText] = useState<string>('');
 
