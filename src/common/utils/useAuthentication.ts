@@ -6,12 +6,16 @@ export default function useAuthentication() {
 
   const isAuthenticated = (): boolean => {
     const token = Cookies.get('token');
+    queryClient.invalidateQueries({ queryKey: ['currentUser'] });
     return !!token;
   };
 
   const onLogOut = () => {
     Cookies.remove('token');
-    Cookies.remove('user');
+    const isNotRememberMe = Cookies.get('rememberMe') !== '1';
+    if (isNotRememberMe) {
+      Cookies.remove('user');
+    }
     queryClient.removeQueries();
   };
 

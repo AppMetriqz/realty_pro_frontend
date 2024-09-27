@@ -185,7 +185,8 @@ const TableShared = <T extends { id: string | number }>({
   // Avoid a layout jump when reaching the last page with empty rows.
   const visibleRows = React.useMemo(
     () => stableSort<T>(rows, getComparator(order, orderBy)),
-    [rows, order, orderBy, page, rowsPerPage]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [rows, order, orderBy, page, rowsPerPage, headCells]
   );
 
   return (

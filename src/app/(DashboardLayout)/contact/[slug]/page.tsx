@@ -54,6 +54,7 @@ const ContactProfile = () => {
         }
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [useContactProfilePageProps.findContact.isLoading]);
 
   const userSections = [

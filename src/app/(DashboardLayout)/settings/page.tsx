@@ -16,58 +16,64 @@ import {
   FeatureTypes,
 } from './component/DialogCreateEditSettings';
 import { DialogFreeDelete } from '@/common/components/Logic/DialogFreeDelete';
+import usePermission from '@/common/hook/usePermission';
 
 const User = () => {
+  const { permissions } = usePermission();
   const usePageProps = usePage();
 
-  const headCells: Array<ColumnProps<GetPropertyFeaturesDto & { id: number }>> =
-    [
-      {
-        key: 'property_feature_id',
-        numeric: false,
-        disablePadding: true,
-        label: 'ID',
-      },
-      {
-        key: 'description',
-        numeric: false,
-        disablePadding: true,
-        label: 'Descripcción',
-      },
-      {
-        key: 'type',
-        numeric: false,
-        disablePadding: true,
-        label: 'Tipo',
-        render: (_, record: GetPropertyFeaturesDto & { id: number }) =>
-          FeatureTypes.find((feature) => feature.value === record.type)
-            ?.label || '-',
-      },
-      {
-        key: 'property_feature_id',
-        numeric: false,
-        disablePadding: false,
-        label: 'Acciones',
-        render: (_, record: GetPropertyFeaturesDto & { id: number }) => (
-          <MenuShared
-            actions={[
-              {
-                id: record.property_feature_id,
-                icon: <EditIcon fontSize="small" />,
-                label: 'Editar',
-                onClick: () => usePageProps.handleClickEdit(record),
-              },
-              {
-                id: record.property_feature_id,
-                icon: <DeleteIcon fontSize="small" />,
-                label: 'Borrar',
-                onClick: () => usePageProps.handleClickDelete(record),
-              },
-            ]}
-          />
-        ),
-      },
-    ];
+  const headCells: Array<
+    ColumnProps<Partial<GetPropertyFeaturesDto> & { id: number }>
+  > = [
+    {
+      key: 'property_feature_id',
+      numeric: false,
+      disablePadding: true,
+      label: 'ID',
+    },
+    {
+      key: 'description',
+      numeric: false,
+      disablePadding: true,
+      label: 'Descripcción',
+    },
+    {
+      key: 'type',
+      numeric: false,
+      disablePadding: true,
+      label: 'Tipo',
+      render: (_, record: Partial<GetPropertyFeaturesDto & { id: number }>) =>
+        FeatureTypes.find((feature) => feature.value === record.type)?.label ||
+        '-',
+    },
+  ];
+
+  if (permissions.setting.canEdit || permissions.setting.canDelete) {
+    headCells.push({
+      key: 'id',
+      numeric: false,
+      disablePadding: false,
+      label: 'Acciones',
+      render: (_, record: Partial<GetPropertyFeaturesDto> & { id: number }) => (
+        <MenuShared
+          actions={[
+            {
+              id: record.id,
+              icon: <EditIcon fontSize="small" />,
+              label: 'Editar',
+              onClick: () => usePageProps.handleClickEdit(record),
+            },
+            {
+              id: record.id,
+              icon: <DeleteIcon fontSize="small" />,
+              label: 'Borrar',
+              onClick: () => usePageProps.handleClickDelete(record),
+            },
+          ]}
+        />
+      ),
+    });
+  }
 
   return (
     <>
@@ -75,7 +81,9 @@ const User = () => {
         <HeaderPage
           noBorder
           name="Características de proyectos y unidades"
-          btnLabel="+ Nueva Características"
+          btnLabel={
+            permissions.setting.canAdd ? '+ Nueva Características' : undefined
+          }
           onClick={() => usePageProps.setOpenCreateEditModal(true)}
         />
         <Box px={5}>
@@ -86,7 +94,7 @@ const User = () => {
           ) : (
             usePageProps.propertyFeatureList.isSuccess && (
               <>
-                <TableShared<GetPropertyFeaturesDto & { id: number }>
+                <TableShared<Partial<GetPropertyFeaturesDto> & { id: number }>
                   headTitle="Características"
                   headCells={headCells}
                   rowsPerPage={usePageProps.rowsPerPage}

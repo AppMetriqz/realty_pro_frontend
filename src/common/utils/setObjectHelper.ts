@@ -13,16 +13,13 @@ function setProperty<T extends NestedBooleanObject>(
   let current: NestedBooleanObject = obj;
 
   for (const key of keys) {
-    if (!(key in current)) {
+    if (!(key in current) || typeof current[key] !== 'object') {
       current[key] = {} as NestedBooleanObject; // Create an empty object if it doesn't exist
     }
     current = current[key] as NestedBooleanObject;
   }
 
-  if (typeof current === 'object' && current !== null) {
-    current[lastKey] = value;
-  }
-
+  current[lastKey] = value; // Directly set the boolean value
   return obj;
 }
 
@@ -30,16 +27,33 @@ function setProperty<T extends NestedBooleanObject>(
 export function setPermissionValue<T extends NestedBooleanObject>(
   obj: T,
   value: boolean,
-  path?: string
+  path?: string,
+  excludePaths?: string[] // New parameter for paths to exclude
 ): T {
-  const updateObject = (o: NestedBooleanObject, v: boolean): void => {
+  const updateObject = (o: NestedBooleanObject, basePath: string): void => {
     for (const key in o) {
       if (o.hasOwnProperty(key)) {
         const currentValue = o[key];
+        const currentPath = basePath ? `${basePath}.${key}` : key;
+
+        // Check if the current path is in the excludePaths
+        const isExcluded =
+          excludePaths &&
+          excludePaths.some(
+            (excludePath) =>
+              currentPath === excludePath ||
+              currentPath.startsWith(`${excludePath}.`)
+          );
+
+        if (isExcluded) {
+          continue; // Skip this property
+        }
+
         if (typeof currentValue === 'object' && currentValue !== null) {
-          updateObject(currentValue, v);
+          // Recursively update nested objects
+          updateObject(currentValue as NestedBooleanObject, currentPath);
         } else if (typeof currentValue === 'boolean') {
-          o[key] = v;
+          o[key] = value; // Set boolean value
         }
       }
     }
@@ -50,7 +64,7 @@ export function setPermissionValue<T extends NestedBooleanObject>(
     setProperty(obj, path, value);
   } else {
     // Otherwise, set all boolean values
-    updateObject(obj, value);
+    updateObject(obj, '');
   }
 
   return obj;

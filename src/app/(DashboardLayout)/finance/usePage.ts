@@ -39,7 +39,7 @@ export interface UsePageProps {
   lineBarOptions: LineBarOptionsDto;
 }
 
-export default function usePage(project_id?:number) {
+export default function usePage(project_id?: number) {
   const [selectedProjects, setSelectedProjects] = useState<ProjectDto[]>([]);
   const [selectedProject, setSelectedProject] = useState<ProjectDto | null>(
     null
@@ -57,7 +57,8 @@ export default function usePage(project_id?:number) {
     }
   );
   const [pieOptions, setPieOptions] = React.useState<any>(PieOptions);
-  const [currency, setCurrency] = React.useState<keyof typeof CurrencyTypeDto>('US');
+  const [currency, setCurrency] =
+    React.useState<keyof typeof CurrencyTypeDto>('US');
 
   const projects = apiProjects.useFindAllAutocomplete({
     description: projectText,
@@ -67,14 +68,15 @@ export default function usePage(project_id?:number) {
     projectIds: _.join(_.map(selectedProjects, 'project_id'), ','),
   });
 
-  React.useEffect(()=>{
-    if (project_id){
-      let project = {project_id} as ProjectDto
+  React.useEffect(() => {
+    if (project_id) {
+      let project = { project_id } as ProjectDto;
       setSelectedProjects(
-          _.uniqBy(_.concat(selectedProjects, [project]), 'project_id')
+        _.uniqBy(_.concat(selectedProjects, [project]), 'project_id')
       );
     }
-  },[project_id])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [project_id]);
 
   React.useEffect(() => {
     if (finances.isSuccess) {
@@ -91,7 +93,8 @@ export default function usePage(project_id?:number) {
       const xAxisLine = {
         categories: _.map(lineData, (item) => {
           const monthName = DateTime.fromObject({ month: item.month }).toFormat(
-            'LLLL',{locale:'es'}
+            'LLLL',
+            { locale: 'es' }
           );
           return `${monthName} ${item.year}`;
         }),

@@ -12,14 +12,15 @@ import {
 } from '@mui/material';
 import PropTypes from 'prop-types';
 import { IconMenu } from '@tabler/icons-react';
-import { CurrentUserContext } from '@/context/CurrentUserContext';
+import { apiAuth } from '@/api';
+import Cookies from 'js-cookie';
 
 interface ItemType {
   toggleMobileSidebar: (event: React.MouseEvent<HTMLElement>) => void;
 }
 
 const Header = ({ toggleMobileSidebar }: ItemType) => {
-  const { isLoading, authUser } = useContext(CurrentUserContext);
+  const currentUser = apiAuth.useCurrentUser(!!Cookies.get('token'));
   const AppBarStyled = styled(AppBar)(({ theme }) => ({
     boxShadow: 'none',
     paddingTop: 10,
@@ -51,11 +52,11 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
         </IconButton>
 
         <Box flexGrow={1} />
-        {isLoading ? (
+        {currentUser.isLoading ? (
           <Grid justifyContent={'center'} item xs={12}>
             <CircularProgress sx={{ color: '#000' }} />
           </Grid>
-        ) : !!authUser ? (
+        ) : !!currentUser.data ? (
           <Stack spacing={1} direction="row" alignItems="center">
             <Stack
               spacing={0.5}
@@ -65,8 +66,10 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
             >
               <Typography color={'#505050'} fontWeight={400}>
                 ¡Bienvenido&nbsp;
-                <span style={{ fontWeight: 700 }}>{authUser?.first_name}</span>!
-                Realty Dominicana
+                <span style={{ fontWeight: 700 }}>
+                  {currentUser.data?.first_name}
+                </span>
+                ! Realty Dominicana
               </Typography>
             </Stack>
           </Stack>

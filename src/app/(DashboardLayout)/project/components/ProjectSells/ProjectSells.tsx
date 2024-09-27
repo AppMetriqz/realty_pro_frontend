@@ -29,6 +29,7 @@ import { formatCurrency } from '@/common/utils/numericHelpers';
 import { DateTime } from 'luxon';
 import Link from 'next/link';
 import { SaleStages } from '@/common/constants';
+import usePermission from '@/common/hook/usePermission';
 
 const mapSellToSellTable = (sell: GetSellDto): SellTableData => {
   return {
@@ -62,6 +63,7 @@ export interface SellTableData {
 }
 
 const ProjectSells = () => {
+  const { permissions } = usePermission();
   const usePageProps = usePage();
 
   const headCells: Array<ColumnProps<SellTableData>> = [
@@ -115,14 +117,16 @@ const ProjectSells = () => {
               label: 'Ver',
               onClick: () => usePageProps.handleClickView(record.actions),
             },
-            {
-              id: record.id,
-              icon: <DeleteIcon fontSize="small" />,
-              label: 'Borrar',
-              onClick: () =>
-                usePageProps.handleClickDelete(record.id, record.unitName),
-            },
-          ]}
+            permissions.sale.canDelete
+              ? {
+                  id: record.id,
+                  icon: <DeleteIcon fontSize="small" />,
+                  label: 'Borrar',
+                  onClick: () =>
+                    usePageProps.handleClickDelete(record.id, record.unitName),
+                }
+              : undefined,
+          ].filter((x) => !!x)}
         />
       ),
     },
@@ -148,78 +152,76 @@ const ProjectSells = () => {
             </Grid>
           </>
         ) : (
-            <>
-              <Box display="flex" flexDirection={'column'}>
+          <>
+            <Box display="flex" flexDirection={'column'}>
+              <Box
+                display="flex"
+                justifyContent={'space-between'}
+                alignItems={'center'}
+                mb="40px"
+              >
                 <Box
                   display="flex"
-                  justifyContent={'space-between'}
+                  width={'80%'}
+                  gap={'20px'}
                   alignItems={'center'}
-                  mb="40px"
                 >
-                  <Box
-                    display="flex"
-                    width={'80%'}
-                    gap={'20px'}
-                    alignItems={'center'}
+                  <SearchInput
+                    sx={{ maxWidth: '268px' }}
+                    label="Buscar unidad"
+                    onChange={usePageProps.onSetUnitText}
+                  />
+                  <FormControl
+                    sx={{
+                      maxWidth: '222px',
+                      '.MuiSelect-select': { padding: '13px 32px' },
+                    }}
+                    fullWidth
                   >
-                    <SearchInput
-                      sx={{ maxWidth: '268px' }}
-                      label="Buscar unidad"
-                      onChange={usePageProps.onSetUnitText}
-                    />
-                    <FormControl
-                      sx={{
-                        maxWidth: '222px',
-                        '.MuiSelect-select': { padding: '13px 32px' },
-                      }}
-                      fullWidth
+                    <InputLabel id="demo-simple-select-label">
+                      Seleccionar Etapa
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      value={''}
+                      label="Seleccionar Etapa"
+                      onChange={usePageProps.onChangeSaleStage}
                     >
-                      <InputLabel id="demo-simple-select-label">
-                        Seleccionar Etapa
-                      </InputLabel>
-                      <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={''}
-                        label="Seleccionar Etapa"
-                        onChange={usePageProps.onChangeSaleStage}
-                      >
-                        {usePageProps.currentSaleStages.map((stage) => (
-                          <MenuItem key={stage.value} value={stage.value}>
-                            {stage.label}
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                    {usePageProps.selectedStages.map((stage) => (
-                      <Chip
-                        key={stage.value}
-                        color="secondary"
-                        label={stage.label}
-                        deleteIcon={
-                          <CloseIcon
-                            onClick={() =>
-                              usePageProps.handleDeleteStage(stage)
-                            }
-                          />
-                        }
-                        onDelete={() => usePageProps.handleDeleteStage(stage)}
-                      />
-                    ))}
-                  </Box>
-                  {usePageProps.availableSales.isSuccess? (
-                      <Box display="flex" width={'20%'} justifyContent={'flex-end'}>
-                        <Typography fontWeight={600}>
-                          {usePageProps.availableSales.data.rows.length} Venta
-                          {usePageProps.availableSales.data.rows.length > 1
-                              ? 'es'
-                              : ''}
-                        </Typography>
-                      </Box>
-                  ):null}
+                      {usePageProps.currentSaleStages.map((stage) => (
+                        <MenuItem key={stage.value} value={stage.value}>
+                          {stage.label}
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                  {usePageProps.selectedStages.map((stage) => (
+                    <Chip
+                      key={stage.value}
+                      color="secondary"
+                      label={stage.label}
+                      deleteIcon={
+                        <CloseIcon
+                          onClick={() => usePageProps.handleDeleteStage(stage)}
+                        />
+                      }
+                      onDelete={() => usePageProps.handleDeleteStage(stage)}
+                    />
+                  ))}
                 </Box>
+                {usePageProps.availableSales.isSuccess ? (
+                  <Box display="flex" width={'20%'} justifyContent={'flex-end'}>
+                    <Typography fontWeight={600}>
+                      {usePageProps.availableSales.data.rows.length} Venta
+                      {usePageProps.availableSales.data.rows.length > 1
+                        ? 's'
+                        : ''}
+                    </Typography>
+                  </Box>
+                ) : null}
               </Box>
-              {usePageProps.availableSales.isSuccess && (
+            </Box>
+            {usePageProps.availableSales.isSuccess && (
               <TableShared<SellTableData>
                 headTitle="Ventas"
                 headCells={headCells}
@@ -233,8 +235,8 @@ const ProjectSells = () => {
                 setPage={usePageProps.setPage}
                 count={usePageProps.availableSales.data.count}
               />
-              )}
-            </>
+            )}
+          </>
         )}
       </Box>
       <DialogDelete

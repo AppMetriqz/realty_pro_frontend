@@ -14,9 +14,11 @@ import { mapContactToTableRow } from '@/common/utils/contact';
 import { GetContactDto } from '@/common/dto';
 import { DialogCreateUpdateContact } from './components/DialogCreateUpdateContact';
 import { Filters } from './components/Filters';
-import HeaderSearch from "@/common/components/UI/headerSearch/HeaderSearch";
+import HeaderSearch from '@/common/components/UI/headerSearch/HeaderSearch';
+import usePermission from '@/common/hook/usePermission';
 
 const Contact = () => {
+  const { permissions } = usePermission();
   const usePageProps = useContactPage();
   const headCells: Array<ColumnProps<ContactData>> = [
     {
@@ -62,7 +64,7 @@ const Contact = () => {
       <PageContainer title="Contactos" description="este es contacto">
         <HeaderPage
           name="Contactos"
-          btnLabel="+ Nuevo Contacto"
+          btnLabel={permissions.contact.canAdd ? '+ Nuevo Contacto' : undefined}
           onClick={() => usePageProps.setOpenCreateEditContact(true)}
           extraContent={<Filters usePageProps={usePageProps} />}
         />
@@ -73,11 +75,10 @@ const Contact = () => {
           display={'flex'}
           flexDirection={'column'}
         >
-
           <HeaderSearch
-              label="Contacto"
-              onChange={usePageProps.onSetContactText}
-              list={usePageProps.allContacts}
+            label="Contacto"
+            onChange={usePageProps.onSetContactText}
+            list={usePageProps.allContacts}
           />
 
           {usePageProps.allContacts.isLoading ? (

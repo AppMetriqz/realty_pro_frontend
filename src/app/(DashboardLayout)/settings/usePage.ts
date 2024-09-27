@@ -20,8 +20,12 @@ export type UsePageProjectAvailableProps = {
   changePageSize: (size: number) => void;
   page: number;
   setPage: Dispatch<SetStateAction<number>>;
-  handleClickEdit: (data: GetPropertyFeaturesDto) => void;
-  handleClickDelete: (data: GetPropertyFeaturesDto) => void;
+  handleClickEdit: (
+    data: Partial<GetPropertyFeaturesDto> & { id: number }
+  ) => void;
+  handleClickDelete: (
+    data: Partial<GetPropertyFeaturesDto> & { id: number }
+  ) => void;
   selectedPropertyFeatureToDelete: number | null;
   onCloseDeleteModal: () => void;
   onCloseCreateEditModal: () => void;
@@ -117,20 +121,26 @@ export default function usePage(): UsePageProjectAvailableProps {
     }
   };
 
-  const handleClickEdit = async (data: GetPropertyFeaturesDto) => {
+  const handleClickEdit = async (
+    data: Partial<GetPropertyFeaturesDto> & { id: number }
+  ) => {
     propertyFeatureHookForm.setValue(
       'property_feature_id',
       data.property_feature_id
     );
-    propertyFeatureHookForm.setValue('description', data.description);
-    propertyFeatureHookForm.setValue('type', data.type);
+    if (data.description)
+      propertyFeatureHookForm.setValue('description', data.description);
+    if (data.type) propertyFeatureHookForm.setValue('type', data.type);
     propertyFeatureHookForm.setValue('is_active', data.is_active);
     setIsEdit(true);
     setOpenCreateEditModal(true);
   };
 
-  const handleClickDelete = async (data: GetPropertyFeaturesDto) => {
-    setSelectedPropertyFeatureToDelete(data.property_feature_id);
+  const handleClickDelete = async (
+    data: Partial<GetPropertyFeaturesDto> & { id: number }
+  ) => {
+    if (data.property_feature_id)
+      setSelectedPropertyFeatureToDelete(data.property_feature_id);
     setOpenDeleteModal(true);
   };
 

@@ -96,3 +96,9 @@ export const PropertyFeaturesType = [
   { value: 'commercial', label: 'Visitante' },
 ];
 
+export enum ROL {
+  SUPER_ADMIN = 1,
+  ADMIN = 2,
+  EXECUTOR = 3,
+  VISITOR = 4,
+}

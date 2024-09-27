@@ -25,6 +25,7 @@ const ProjectSummary: FC<{
         )
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     useProjectPageProps.findProject.isLoading,
     useProjectSummaryProps.showCreateEditProject,

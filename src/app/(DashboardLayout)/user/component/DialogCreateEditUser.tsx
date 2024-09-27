@@ -11,6 +11,7 @@ import { handleOnClose } from '@/common/utils/dialog';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { SelectSharedController } from '@/common/components/UI/textField/SelectShared';
 import { UserRoles } from '@/common/constants';
+import TextMaskCustom from '@/common/components/UI/textMaskCustom/TextMaskCustom';
 
 type Props = {
   isEdit?: boolean;
@@ -115,6 +116,9 @@ export const DialogCreateEditUser = ({
               name={'phone_number'}
               hookForm={userHookForm}
               labelStyle={{ mb: '10px' }}
+              textFieldProps={{
+                InputProps: { inputComponent: TextMaskCustom as any },
+              }}
             />
           </Grid>
           <Grid item xs={12} md={6}>

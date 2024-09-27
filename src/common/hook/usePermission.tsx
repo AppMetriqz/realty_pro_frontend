@@ -1,21 +1,9 @@
-'use client';
-
 import { apiAuth } from '@/api';
-import React, {
-  createContext,
-  useState,
-  FC,
-  ReactNode,
-  useEffect,
-  Dispatch,
-  SetStateAction,
-} from 'react';
-import _ from 'lodash';
-import { PermissionType } from '@/common/types/UserType';
-import { GetUserDto } from '@/common/dto';
-import { setPermissionValue } from '@/common/utils/setObjectHelper';
-import { ROL } from '@/common/constants';
 import Cookies from 'js-cookie';
+import { useEffect, useState } from 'react';
+import { PermissionType } from '../types/UserType';
+import { setPermissionValue } from '../utils/setObjectHelper';
+import { ROL } from '../constants';
 
 export const defaultPermission = {
   dashboard: {
@@ -39,28 +27,14 @@ export const defaultPermission = {
   setting: { canView: false, canAdd: false, canEdit: false, canDelete: false },
 };
 
-type CurrentUserContextType = {
-  isLoading: boolean;
-  authUser: GetUserDto | undefined;
-  permissions: PermissionType;
-  setPermissions: Dispatch<SetStateAction<PermissionType>>;
-};
-
-export const CurrentUserContext = createContext<CurrentUserContextType>({
-  isLoading: false,
-  authUser: undefined,
-  permissions: defaultPermission,
-  setPermissions: () => {},
-});
-
-export const CurrentUserProvider: FC<{ children: ReactNode }> = ({
-  children,
-}) => {
+const usePermission = () => {
+  const [isLoadingPermission, setIsLoadingPermission] = useState(false);
   const currentUser = apiAuth.useCurrentUser(!!Cookies.get('token'));
   const [permissions, setPermissions] =
     useState<PermissionType>(defaultPermission);
 
   useEffect(() => {
+    setIsLoadingPermission(true);
     if (currentUser && currentUser.data && currentUser.isAuth) {
       if (currentUser.data.role_id === ROL.SUPER_ADMIN) {
         setPermissions(setPermissionValue(defaultPermission, true));
@@ -76,6 +50,7 @@ export const CurrentUserProvider: FC<{ children: ReactNode }> = ({
         setPermissions(
           setPermissionValue(defaultPermission, true, undefined, [
             'finance.canView',
+            'project.canEdit',
           ])
         );
       }
@@ -102,18 +77,15 @@ export const CurrentUserProvider: FC<{ children: ReactNode }> = ({
         );
       }
     }
+    setIsLoadingPermission(false);
   }, [currentUser]);
 
-  return (
-    <CurrentUserContext.Provider
-      value={{
-        isLoading: currentUser.isLoading || currentUser.isRefetching,
-        authUser: currentUser.data,
-        permissions,
-        setPermissions,
-      }}
-    >
-      {children}
-    </CurrentUserContext.Provider>
-  );
+  return {
+    isLoading:
+      currentUser.isLoading || currentUser.isFetching || isLoadingPermission,
+    permissions,
+    setPermissions,
+  };
 };
+
+export default usePermission;

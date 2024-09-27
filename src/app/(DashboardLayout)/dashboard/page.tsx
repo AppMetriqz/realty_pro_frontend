@@ -19,8 +19,10 @@ import { GetSellDto, PaymentPlanToAssignDto } from '@/common/dto';
 import { DateTime } from 'luxon';
 import { formatCurrency } from '@/common/utils/numericHelpers';
 import { DialogCreatePaymentPlan } from '@/common/components/Logic/DialogCreatePaymentPlan';
+import usePermission from '@/common/hook/usePermission';
 
 const Dashboard = () => {
+  const { permissions } = usePermission();
   const usePageProps: UsePageProps = usePage();
 
   const HeadCellsPaymentPlansToAssign: Array<
@@ -67,7 +69,10 @@ const Dashboard = () => {
           ? `${record.client.first_name} ${record.client.last_name}`
           : '-',
     },
-    {
+  ];
+
+  if (permissions.dashboard.canAssignPaymentPlan) {
+    HeadCellsPaymentPlansToAssign.push({
       key: 'created_at',
       numeric: false,
       disablePadding: false,
@@ -81,8 +86,8 @@ const Dashboard = () => {
           Asignar
         </Button>
       ),
-    },
-  ];
+    });
+  }
 
   const HeadCellsSalesToAssign: Array<
     ColumnProps<Partial<GetSellDto> & { id: number }>
@@ -126,7 +131,10 @@ const Dashboard = () => {
       render: (_, record: Partial<GetSellDto>) =>
         record.price ? formatCurrency(parseFloat(record.price)) : '0',
     },
-    {
+  ];
+
+  if (permissions.dashboard.canAssignSales) {
+    HeadCellsSalesToAssign.push({
       key: 'created_at',
       numeric: false,
       disablePadding: false,
@@ -140,8 +148,8 @@ const Dashboard = () => {
           Asignar
         </Button>
       ),
-    },
-  ];
+    });
+  }
 
   return (
     <PageContainer title="Escritorio" description="este es el escritorio">

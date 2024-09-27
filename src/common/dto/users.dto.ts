@@ -19,8 +19,8 @@ export interface CreateUserDto {
   role_id: number;
   first_name: string;
   last_name: string;
-  phone_number: string;
-  national_id: string;
+  phone_number?: string;
+  national_id?: string;
   email: string;
   password?: string;
 }
