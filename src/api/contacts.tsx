@@ -83,6 +83,10 @@ export const useCreate = () => {
       queryClient.invalidateQueries({
         queryKey: [`${contacts}FindAll`],
       });
+      queryClient.invalidateQueries({
+        queryKey: [`${contacts}FindAllAutocomplete`],
+      });
+      queryClient.invalidateQueries({ queryKey: [contacts] });
     },
   });
 };

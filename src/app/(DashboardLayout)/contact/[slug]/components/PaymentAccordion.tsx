@@ -70,31 +70,43 @@ const PaymentAccordion: FC<{
         </Typography>
       ),
     },
-    ...plan.payments.map((payment): ChipType => {
-      return {
-        id: payment.payment_id + 4,
-        bgColor: 'separation',
-        content: (
-          <>
-            <Typography fontSize={'14px'} fontWeight={500} textAlign={'center'}>
-              {DateTime.fromISO(payment.payment_made_at).toFormat('dd/LL/yyyy')}
-              &nbsp;-&nbsp;{plan.project.currency_type}
-              {formatCurrency(payment.amount)}
-              &nbsp;Pago
-            </Typography>
-            {payment.notes ? (
+    ...plan.payments
+      .sort(
+        (a, b) =>
+          new Date(a.payment_made_at).valueOf() -
+          new Date(b.payment_made_at).valueOf()
+      )
+      .map((payment): ChipType => {
+        return {
+          id: payment.payment_id + 4,
+          bgColor: 'separation',
+          content: (
+            <>
               <Typography
                 fontSize={'14px'}
                 fontWeight={500}
                 textAlign={'center'}
               >
-                <span style={{ fontWeight: 700 }}>Nota:</span> {payment.notes}
+                {DateTime.fromISO(payment.payment_made_at).toFormat(
+                  'dd/LL/yyyy'
+                )}
+                &nbsp;-&nbsp;{plan.project.currency_type}
+                {formatCurrency(payment.amount)}
+                &nbsp;Pago
               </Typography>
-            ) : null}
-          </>
-        ),
-      };
-    }),
+              {payment.notes ? (
+                <Typography
+                  fontSize={'14px'}
+                  fontWeight={500}
+                  textAlign={'center'}
+                >
+                  <span style={{ fontWeight: 700 }}>Nota:</span> {payment.notes}
+                </Typography>
+              ) : null}
+            </>
+          ),
+        };
+      }),
   ];
   if (plan.sale && plan.sale.stage === 'financed' && !!plan.sale.financed_at) {
     paidPayment.push({

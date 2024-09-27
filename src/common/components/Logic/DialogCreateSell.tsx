@@ -36,7 +36,7 @@ export const DialogCreateSell = ({
       onSubmit={sellHookForm.handleSubmit(usePageProps.onSubmitSell)}
     >
       <DialogTitle sx={{ p: '40px' }} fontSize={'21px'}>
-        {isEdit ? 'Editar' : 'Nuevo'}&nbsp;
+        {isEdit ? 'Editar' : 'Nueva'}&nbsp;
         {usePageProps.selectedUnits?.length > 0 ? 'Ventas' : 'Venta'}
         &nbsp;
         <span style={{ fontWeight: 600 }}>
