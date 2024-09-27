@@ -20,7 +20,7 @@ import TableShared, {
 } from '@/common/components/UI/table/TableShared';
 import SearchInput from '@/common/components/UI/searchInput/SearchInput';
 
-import MenuShared from '@/common/components/UI/menu/MenuShared';
+import MenuShared, { ActionType } from '@/common/components/UI/menu/MenuShared';
 import { mapUnitToProperty } from '@/common/utils/unit';
 import { DialogDelete } from '../DialogDelete';
 import { GetSellDto } from '@/common/dto';
@@ -108,27 +108,29 @@ const ProjectSells = () => {
       numeric: false,
       disablePadding: false,
       label: 'Acciones',
-      render: (_, record: SellTableData) => (
-        <MenuShared
-          actions={[
-            {
-              id: record.id,
-              icon: <VisibilityIcon fontSize="small" />,
-              label: 'Ver',
-              onClick: () => usePageProps.handleClickView(record.actions),
-            },
-            permissions.sale.canDelete
-              ? {
+      render: (_, record: SellTableData) => {
+        const actions: ActionType[] = [
+          {
+            id: record.id,
+            icon: <VisibilityIcon fontSize="small" />,
+            label: 'Ver',
+            onClick: () => usePageProps.handleClickView(record.actions),
+          },
+          ...(permissions.sale.canDelete
+            ? [
+                {
                   id: record.id,
                   icon: <DeleteIcon fontSize="small" />,
                   label: 'Borrar',
                   onClick: () =>
                     usePageProps.handleClickDelete(record.id, record.unitName),
-                }
-              : undefined,
-          ].filter((x) => !!x)}
-        />
-      ),
+                },
+              ]
+            : []),
+        ];
+
+        return <MenuShared actions={actions} />;
+      },
     },
   ];
 
