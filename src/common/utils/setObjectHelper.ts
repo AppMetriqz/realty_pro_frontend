@@ -30,16 +30,25 @@ function setProperty<T extends NestedBooleanObject>(
 export function setPermissionValue<T extends NestedBooleanObject>(
   obj: T,
   value: boolean,
-  path?: string
+  path?: string,
+  excludePaths?: string[] // New parameter for paths to exclude
 ): T {
-  const updateObject = (o: NestedBooleanObject, v: boolean): void => {
+  const updateObject = (o: NestedBooleanObject, basePath: string): void => {
     for (const key in o) {
       if (o.hasOwnProperty(key)) {
         const currentValue = o[key];
+        const currentPath = basePath ? `${basePath}.${key}` : key;
+
+        // Check if the current path is in the excludePaths
+        if (excludePaths && excludePaths.includes(currentPath)) {
+          continue; // Skip this property
+        }
+
         if (typeof currentValue === 'object' && currentValue !== null) {
-          updateObject(currentValue, v);
+          // Recursively update nested objects
+          updateObject(currentValue as NestedBooleanObject, currentPath);
         } else if (typeof currentValue === 'boolean') {
-          o[key] = v;
+          o[key] = value; // Set boolean value
         }
       }
     }
@@ -50,7 +59,7 @@ export function setPermissionValue<T extends NestedBooleanObject>(
     setProperty(obj, path, value);
   } else {
     // Otherwise, set all boolean values
-    updateObject(obj, value);
+    updateObject(obj, '');
   }
 
   return obj;

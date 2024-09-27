@@ -21,7 +21,7 @@ export const userFormDefaultValues: CreateUserDto = {
   role_id: 4,
   first_name: '',
   last_name: '',
-  phone_number: '',
-  national_id: '',
+  phone_number: undefined,
+  national_id: undefined,
   email: '',
 };

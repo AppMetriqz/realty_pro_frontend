@@ -1,13 +1,102 @@
+'use client';
 import React from 'react';
-import { NavigationMenuitems, SettingsMenuitems } from './MenuItems';
 import { Box, Divider, List, Typography } from '@mui/material';
 import NavItem from './NavItem';
 import { uniqueId } from 'lodash';
 import LogoutIcon from '../../../../../public/images/svg/logoutIcon.svg';
 import useFunctions from '@/common/utils/useAuthentication';
+import { defaultPermission } from '@/context/CurrentUserContext';
+import ChartIcon from '@/icons/ChartIcon';
+import routers from '@/common/constants/routes';
+import PaymentIcon from '@/icons/PaymentIcon';
+import FinanceIcon from '@/icons/FinanceIcon';
+import ProjectIcon from '@/icons/ProjectIcon';
+import ProfileIcon from '@/icons/ProfileIcon';
+import UsersIcon from '@/icons/UsersIcon';
+import SettingsIcon from '@/icons/SettingsIcon';
+import usePermission from '@/common/hook/usePermission';
+
+type MenuNavegationItemType = {
+  id: string;
+  title: string;
+  icon: () => JSX.Element;
+  href: string;
+  selectedArray?: Array<string>;
+};
 
 const SidebarItems = ({ toggleMobileSidebar }: any) => {
+  const { permissions, setPermissions } = usePermission();
   const { onLogOut } = useFunctions();
+
+  let navigationMenuItems: MenuNavegationItemType[] = [];
+  let settingsMenuItems: MenuNavegationItemType[] = [];
+  if (permissions.dashboard.canView) {
+    navigationMenuItems.push({
+      id: uniqueId(),
+      title: 'Escritorio',
+      icon: ChartIcon,
+      href: routers.dashboard,
+      selectedArray: [routers.dashboard],
+    });
+  }
+  if (permissions.paymentPlan.canView) {
+    navigationMenuItems.push({
+      id: uniqueId(),
+      title: 'Planes de Pago',
+      icon: PaymentIcon,
+      href: routers.paymentPlan,
+      selectedArray: [routers.paymentPlan],
+    });
+  }
+  if (permissions.finance.canView) {
+    navigationMenuItems.push({
+      id: uniqueId(),
+      title: 'Finanzas',
+      icon: FinanceIcon,
+      href: routers.finance,
+      selectedArray: [routers.finance],
+    });
+  }
+  if (permissions.project.canView) {
+    navigationMenuItems.push({
+      id: uniqueId(),
+      title: 'Proyectos',
+      icon: ProjectIcon,
+      href: routers.project,
+    });
+  }
+  if (permissions.contact.canView) {
+    navigationMenuItems.push({
+      id: uniqueId(),
+      title: 'Contactos',
+      icon: ProfileIcon,
+      href: routers.contact,
+      selectedArray: [routers.contact],
+    });
+  }
+  if (permissions.user.canView) {
+    settingsMenuItems.push({
+      id: uniqueId(),
+      title: 'Usuarios',
+      icon: UsersIcon,
+      href: routers.user,
+      selectedArray: [routers.user],
+    });
+  }
+  if (permissions.setting.canView) {
+    settingsMenuItems.push({
+      id: uniqueId(),
+      title: 'Configuraciones',
+      icon: SettingsIcon,
+      href: routers.settings,
+      selectedArray: [routers.settings],
+    });
+  }
+
+  const onClickLogOut = () => {
+    onLogOut();
+    setPermissions(defaultPermission);
+  };
 
   return (
     <Box
@@ -23,7 +112,7 @@ const SidebarItems = ({ toggleMobileSidebar }: any) => {
         <Typography pb={1} pl={2.5} color="rgba(80, 80, 80, 0.50)">
           Navegación
         </Typography>
-        {NavigationMenuitems.map((item) => {
+        {navigationMenuItems.map((item) => {
           return (
             <NavItem item={item} key={item.id} onClick={toggleMobileSidebar} />
           );
@@ -32,7 +121,7 @@ const SidebarItems = ({ toggleMobileSidebar }: any) => {
         <Typography pb={1} pl={2.5} color="rgba(80, 80, 80, 0.50)">
           Ajustes
         </Typography>
-        {SettingsMenuitems.map((item) => {
+        {settingsMenuItems.map((item) => {
           return (
             <NavItem item={item} key={item.id} onClick={toggleMobileSidebar} />
           );
@@ -44,7 +133,7 @@ const SidebarItems = ({ toggleMobileSidebar }: any) => {
             icon: LogoutIcon,
             href: '/login',
           }}
-          onClick={onLogOut}
+          onClick={onClickLogOut}
         />
       </List>
       <Box sx={{ px: 3 }} style={{ bottom: 28 }}>

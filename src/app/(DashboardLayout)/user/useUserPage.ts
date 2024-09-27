@@ -161,7 +161,11 @@ export default function usePage(): UsePageProjectAvailableProps {
   const onSubmitUser: SubmitHandler<CreateUpdateUserDto> = async (data) => {
     try {
       const user = isEdit
-        ? await updateUser.mutateAsync(data)
+        ? await updateUser.mutateAsync({
+            ...data,
+            phone_number: data.phone_number ? data.phone_number : undefined,
+            national_id: data.national_id ? data.national_id : undefined,
+          })
         : await createUser.mutateAsync(data);
       if (!!user) {
         toast.success(`Usuario ${isEdit ? 'Actualizado' : 'Creado'}.`, {

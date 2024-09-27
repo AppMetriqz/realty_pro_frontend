@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { apiAuth } from '@/api';
 import { useRouter } from 'next/navigation';
 import { ExceptionCatchResponse } from '@/common/exceptions';
@@ -6,12 +6,9 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { useYupValidationResolver } from '@/common/utils/formHook';
 import { LoginFormInput, validationSchema } from '@/app/login/core';
 import Cookies from 'js-cookie';
-import { useQueryClient } from '@tanstack/react-query';
 import _ from 'lodash';
 
 export default function useLogin() {
-  const queryClient = useQueryClient();
-
   const resolver = useYupValidationResolver(validationSchema);
 
   const {
@@ -31,7 +28,7 @@ export default function useLogin() {
   const router = useRouter();
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
-  const [rememberMe, setRememberMe] = React.useState(true);
+  const [rememberMe, setRememberMe] = React.useState(false);
 
   React.useEffect(() => {
     router.prefetch('/');
@@ -43,20 +40,18 @@ export default function useLogin() {
       const userSaved: any = Cookies.get('user');
       if (userSaved && !_.isEmpty(userSaved)) {
         setValue('email', JSON.parse(userSaved).email);
-        setValue('password', JSON.parse(userSaved).password);
       }
     }
+    setRememberMe(isRememberMe);
   }, []);
 
   const onLogin: SubmitHandler<LoginFormInput> = async (data) => {
     try {
-      queryClient.removeQueries();
       const response = await useSignIn.mutateAsync({
         email: data.email,
         password: data.password,
       });
       if (rememberMe) {
-        // TODO: Guardar encriptado
         Cookies.set(
           'user',
           JSON.stringify({
@@ -66,7 +61,6 @@ export default function useLogin() {
         );
       }
       Cookies.set('rememberMe', rememberMe ? '1' : '0');
-      router.push('/');
     } catch (error: any) {
       ExceptionCatchResponse(error);
     }

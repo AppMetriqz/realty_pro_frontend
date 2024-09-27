@@ -1,7 +1,12 @@
 'use client';
 import { GetUserDto } from '@/common/dto';
 import axiosInstance from '@/config/api/api.config';
-import { useMutation, useQuery, UseQueryResult } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQuery,
+  useQueryClient,
+  UseQueryResult,
+} from '@tanstack/react-query';
 
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
@@ -9,30 +14,29 @@ import { useRouter } from 'next/navigation';
 const path = 'auth';
 
 export const useSignIn = () => {
+  const router = useRouter();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationKey: ['signIn'],
     mutationFn: ({ email, password }: { email: string; password: string }) =>
       axiosInstance.post(`${path}/login`, { email, password }),
-    onSuccess: (data: any, variables, context) => {
-      if (data.token) {
-        Cookies.set('token', data.token);
-      }
+    onSuccess: (data: any) => {
+      Cookies.set('token', data.token);
+      router.push('/');
+      queryClient.invalidateQueries({ queryKey: ['currentUser'] });
     },
   });
 };
 
-export const useCurrentUser = () => {
-  let isEnabled = false;
-  if (Cookies.get('token')) {
-    isEnabled = true;
-  }
-
+export const useCurrentUser = (isEnabled: boolean) => {
+  const router = useRouter();
   const user = useQuery<GetUserDto, Error>({
     queryKey: ['currentUser'],
     queryFn: () => axiosInstance.get(`${path}/user`),
-    staleTime: 10 * 80000,
-    gcTime: 10 * 80000,
-    retry: 3,
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
+    gcTime: 0,
+    staleTime: 0,
     enabled: isEnabled,
   });
 
@@ -40,8 +44,6 @@ export const useCurrentUser = () => {
     ...user,
     isAuth: false,
   };
-
-  const router = useRouter();
 
   if (!user.isPending && user.isError) {
     Cookies.remove('token');

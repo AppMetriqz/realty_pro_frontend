@@ -1,21 +1,11 @@
-'use client';
-
 import { apiAuth } from '@/api';
-import React, {
-  createContext,
-  useState,
-  FC,
-  ReactNode,
-  useEffect,
-  Dispatch,
-  SetStateAction,
-} from 'react';
-import _ from 'lodash';
-import { PermissionType } from '@/common/types/UserType';
-import { GetUserDto } from '@/common/dto';
-import { setPermissionValue } from '@/common/utils/setObjectHelper';
-import { ROL } from '@/common/constants';
 import Cookies from 'js-cookie';
+import { useEffect, useState } from 'react';
+import { PermissionType } from '../types/UserType';
+import { setPermissionValue } from '../utils/setObjectHelper';
+import { ROL } from '../constants';
+import { UseQueryResult } from '@tanstack/react-query';
+import { GetUserDto } from '../dto';
 
 export const defaultPermission = {
   dashboard: {
@@ -39,50 +29,32 @@ export const defaultPermission = {
   setting: { canView: false, canAdd: false, canEdit: false },
 };
 
-type CurrentUserContextType = {
-  isLoading: boolean;
-  authUser: GetUserDto | undefined;
-  permissions: PermissionType;
-  setPermissions: Dispatch<SetStateAction<PermissionType>>;
-};
-
-export const CurrentUserContext = createContext<CurrentUserContextType>({
-  isLoading: false,
-  authUser: undefined,
-  permissions: defaultPermission,
-  setPermissions: () => {},
-});
-
-export const CurrentUserProvider: FC<{ children: ReactNode }> = ({
-  children,
-}) => {
+const usePermission = () => {
   const currentUser = apiAuth.useCurrentUser(!!Cookies.get('token'));
   const [permissions, setPermissions] =
     useState<PermissionType>(defaultPermission);
+  console.log({ permissions });
 
   useEffect(() => {
-    if (
-      currentUser &&
-      !currentUser.isLoading &&
-      currentUser.isSuccess &&
-      currentUser.data &&
-      currentUser.isAuth
-    ) {
+    if (currentUser && currentUser.data && currentUser.isAuth) {
       if (currentUser.data.role_id === ROL.SUPER_ADMIN) {
         setPermissions(setPermissionValue(defaultPermission, true));
-      } else if (currentUser.data.role_id === ROL.ADMIN) {
+      }
+      if (currentUser.data.role_id === ROL.ADMIN) {
         setPermissions(
           setPermissionValue(defaultPermission, true, undefined, [
             'user.canEdit',
           ])
         );
-      } else if (currentUser.data.role_id === ROL.EXECUTOR) {
+      }
+      if (currentUser.data.role_id === ROL.EXECUTOR) {
         setPermissions(
           setPermissionValue(defaultPermission, true, undefined, [
             'finance.canView',
           ])
         );
-      } else if (currentUser.data.role_id === ROL.VISITOR) {
+      }
+      if (currentUser.data.role_id === ROL.VISITOR) {
         setPermissions(
           setPermissionValue(defaultPermission, true, undefined, [
             'dashboard.canAssignSales',
@@ -106,16 +78,10 @@ export const CurrentUserProvider: FC<{ children: ReactNode }> = ({
     }
   }, [currentUser]);
 
-  return (
-    <CurrentUserContext.Provider
-      value={{
-        isLoading: currentUser.isLoading || currentUser.isRefetching,
-        authUser: currentUser.data,
-        permissions,
-        setPermissions,
-      }}
-    >
-      {children}
-    </CurrentUserContext.Provider>
-  );
+  return {
+    permissions,
+    setPermissions,
+  };
 };
+
+export default usePermission;
