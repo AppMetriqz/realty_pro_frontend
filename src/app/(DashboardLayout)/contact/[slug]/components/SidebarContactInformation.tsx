@@ -13,6 +13,7 @@ import { UseQueryResult } from '@tanstack/react-query';
 import { GetContactDto } from '@/common/dto';
 import { ContactType, MaritalStatusType } from '@/common/constants';
 import { DateTime } from 'luxon';
+import usePermission from '@/common/hook/usePermission';
 
 type SidebarContactInformationProps = {
   findContact: UseQueryResult<GetContactDto, Error>;
@@ -25,6 +26,7 @@ const SidebarContactInformation: FC<SidebarContactInformationProps> = ({
   onClickEdit,
   onClickAddSpouse,
 }) => {
+  const { permissions } = usePermission();
   const userInformations: (UserInfoLabelProps & { id: string | number })[] = [
     {
       id: 1,
@@ -50,7 +52,7 @@ const SidebarContactInformation: FC<SidebarContactInformationProps> = ({
             {findContact.data?.spouse?.last_name}
           </Typography>
         </>
-      ) : (
+      ) : permissions.contact.canEdit ? (
         <Button
           variant="text"
           sx={{
@@ -63,6 +65,8 @@ const SidebarContactInformation: FC<SidebarContactInformationProps> = ({
         >
           + Agregar Conyuge
         </Button>
+      ) : (
+        <></>
       ),
     },
     {
@@ -144,18 +148,20 @@ const SidebarContactInformation: FC<SidebarContactInformationProps> = ({
               )
             : ''}
         </Typography>
-        <Button
-          sx={{
-            color: '#18A1EE',
-            fontSize: '12px',
-            padding: 0,
-            fontWeight: 500,
-          }}
-          onClick={onClickEdit}
-          variant="text"
-        >
-          Editar
-        </Button>
+        {permissions.contact.canEdit ? (
+          <Button
+            sx={{
+              color: '#18A1EE',
+              fontSize: '12px',
+              padding: 0,
+              fontWeight: 500,
+            }}
+            onClick={onClickEdit}
+            variant="text"
+          >
+            Editar
+          </Button>
+        ) : null}
       </Box>
       <Box sx={{ padding: '40px' }}>
         {userInformations.map((userInfo) => (

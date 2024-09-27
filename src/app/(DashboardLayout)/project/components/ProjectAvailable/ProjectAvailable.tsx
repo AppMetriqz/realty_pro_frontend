@@ -38,10 +38,12 @@ import { DialogEditMultipleUnit } from '../DialogEditMultipleUnit';
 import { UseProjectPageProps } from '../../[slug]/usePage';
 import DoDisturbOffIcon from '@mui/icons-material/DoDisturbOff';
 import { DialogCancelSell } from '../DialogCancelSell';
+import usePermission from '@/common/hook/usePermission';
 
 const ProjectAvailable: FC<{
   useProjectPageProps: UseProjectPageProps;
 }> = ({ useProjectPageProps }) => {
+  const { permissions } = usePermission();
   const usePageProps = usePage();
   const isPlot =
     useProjectPageProps.findProject.data &&
@@ -61,6 +63,7 @@ const ProjectAvailable: FC<{
         useProjectPageProps.findProject.data.type
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     useProjectPageProps.findProject.isLoading,
     usePageProps.showView,
@@ -79,6 +82,7 @@ const ProjectAvailable: FC<{
         );
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [usePageProps.unitDetails.isLoading, usePageProps.openEditOneUnitModal]);
 
   const actionList = (
@@ -92,34 +96,43 @@ const ProjectAvailable: FC<{
         label: 'Ver',
         onClick: () => usePageProps.handleClickView(record.id),
       },
-      {
-        id: record.id,
-        icon: isSold ? (
-          <DoDisturbOffIcon fontSize="small" />
-        ) : (
-          <SellIcon fontSize="small" />
-        ),
-        label: isSold ? 'Cancelar Venta' : 'Vender',
-        onClick: isSold
-          ? () => usePageProps.handleClickCancelSale(record.id)
-          : () => usePageProps.handleClickSell(record.id),
-      },
-    ];
+      permissions.unit.canSale || permissions.unit.canCancel
+        ? {
+            id: record.id,
+            icon: isSold ? (
+              <DoDisturbOffIcon fontSize="small" />
+            ) : (
+              <SellIcon fontSize="small" />
+            ),
+            label: isSold ? 'Cancelar Venta' : 'Vender',
+            onClick: isSold
+              ? () => usePageProps.handleClickCancelSale(record.id)
+              : () => usePageProps.handleClickSell(record.id),
+          }
+        : undefined,
+    ].filter((x) => !!x);
     if (!isSold) {
-      actionArray.push.apply(actionArray, [
-        {
-          id: record.id,
-          icon: <EditIcon fontSize="small" />,
-          label: 'Editar',
-          onClick: () => usePageProps.handleClickEdit(record.id),
-        },
-        {
-          id: record.id,
-          icon: <DeleteIcon fontSize="small" />,
-          label: 'Borrar',
-          onClick: () => usePageProps.handleClickDelete(record.id),
-        },
-      ]);
+      actionArray.push.apply(
+        actionArray,
+        [
+          permissions.unit.canEdit
+            ? {
+                id: record.id,
+                icon: <EditIcon fontSize="small" />,
+                label: 'Editar',
+                onClick: () => usePageProps.handleClickEdit(record.id),
+              }
+            : undefined,
+          permissions.unit.canDelete
+            ? {
+                id: record.id,
+                icon: <DeleteIcon fontSize="small" />,
+                label: 'Borrar',
+                onClick: () => usePageProps.handleClickDelete(record.id),
+              }
+            : undefined,
+        ].filter((x) => !!x)
+      );
     }
     return actionArray;
   };

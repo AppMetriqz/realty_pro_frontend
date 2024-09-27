@@ -43,6 +43,7 @@ export default function useLogin() {
       }
     }
     setRememberMe(isRememberMe);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onLogin: SubmitHandler<LoginFormInput> = async (data) => {

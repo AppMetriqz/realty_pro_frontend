@@ -1,6 +1,6 @@
 'use client';
 import { Box, Chip, CircularProgress, Grid } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import usePage from './useUserPage';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
@@ -135,7 +135,7 @@ const User = () => {
       <PageContainer title="Usuarios" description="este es Usuarios">
         <HeaderPage
           name="Usuarios"
-          btnLabel="+ Nuevo Usuario"
+          btnLabel={permissions.user.canAdd ? '+ Nuevo Usuario' : undefined}
           onClick={() => usePageProps.setOpenCreateEditModal(true)}
         />
         <Box p={5}>

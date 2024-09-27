@@ -35,6 +35,7 @@ const ProjectResumen = () => {
     if (usePageProps.findProject.isError) {
       router.push(routers.project);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     usePageProps.findProject.isLoading,
     usePageProps.findProject.isError,

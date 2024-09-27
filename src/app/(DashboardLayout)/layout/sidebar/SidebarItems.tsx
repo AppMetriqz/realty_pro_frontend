@@ -94,8 +94,8 @@ const SidebarItems = ({ toggleMobileSidebar }: any) => {
   }
 
   const onClickLogOut = () => {
-    onLogOut();
     setPermissions(defaultPermission);
+    onLogOut();
   };
 
   return (

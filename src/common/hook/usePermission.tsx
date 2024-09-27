@@ -4,8 +4,6 @@ import { useEffect, useState } from 'react';
 import { PermissionType } from '../types/UserType';
 import { setPermissionValue } from '../utils/setObjectHelper';
 import { ROL } from '../constants';
-import { UseQueryResult } from '@tanstack/react-query';
-import { GetUserDto } from '../dto';
 
 export const defaultPermission = {
   dashboard: {
@@ -26,16 +24,17 @@ export const defaultPermission = {
   },
   contact: { canView: false, canAdd: false, canEdit: false },
   user: { canView: false, canAdd: false, canEdit: false },
-  setting: { canView: false, canAdd: false, canEdit: false },
+  setting: { canView: false, canAdd: false, canEdit: false, canDelete: false },
 };
 
 const usePermission = () => {
+  const [isLoadingPermission, setIsLoadingPermission] = useState(false);
   const currentUser = apiAuth.useCurrentUser(!!Cookies.get('token'));
   const [permissions, setPermissions] =
     useState<PermissionType>(defaultPermission);
-  console.log({ permissions });
 
   useEffect(() => {
+    setIsLoadingPermission(true);
     if (currentUser && currentUser.data && currentUser.isAuth) {
       if (currentUser.data.role_id === ROL.SUPER_ADMIN) {
         setPermissions(setPermissionValue(defaultPermission, true));
@@ -51,6 +50,7 @@ const usePermission = () => {
         setPermissions(
           setPermissionValue(defaultPermission, true, undefined, [
             'finance.canView',
+            'project.canEdit',
           ])
         );
       }
@@ -72,13 +72,17 @@ const usePermission = () => {
             'user.canEdit',
             'setting.canAdd',
             'setting.canEdit',
+            'setting.canDelete',
           ])
         );
       }
     }
+    setIsLoadingPermission(false);
   }, [currentUser]);
 
   return {
+    isLoading:
+      currentUser.isLoading || currentUser.isFetching || isLoadingPermission,
     permissions,
     setPermissions,
   };

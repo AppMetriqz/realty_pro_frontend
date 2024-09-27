@@ -36,7 +36,7 @@ export const defaultPermission = {
   },
   contact: { canView: false, canAdd: false, canEdit: false },
   user: { canView: false, canAdd: false, canEdit: false },
-  setting: { canView: false, canAdd: false, canEdit: false },
+  setting: { canView: false, canAdd: false, canEdit: false, canDelete: false },
 };
 
 type CurrentUserContextType = {
@@ -61,28 +61,25 @@ export const CurrentUserProvider: FC<{ children: ReactNode }> = ({
     useState<PermissionType>(defaultPermission);
 
   useEffect(() => {
-    if (
-      currentUser &&
-      !currentUser.isLoading &&
-      currentUser.isSuccess &&
-      currentUser.data &&
-      currentUser.isAuth
-    ) {
+    if (currentUser && currentUser.data && currentUser.isAuth) {
       if (currentUser.data.role_id === ROL.SUPER_ADMIN) {
         setPermissions(setPermissionValue(defaultPermission, true));
-      } else if (currentUser.data.role_id === ROL.ADMIN) {
+      }
+      if (currentUser.data.role_id === ROL.ADMIN) {
         setPermissions(
           setPermissionValue(defaultPermission, true, undefined, [
             'user.canEdit',
           ])
         );
-      } else if (currentUser.data.role_id === ROL.EXECUTOR) {
+      }
+      if (currentUser.data.role_id === ROL.EXECUTOR) {
         setPermissions(
           setPermissionValue(defaultPermission, true, undefined, [
             'finance.canView',
           ])
         );
-      } else if (currentUser.data.role_id === ROL.VISITOR) {
+      }
+      if (currentUser.data.role_id === ROL.VISITOR) {
         setPermissions(
           setPermissionValue(defaultPermission, true, undefined, [
             'dashboard.canAssignSales',
@@ -100,6 +97,7 @@ export const CurrentUserProvider: FC<{ children: ReactNode }> = ({
             'user.canEdit',
             'setting.canAdd',
             'setting.canEdit',
+            'setting.canDelete',
           ])
         );
       }

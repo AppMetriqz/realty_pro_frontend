@@ -1,6 +1,6 @@
 'use client';
 import PageContainer from '@/app/(DashboardLayout)/components/container/PageContainer';
-import React from 'react';
+import React, { useEffect } from 'react';
 import HeaderPage from '../components/shared/HeaderPage';
 import { Box, CircularProgress, Grid } from '@mui/material';
 import PropertyCard from '../components/shared/PropertyCard';
@@ -10,16 +10,27 @@ import _ from 'lodash';
 import { ProjectDto } from '@/common/dto';
 import { mapProjectToProperty } from '@/common/utils/project';
 import SearchInput from '@/common/components/UI/searchInput/SearchInput';
+import usePermission from '@/common/hook/usePermission';
+import routers from '@/common/constants/routes';
+import { useRouter } from 'next/navigation';
 
 const Project = () => {
+  const navigate = useRouter();
+  const { permissions } = usePermission();
   const usePageProps = usePage();
+
+  useEffect(() => {
+    if (!permissions.project.canView) {
+      navigate.push(routers.dashboard);
+    }
+  }, [permissions.project.canView]);
 
   return (
     <>
       <PageContainer title="Proyectos" description="este es Proyectos">
         <HeaderPage
           name="Proyectos"
-          btnLabel="+ Nuevo Proyecto"
+          btnLabel={permissions.project.canAdd ? '+ Nuevo Proyecto' : undefined}
           onClick={() => usePageProps.setShowCreateProject(true)}
         />
         <Box

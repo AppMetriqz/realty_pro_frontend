@@ -26,6 +26,7 @@ export default function withAuthentication<P extends object>(
         setIsAllow(true);
       }
       setLoading(false);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [router]);
 
     if (loading) {

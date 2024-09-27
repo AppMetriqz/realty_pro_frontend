@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { Box, Button, Divider, Typography } from '@mui/material';
 import PaymentInformationChip, { ChipType } from './PaymentInformationChip';
 import { GetContactPaymentPlanDto } from '@/common/dto';
+import usePermission from '@/common/hook/usePermission';
 
 type PendingPaymentProps = {
   pendingPaymentList: ChipType[];
@@ -22,6 +23,7 @@ const PendingPayment: FC<PendingPaymentProps> = ({
   onClickCreateResale,
   onClickMoveToFinancing,
 }) => {
+  const { permissions } = usePermission();
   return (
     <>
       <Divider sx={{ width: '250px', marginY: '35px' }} />
@@ -29,7 +31,8 @@ const PendingPayment: FC<PendingPaymentProps> = ({
         Total Pagos Pendiente (Inicial): {pendingAmount}
       </Typography>
       <Box my={'32px'} display="flex" columnGap={'44px'}>
-        {parseFloat(pendingAmount.replaceAll(/[US$,]/gi, '')) > 0 ? (
+        {parseFloat(pendingAmount.replaceAll(/[US$,]/gi, '')) > 0 &&
+        permissions.contact.canEdit ? (
           <>
             <Button
               sx={{
@@ -60,19 +63,23 @@ const PendingPayment: FC<PendingPaymentProps> = ({
           </PaymentInformationChip>
         ))}
       </Box>
-      <Button
-        sx={{
-          mt: '49px',
-          backgroundColor: '#FFF1E6',
-          '&:hover': { backgroundColor: '#FFE3CD' },
-        }}
-        disabled={
-          pendingPaymentList.length > 0 || plan.sale.stage === 'financed'
-        }
-        onClick={() => onClickMoveToFinancing?.({ sale_id: plan.sale.sale_id })}
-      >
-        Pasar a Financamiento ({financingAmount})
-      </Button>
+      {permissions.contact.canEdit ? (
+        <Button
+          sx={{
+            mt: '49px',
+            backgroundColor: '#FFF1E6',
+            '&:hover': { backgroundColor: '#FFE3CD' },
+          }}
+          disabled={
+            pendingPaymentList.length > 0 || plan.sale.stage === 'financed'
+          }
+          onClick={() =>
+            onClickMoveToFinancing?.({ sale_id: plan.sale.sale_id })
+          }
+        >
+          Pasar a Financamiento ({financingAmount})
+        </Button>
+      ) : null}
     </>
   );
 };

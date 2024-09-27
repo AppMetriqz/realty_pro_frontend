@@ -11,6 +11,7 @@ import { addCommasToAnumber } from '@/common/utils/numericHelpers';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { getConditionLabel, getUnitStatus } from '@/common/utils/unit';
 import { PropertyTypeDto } from '@/common/dto';
+import usePermission from '@/common/hook/usePermission';
 
 type UnitDetailType = {
   deleteLabel?: string;
@@ -31,6 +32,7 @@ const UnitDetails: FC<UnitDetailType> = ({
   property,
   onClickBack,
 }) => {
+  const { permissions } = usePermission();
   const houseAndApartment = (
     <>
       <Grid container spacing={'30px'}>
@@ -274,7 +276,7 @@ const UnitDetails: FC<UnitDetailType> = ({
                 {deleteLabel}
               </DeleteButtonShared>
             ) : null}
-            {editLabel ? (
+            {permissions.project.canEdit && editLabel ? (
               <ButtonShared onClick={onClickEdit}>{editLabel}</ButtonShared>
             ) : null}
           </Box>

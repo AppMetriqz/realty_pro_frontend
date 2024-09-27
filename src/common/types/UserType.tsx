@@ -17,5 +17,10 @@ export type PermissionType = {
   };
   contact: { canView: boolean; canAdd: boolean; canEdit: boolean };
   user: { canView: boolean; canAdd: boolean; canEdit: boolean };
-  setting: { canView: boolean; canAdd: boolean; canEdit: boolean };
+  setting: {
+    canView: boolean;
+    canAdd: boolean;
+    canEdit: boolean;
+    canDelete: boolean;
+  };
 };

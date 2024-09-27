@@ -13,16 +13,13 @@ function setProperty<T extends NestedBooleanObject>(
   let current: NestedBooleanObject = obj;
 
   for (const key of keys) {
-    if (!(key in current)) {
+    if (!(key in current) || typeof current[key] !== 'object') {
       current[key] = {} as NestedBooleanObject; // Create an empty object if it doesn't exist
     }
     current = current[key] as NestedBooleanObject;
   }
 
-  if (typeof current === 'object' && current !== null) {
-    current[lastKey] = value;
-  }
-
+  current[lastKey] = value; // Directly set the boolean value
   return obj;
 }
 
@@ -40,7 +37,15 @@ export function setPermissionValue<T extends NestedBooleanObject>(
         const currentPath = basePath ? `${basePath}.${key}` : key;
 
         // Check if the current path is in the excludePaths
-        if (excludePaths && excludePaths.includes(currentPath)) {
+        const isExcluded =
+          excludePaths &&
+          excludePaths.some(
+            (excludePath) =>
+              currentPath === excludePath ||
+              currentPath.startsWith(`${excludePath}.`)
+          );
+
+        if (isExcluded) {
           continue; // Skip this property
         }
 
