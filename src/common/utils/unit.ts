@@ -1,6 +1,5 @@
 import { DateTime } from 'luxon';
 import { GetUnitDto } from '../dto';
-import { BASE_URL } from '@/config/api/api.config';
 import { getCountry } from './project';
 import { CardPropertyType } from '../types/ProjectTypes';
 import { addCommasToAnumber, formatCurrency } from './numericHelpers';
@@ -15,7 +14,9 @@ export const mapUnitToProperty = (
     id: unit.unit_id,
     name: unit.name,
     creationDate: DateTime.fromISO(unit.created_at).toFormat('dd/LL/yyyy'),
-    imageSrc: unit.cover_path ? unit.cover_path : '/images/products/no_image.png',
+    imageSrc: unit.cover_path
+      ? unit.cover_path
+      : '/images/products/no_image.png',
     type: unit.type,
     price: formatCurrency(parseFloat(unit.price)),
     rooms: unit.rooms ?? undefined,
@@ -26,6 +27,7 @@ export const mapUnitToProperty = (
     price_per_meter: unit.price_per_meter
       ? formatCurrency(parseFloat(unit.price_per_meter))
       : undefined,
+    description: unit.description,
     meters: unit.meters_of_building,
     condition: unit.condition,
     status: unit.status,
@@ -45,6 +47,9 @@ export const mapUnitToAvailableTable = (
   return {
     id: availableUnit.unit_id,
     name: availableUnit.name,
+    meters_of_building: `${addCommasToAnumber(
+      parseFloat(availableUnit.meters_of_building ?? '0')
+    )} mts2`,
     meters_of_land: `${addCommasToAnumber(
       parseFloat(availableUnit.meters_of_land)
     )} mts2`,

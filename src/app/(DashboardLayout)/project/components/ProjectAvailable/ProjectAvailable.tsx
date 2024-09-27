@@ -48,6 +48,9 @@ const ProjectAvailable: FC<{
   const isPlot =
     useProjectPageProps.findProject.data &&
     useProjectPageProps.findProject.data.type === 'plot';
+  const isHouse =
+    useProjectPageProps.findProject.data &&
+    useProjectPageProps.findProject.data.type === 'house';
 
   useEffect(() => {
     if (
@@ -170,6 +173,14 @@ const ProjectAvailable: FC<{
       disablePadding: true,
       label: 'Unidad',
     },
+    isHouse
+      ? {
+          key: 'meters_of_building',
+          numeric: false,
+          disablePadding: false,
+          label: 'Metraje de construcción',
+        }
+      : ({} as ColumnProps<AvailableTableData>),
     {
       key: 'meters_of_land',
       numeric: false,

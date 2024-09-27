@@ -144,7 +144,6 @@ export const DialogCreatePaymentPlan = ({
                   }
                 },
               }}
-              disabled={isResale}
               hookForm={paymentPlanHookForm}
               labelStyle={{ mb: '10px' }}
             />
@@ -180,7 +179,6 @@ export const DialogCreatePaymentPlan = ({
                     ),
                 },
               }}
-              disabled={isResale}
               labelStyle={{ mb: '10px' }}
             />
           </Grid>

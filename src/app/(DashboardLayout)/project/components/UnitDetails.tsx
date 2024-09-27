@@ -184,19 +184,6 @@ const UnitDetails: FC<UnitDetailType> = ({
             </Box>
           </Grid>
         </Grid>
-        <Typography mt={4} variant="h3" fontWeight={600}>
-          Descripcion:
-        </Typography>
-        <Divider sx={{ my: '21px', backgroundColor: '#E7E7E7' }} />
-        <Grid container spacing={'30px'}>
-          <Grid item xs={12}>
-            <Box display={'flex'}>
-              <Typography variant="h4" mr={2}>
-                {property.description}
-              </Typography>
-            </Box>
-          </Grid>
-        </Grid>
       </>
     ),
     plot: (
@@ -288,21 +275,38 @@ const UnitDetails: FC<UnitDetailType> = ({
         </Typography>
         <Divider sx={{ my: '21px', backgroundColor: '#E7E7E7' }} />
         {specificationContent[typeOfUnit]}
+        {property.property_features && property.property_features.length ? (
+          <>
+            <Typography mt={8} variant="h3" fontWeight={600}>
+              Caracteristicas del proyecto
+            </Typography>
+            <Divider sx={{ my: '21px', backgroundColor: '#E7E7E7' }} />
+            <Grid container spacing={'30px'}>
+              {property.property_features?.map((property) => (
+                <Grid item xs={4} key={property.property_feature_id}>
+                  <Box display={'flex'} alignItems={'center'}>
+                    <CheckIcon />
+                    <Typography ml={1} fontSize={'14px'} variant="h3">
+                      {property.description}
+                    </Typography>
+                  </Box>
+                </Grid>
+              ))}
+            </Grid>
+          </>
+        ) : null}
         <Typography mt={8} variant="h3" fontWeight={600}>
-          Caracteristicas del proyecto
+          Descripcion:
         </Typography>
         <Divider sx={{ my: '21px', backgroundColor: '#E7E7E7' }} />
         <Grid container spacing={'30px'}>
-          {property.property_features?.map((property) => (
-            <Grid item xs={4} key={property.property_feature_id}>
-              <Box display={'flex'} alignItems={'center'}>
-                <CheckIcon />
-                <Typography ml={1} fontSize={'14px'} variant="h3">
-                  {property.description}
-                </Typography>
-              </Box>
-            </Grid>
-          ))}
+          <Grid item xs={12}>
+            <Box display={'flex'}>
+              <Typography variant="h4" mr={2}>
+                {property.description}
+              </Typography>
+            </Box>
+          </Grid>
         </Grid>
       </Grid>
     </>

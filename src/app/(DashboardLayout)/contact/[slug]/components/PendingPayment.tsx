@@ -31,8 +31,7 @@ const PendingPayment: FC<PendingPaymentProps> = ({
         Total Pagos Pendiente (Inicial): {pendingAmount}
       </Typography>
       <Box my={'32px'} display="flex" columnGap={'44px'}>
-        {parseFloat(pendingAmount.replaceAll(/[US$,]/gi, '')) > 0 &&
-        permissions.contact.canEdit ? (
+        {permissions.contact.canEdit ? (
           <>
             <Button
               sx={{

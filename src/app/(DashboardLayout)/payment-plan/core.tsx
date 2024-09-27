@@ -55,7 +55,7 @@ export const HeadCellsPaymentPlan: Array<ColumnProps<PaymentPlanDto>> = [
               : 'black'
           }
         >
-          {remaining_time.days} dias y {remaining_time.hours.toFixed(0)} horas
+          {remaining_time.days} dias
         </Typography>
       );
     },
@@ -146,7 +146,7 @@ export const HeadCellsPaymentPlanFinancing: Array<ColumnProps<PaymentPlanDto>> =
                 : 'black'
             }
           >
-            {remaining_time.days} dias y {remaining_time.hours.toFixed(0)} horas
+            {remaining_time.days} dias
           </Typography>
         );
       },

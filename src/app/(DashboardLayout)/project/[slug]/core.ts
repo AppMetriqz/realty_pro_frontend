@@ -70,7 +70,7 @@ export const createUnitValidationSchema = yup.object({
       : schema.required(ErrorMsg.required);
   }),
   level: yup.string().when('type', ([type], schema) => {
-    return type === 'plot'
+    return type === 'plot' || type === 'house'
       ? schema.notRequired()
       : schema.required(ErrorMsg.required);
   }),
@@ -113,7 +113,7 @@ export const updateUnitValidationSchema = yup.object({
       : schema.required(ErrorMsg.required);
   }),
   level: yup.string().when('type', ([type], schema) => {
-    return type === 'plot'
+    return type === 'plot' || type === 'house'
       ? schema.notRequired()
       : schema.required(ErrorMsg.required);
   }),

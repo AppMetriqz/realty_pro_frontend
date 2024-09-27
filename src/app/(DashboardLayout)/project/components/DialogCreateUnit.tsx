@@ -36,6 +36,9 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
   const { hookForm } = usePageProps;
   const isPlot =
     hookForm.watch('type') === 'plot' || hookForm.getValues('type') === 'plot';
+  const isHouse =
+    hookForm.watch('type') === 'house' ||
+    hookForm.getValues('type') === 'house';
 
   if (isPlot) {
     hookForm.setValue(
@@ -104,16 +107,18 @@ export const DialogCreateUnit = <T extends CreateUnitProjectProps>({
                   labelStyle={{ mb: '10px' }}
                 />
               </Grid>
-              <Grid item xs={12} md={6}>
-                <TextFieldSharedController
-                  label={'Niveles en que se encuentra'}
-                  name={'level'}
-                  isRequired
-                  hookForm={hookForm}
-                  textFieldProps={{ type: 'number' }}
-                  labelStyle={{ mb: '10px' }}
-                />
-              </Grid>
+              {isHouse ? null : (
+                <Grid item xs={12} md={6}>
+                  <TextFieldSharedController
+                    label={'Niveles en que se encuentra'}
+                    name={'level'}
+                    isRequired
+                    hookForm={hookForm}
+                    textFieldProps={{ type: 'number' }}
+                    labelStyle={{ mb: '10px' }}
+                  />
+                </Grid>
+              )}
             </>
           )}
           <Grid item xs={12} md={6}>

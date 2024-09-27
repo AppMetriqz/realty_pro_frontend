@@ -3,9 +3,7 @@ import PageContainer from '@/app/(DashboardLayout)/components/container/PageCont
 import React from 'react';
 import HeaderPage from '@/app/(DashboardLayout)/components/shared/HeaderPage';
 import { Filters } from '@/app/(DashboardLayout)/payment-plan/components/Filters';
-import usePage, {
-  UsePageProps,
-} from '@/app/(DashboardLayout)/payment-plan/usePage';
+import usePage from '@/app/(DashboardLayout)/payment-plan/usePage';
 import { Box } from '@mui/material';
 import TableShared from '@/common/components/UI/table/TableShared';
 import {
@@ -62,9 +60,7 @@ const PaymentPlan = () => {
                     )?.label ?? '',
                   remaining_time: {
                     ...items.remaining_time,
-                    name: `${
-                      items.remaining_time.days
-                    } dias y ${items.remaining_time.hours.toFixed(0)} horas`,
+                    name: `${items.remaining_time.days} dias`,
                   },
                 }))
               : []
@@ -107,9 +103,7 @@ const PaymentPlan = () => {
                     })?.label ?? '',
                   remaining_time: {
                     ...items.remaining_time,
-                    name: `${
-                      items.remaining_time.days
-                    } dias y ${items.remaining_time.hours.toFixed(0)} horas`,
+                    name: `${items.remaining_time.days} dias`,
                   },
                 }))
               : []
@@ -151,9 +145,7 @@ const PaymentPlan = () => {
                       ?.label ?? '',
                   remaining_time: {
                     ...items.remaining_time,
-                    name: `${
-                      items.remaining_time.days
-                    } dias y ${items.remaining_time.hours.toFixed(0)} horas`,
+                    name: `${items.remaining_time.days} dias`,
                   },
                 }))
               : []

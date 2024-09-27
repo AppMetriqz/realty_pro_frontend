@@ -41,6 +41,7 @@ export interface AvailableTableData {
   id: string | number;
   name: string;
   meters_of_land: string;
+  meters_of_building?: string;
   price_per_meter?: string;
   price: string;
   condition: string;
