@@ -51,7 +51,10 @@ export const Filters = ({ usePageProps }: FiltersProps) => {
               onSelected={usePageProps.onSetSelectedProjects}
               options={
                 usePageProps.projects.isSuccess
-                  ? usePageProps.projects.data
+                  ? [
+                      ...usePageProps.projects.data,
+                      { project_id: 0, name: 'Todos' },
+                    ]
                   : []
               }
               labelStyle={{ mb: '10px' }}
