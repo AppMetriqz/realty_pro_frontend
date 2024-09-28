@@ -78,7 +78,7 @@ const PaymentAccordion: FC<{
       )
       .map((payment): ChipType => {
         return {
-          id: payment.payment_id + 4,
+          id: payment.payment_id + 5,
           bgColor: 'separation',
           content: (
             <>
@@ -108,7 +108,11 @@ const PaymentAccordion: FC<{
         };
       }),
   ];
-  if (plan.sale && plan.sale.stage === 'financed' && !!plan.sale.financed_at) {
+  if (
+    !!plan.sale &&
+    plan.sale.stage === 'financed' &&
+    !!plan.sale.financed_at
+  ) {
     paidPayment.push({
       id: 4,
       bgColor: 'paymentPlanCreated',
@@ -118,6 +122,23 @@ const PaymentAccordion: FC<{
           &nbsp;- Plan de Pago Financiado -&nbsp;
           {plan.project.currency_type}
           {formatCurrency(plan.total_financing)}
+        </Typography>
+      ),
+    });
+  }
+  if (
+    !!plan.status &&
+    plan.status === 'resold' &&
+    !!plan.current_client_full_name &&
+    !!plan.resolved_at
+  ) {
+    paidPayment.push({
+      id: 5,
+      bgColor: 'resold',
+      content: (
+        <Typography fontSize={'14px'} fontWeight={500} textAlign={'center'}>
+          {DateTime.fromISO(plan.resolved_at).toFormat('dd/LL/yyyy')}
+          &nbsp;- Reventa creada hacia&nbsp;{plan.current_client_full_name}
         </Typography>
       ),
     });

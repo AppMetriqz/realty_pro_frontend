@@ -31,7 +31,9 @@ const PendingPayment: FC<PendingPaymentProps> = ({
         Total Pagos Pendiente (Inicial): {pendingAmount}
       </Typography>
       <Box my={'32px'} display="flex" columnGap={'44px'}>
-        {permissions.contact.canEdit ? (
+        {permissions.contact.canEdit &&
+        !!plan.status &&
+        plan.status !== 'resold' ? (
           <>
             <Button
               sx={{
@@ -70,7 +72,9 @@ const PendingPayment: FC<PendingPaymentProps> = ({
             '&:hover': { backgroundColor: '#FFE3CD' },
           }}
           disabled={
-            pendingPaymentList.length > 0 || plan.sale.stage === 'financed'
+            pendingPaymentList.length > 0 ||
+            plan.sale.stage === 'financed' ||
+            plan.status === 'resold'
           }
           onClick={() =>
             onClickMoveToFinancing?.({ sale_id: plan.sale.sale_id })

@@ -91,6 +91,7 @@ export type GetContactPaymentPlanDto = {
   sale_id: number;
   sale_type: string;
   total_amount: string;
+  current_client_full_name: string;
   separation_amount: string;
   separation_date: string;
   payment_plan_numbers: number;
@@ -101,6 +102,7 @@ export type GetContactPaymentPlanDto = {
   create_by: number;
   update_by?: number;
   created_at: string;
+  resolved_at?: string;
   updated_at?: string;
   total_payment_amount: string;
   total_amount_paid: string;

@@ -8,6 +8,7 @@ const chipColor = {
   note: '#FFFCDD',
   reSale: '#F3EAFF',
   pending: '#E7E7E780',
+  resold: '#F3EAFF',
 };
 
 export type ChipType = {
