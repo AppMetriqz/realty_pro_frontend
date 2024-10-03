@@ -112,6 +112,7 @@ export const useDelete = (id: string | number | string[]) => {
       axiosInstance.delete(`/${units}/${id}`, { data }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`${units}FindAll`] });
+      queryClient.invalidateQueries({ queryKey: [`${projects}-summary`] });
       queryClient.invalidateQueries({
         queryKey: [`${projects}FindAllAutocomplete`],
       });
@@ -133,6 +134,10 @@ export const useDeleteAll = () => {
       }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`${units}FindAll`] });
+      queryClient.invalidateQueries({ queryKey: [`${projects}-summary`] });
+      queryClient.invalidateQueries({
+        queryKey: [`${projects}FindAllAutocomplete`],
+      });
     },
   });
 };
