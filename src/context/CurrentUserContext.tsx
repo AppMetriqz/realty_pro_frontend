@@ -9,7 +9,6 @@ import React, {
   useEffect,
   Dispatch,
   SetStateAction,
-  useMemo,
 } from 'react';
 import _ from 'lodash';
 import { PermissionType } from '@/common/types/UserType';
@@ -118,15 +117,13 @@ export const CurrentUserProvider: FC<{ children: ReactNode }> = ({
     setIsLoadingPermission(false);
   }, [currentUser]);
 
-  const values = useMemo(() => {
-    return {
-      isLoading:
-        currentUser.isLoading || currentUser.isFetching || isLoadingPermission,
-      authUser: currentUser.data,
-      permissions,
-      setPermissions,
-    };
-  }, [permissions, currentUser]);
+  const values = {
+    isLoading:
+      currentUser.isLoading || currentUser.isFetching || isLoadingPermission,
+    authUser: currentUser.data,
+    permissions,
+    setPermissions,
+  };
 
   return (
     <CurrentUserContext.Provider value={values}>
