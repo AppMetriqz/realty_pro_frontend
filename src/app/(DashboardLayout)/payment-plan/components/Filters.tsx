@@ -17,7 +17,6 @@ const keyId = 'project_id';
 const keyName = 'name';
 
 export const Filters = ({ usePageProps }: FiltersProps) => {
-  console.log({ list: usePageProps.projects.data });
   return (
     <>
       <Box

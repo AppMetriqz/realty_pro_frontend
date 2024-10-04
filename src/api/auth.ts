@@ -54,7 +54,7 @@ export const useCurrentUser = () => {
   if (user.data && user.data?.user_id) {
     data = { ...user, isAuth: true };
   }
-  console.log({ data });
+
   return data;
 };
 
