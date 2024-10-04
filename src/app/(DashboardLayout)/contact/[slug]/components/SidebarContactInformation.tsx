@@ -14,6 +14,7 @@ import { GetContactDto } from '@/common/dto';
 import { ContactType, MaritalStatusType } from '@/common/constants';
 import { DateTime } from 'luxon';
 import usePermission from '@/common/hook/usePermission';
+import { apiAuth } from '@/api';
 
 type SidebarContactInformationProps = {
   findContact: UseQueryResult<GetContactDto, Error>;
@@ -26,7 +27,8 @@ const SidebarContactInformation: FC<SidebarContactInformationProps> = ({
   onClickEdit,
   onClickAddSpouse,
 }) => {
-  const { permissions } = usePermission();
+  const currentUser = apiAuth.useCurrentUser();
+  const { permissions } = usePermission(currentUser);
   const userInformations: (UserInfoLabelProps & { id: string | number })[] = [
     {
       id: 1,

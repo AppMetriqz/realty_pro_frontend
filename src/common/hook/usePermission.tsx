@@ -1,9 +1,9 @@
-import { apiAuth } from '@/api';
-import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
 import { PermissionType } from '../types/UserType';
 import { setPermissionValue } from '../utils/setObjectHelper';
 import { ROL } from '../constants';
+import { UseQueryResult } from '@tanstack/react-query';
+import { GetUserDto } from '../dto';
 
 export const defaultPermission = {
   dashboard: {
@@ -27,36 +27,48 @@ export const defaultPermission = {
   setting: { canView: false, canAdd: false, canEdit: false, canDelete: false },
 };
 
-const usePermission = () => {
+const usePermission = (
+  currentUser: UseQueryResult<GetUserDto, Error> & {
+    isAuth: boolean;
+  }
+) => {
   const [isLoadingPermission, setIsLoadingPermission] = useState(false);
-  const currentUser = apiAuth.useCurrentUser(!!Cookies.get('token'));
   const [permissions, setPermissions] =
     useState<PermissionType>(defaultPermission);
 
   useEffect(() => {
     setIsLoadingPermission(true);
-    if (currentUser && currentUser.data && currentUser.isAuth) {
+    if (
+      currentUser &&
+      currentUser.isSuccess &&
+      currentUser.data &&
+      currentUser.isAuth
+    ) {
       if (currentUser.data.role_id === ROL.SUPER_ADMIN) {
-        setPermissions(setPermissionValue(defaultPermission, true));
+        const superAdminPermissions = setPermissionValue(defaultPermission);
+        setPermissions(superAdminPermissions);
       }
       if (currentUser.data.role_id === ROL.ADMIN) {
-        setPermissions(
-          setPermissionValue(defaultPermission, true, undefined, [
-            'user.canEdit',
-          ])
+        const adminPermissions = setPermissionValue(
+          defaultPermission,
+          undefined,
+          ['user.canEdit']
         );
+        setPermissions(adminPermissions);
       }
       if (currentUser.data.role_id === ROL.EXECUTOR) {
-        setPermissions(
-          setPermissionValue(defaultPermission, true, undefined, [
-            'finance.canView',
-            'project.canEdit',
-          ])
+        const executorPermissions = setPermissionValue(
+          defaultPermission,
+          undefined,
+          ['finance.canView', 'project.canEdit']
         );
+        setPermissions(executorPermissions);
       }
       if (currentUser.data.role_id === ROL.VISITOR) {
-        setPermissions(
-          setPermissionValue(defaultPermission, true, undefined, [
+        const visitorPermissions = setPermissionValue(
+          defaultPermission,
+          undefined,
+          [
             'dashboard.canAssignSales',
             'dashboard.canAssignPaymentPlan',
             'project.canAdd',
@@ -73,8 +85,9 @@ const usePermission = () => {
             'setting.canAdd',
             'setting.canEdit',
             'setting.canDelete',
-          ])
+          ]
         );
+        setPermissions(visitorPermissions);
       }
     }
     setIsLoadingPermission(false);

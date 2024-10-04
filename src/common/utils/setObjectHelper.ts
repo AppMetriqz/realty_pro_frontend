@@ -23,10 +23,9 @@ function setProperty<T extends NestedBooleanObject>(
   return obj;
 }
 
-// Generic function to set all boolean values in a nested object to true or false
+// Generic function to set all boolean values in a nested object
 export function setPermissionValue<T extends NestedBooleanObject>(
   obj: T,
-  value: boolean,
   path?: string,
   excludePaths?: string[] // New parameter for paths to exclude
 ): T {
@@ -46,26 +45,26 @@ export function setPermissionValue<T extends NestedBooleanObject>(
           );
 
         if (isExcluded) {
-          continue; // Skip this property
-        }
-
-        if (typeof currentValue === 'object' && currentValue !== null) {
+          // Set the excluded property to false
+          o[key] = false;
+        } else if (typeof currentValue === 'object' && currentValue !== null) {
           // Recursively update nested objects
           updateObject(currentValue as NestedBooleanObject, currentPath);
         } else if (typeof currentValue === 'boolean') {
-          o[key] = value; // Set boolean value
+          // Set boolean values to true for non-excluded properties
+          o[key] = true;
         }
       }
     }
   };
 
-  if (path) {
-    // If a path is provided, set the specific property
-    setProperty(obj, path, value);
+  if (path && typeof path === 'string') {
+    // If a path is provided and is a string, set the specific property to true
+    setProperty(obj, path, true);
   } else {
-    // Otherwise, set all boolean values
+    // Otherwise, update all boolean values
     updateObject(obj, '');
   }
 
-  return obj;
+  return obj; // Return the original object
 }

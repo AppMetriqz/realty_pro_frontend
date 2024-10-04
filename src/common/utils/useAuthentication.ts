@@ -10,8 +10,9 @@ export default function useAuthentication() {
     return !!token;
   };
 
-  const onLogOut = () => {
+  const onLogOut = (removePermissions: () => void) => {
     Cookies.remove('token');
+    removePermissions();
     const isNotRememberMe = Cookies.get('rememberMe') !== '1';
     if (isNotRememberMe) {
       Cookies.remove('user');

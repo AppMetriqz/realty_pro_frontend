@@ -17,9 +17,11 @@ import {
 } from './component/DialogCreateEditSettings';
 import { DialogFreeDelete } from '@/common/components/Logic/DialogFreeDelete';
 import usePermission from '@/common/hook/usePermission';
+import { apiAuth } from '@/api';
 
 const User = () => {
-  const { permissions } = usePermission();
+  const currentUser = apiAuth.useCurrentUser();
+  const { permissions } = usePermission(currentUser);
   const usePageProps = usePage();
 
   const headCells: Array<

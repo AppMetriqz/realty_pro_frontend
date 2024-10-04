@@ -20,7 +20,7 @@ interface ItemType {
 }
 
 const Header = ({ toggleMobileSidebar }: ItemType) => {
-  const currentUser = apiAuth.useCurrentUser(!!Cookies.get('token'));
+  const currentUser = apiAuth.useCurrentUser();
   const AppBarStyled = styled(AppBar)(({ theme }) => ({
     boxShadow: 'none',
     paddingTop: 10,

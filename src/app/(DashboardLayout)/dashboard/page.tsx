@@ -20,9 +20,11 @@ import { DateTime } from 'luxon';
 import { formatCurrency } from '@/common/utils/numericHelpers';
 import { DialogCreatePaymentPlan } from '@/common/components/Logic/DialogCreatePaymentPlan';
 import usePermission from '@/common/hook/usePermission';
+import { apiAuth } from '@/api';
 
 const Dashboard = () => {
-  const { permissions } = usePermission();
+  const currentUser = apiAuth.useCurrentUser();
+  const { permissions } = usePermission(currentUser);
   const usePageProps: UsePageProps = usePage();
 
   const HeadCellsPaymentPlansToAssign: Array<

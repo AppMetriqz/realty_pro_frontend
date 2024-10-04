@@ -18,6 +18,7 @@ import { DialogDelete } from '@/common/components/Logic/DialogDelete';
 import { DialogCreateEditUser } from './component/DialogCreateEditUser';
 import HeaderSearch from '@/common/components/UI/headerSearch/HeaderSearch';
 import usePermission from '@/common/hook/usePermission';
+import { apiAuth } from '@/api';
 
 const chipColor: {
   [key: number]:
@@ -36,7 +37,8 @@ const chipColor: {
 };
 
 const User = () => {
-  const { permissions } = usePermission();
+  const currentUser = apiAuth.useCurrentUser();
+  const { permissions } = usePermission(currentUser);
   const usePageProps = usePage();
   let headCells: Array<ColumnProps<Partial<GetUserDto> & { id: number }>> = [
     {

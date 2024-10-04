@@ -12,6 +12,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { getConditionLabel, getUnitStatus } from '@/common/utils/unit';
 import { PropertyTypeDto } from '@/common/dto';
 import usePermission from '@/common/hook/usePermission';
+import { apiAuth } from '@/api';
 
 type UnitDetailType = {
   deleteLabel?: string;
@@ -32,7 +33,8 @@ const UnitDetails: FC<UnitDetailType> = ({
   property,
   onClickBack,
 }) => {
-  const { permissions } = usePermission();
+  const currentUser = apiAuth.useCurrentUser();
+  const { permissions } = usePermission(currentUser);
   const houseAndApartment = (
     <>
       <Grid container spacing={'30px'}>

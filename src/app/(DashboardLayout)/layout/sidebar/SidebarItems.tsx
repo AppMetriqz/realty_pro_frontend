@@ -1,5 +1,5 @@
 'use client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Divider, List, Typography } from '@mui/material';
 import NavItem from './NavItem';
 import { uniqueId } from 'lodash';
@@ -15,87 +15,107 @@ import ProfileIcon from '@/icons/ProfileIcon';
 import UsersIcon from '@/icons/UsersIcon';
 import SettingsIcon from '@/icons/SettingsIcon';
 import usePermission from '@/common/hook/usePermission';
+import { apiAuth } from '@/api';
 
 type MenuNavegationItemType = {
   id: string;
   title: string;
-  icon: () => JSX.Element;
+  icon: React.ComponentType; // Icon component type
   href: string;
-  selectedArray?: Array<string>;
+  selectedArray?: string[];
 };
 
 const SidebarItems = ({ toggleMobileSidebar }: any) => {
-  const { permissions, setPermissions } = usePermission();
+  const currentUser = apiAuth.useCurrentUser();
+  const { permissions, setPermissions, isLoading } = usePermission(currentUser);
   const { onLogOut } = useFunctions();
+  const [navigationMenuItems, setNavigationMenuItems] = useState<
+    MenuNavegationItemType[]
+  >([]);
+  const [settingsMenuItems, setSettingsMenuItems] = useState<
+    MenuNavegationItemType[]
+  >([]);
 
-  let navigationMenuItems: MenuNavegationItemType[] = [];
-  let settingsMenuItems: MenuNavegationItemType[] = [];
-  if (permissions.dashboard.canView) {
-    navigationMenuItems.push({
-      id: uniqueId(),
-      title: 'Escritorio',
-      icon: ChartIcon,
-      href: routers.dashboard,
-      selectedArray: [routers.dashboard],
-    });
-  }
-  if (permissions.paymentPlan.canView) {
-    navigationMenuItems.push({
-      id: uniqueId(),
-      title: 'Planes de Pago',
-      icon: PaymentIcon,
-      href: routers.paymentPlan,
-      selectedArray: [routers.paymentPlan],
-    });
-  }
-  if (permissions.finance.canView) {
-    navigationMenuItems.push({
-      id: uniqueId(),
-      title: 'Finanzas',
-      icon: FinanceIcon,
-      href: routers.finance,
-      selectedArray: [routers.finance],
-    });
-  }
-  if (permissions.project.canView) {
-    navigationMenuItems.push({
-      id: uniqueId(),
-      title: 'Proyectos',
-      icon: ProjectIcon,
-      href: routers.project,
-    });
-  }
-  if (permissions.contact.canView) {
-    navigationMenuItems.push({
-      id: uniqueId(),
-      title: 'Contactos',
-      icon: ProfileIcon,
-      href: routers.contact,
-      selectedArray: [routers.contact],
-    });
-  }
-  if (permissions.user.canView) {
-    settingsMenuItems.push({
-      id: uniqueId(),
-      title: 'Usuarios',
-      icon: UsersIcon,
-      href: routers.user,
-      selectedArray: [routers.user],
-    });
-  }
-  if (permissions.setting.canView) {
-    settingsMenuItems.push({
-      id: uniqueId(),
-      title: 'Configuraciones',
-      icon: SettingsIcon,
-      href: routers.settings,
-      selectedArray: [routers.settings],
-    });
-  }
+  const createMenuItem = (
+    id: string,
+    title: string,
+    icon: React.ComponentType,
+    href: string,
+    selectedArray?: string[]
+  ) => ({
+    id,
+    title,
+    icon,
+    href,
+    selectedArray,
+  });
+
+  useEffect(() => {
+    const newNavigationMenuItems: MenuNavegationItemType[] = [];
+    const newSettingsMenuItems: MenuNavegationItemType[] = [];
+
+    if (permissions.dashboard.canView) {
+      newNavigationMenuItems.push(
+        createMenuItem(uniqueId(), 'Escritorio', ChartIcon, routers.dashboard, [
+          routers.dashboard,
+        ])
+      );
+    }
+    if (permissions.paymentPlan.canView) {
+      newNavigationMenuItems.push(
+        createMenuItem(
+          uniqueId(),
+          'Planes de Pago',
+          PaymentIcon,
+          routers.paymentPlan,
+          [routers.paymentPlan]
+        )
+      );
+    }
+    if (permissions.finance.canView) {
+      newNavigationMenuItems.push(
+        createMenuItem(uniqueId(), 'Finanzas', FinanceIcon, routers.finance, [
+          routers.finance,
+        ])
+      );
+    }
+    if (permissions.project.canView) {
+      newNavigationMenuItems.push(
+        createMenuItem(uniqueId(), 'Proyectos', ProjectIcon, routers.project)
+      );
+    }
+    if (permissions.contact.canView) {
+      newNavigationMenuItems.push(
+        createMenuItem(uniqueId(), 'Contactos', ProfileIcon, routers.contact, [
+          routers.contact,
+        ])
+      );
+    }
+    if (permissions.user.canView) {
+      newSettingsMenuItems.push(
+        createMenuItem(uniqueId(), 'Usuarios', UsersIcon, routers.user, [
+          routers.user,
+        ])
+      );
+    }
+    if (permissions.setting.canView) {
+      newSettingsMenuItems.push(
+        createMenuItem(
+          uniqueId(),
+          'Configuraciones',
+          SettingsIcon,
+          routers.settings,
+          [routers.settings]
+        )
+      );
+    }
+
+    setNavigationMenuItems(newNavigationMenuItems);
+    setSettingsMenuItems(newSettingsMenuItems);
+  }, [permissions, isLoading]);
 
   const onClickLogOut = () => {
-    setPermissions(defaultPermission);
-    onLogOut();
+    onLogOut(() => setPermissions(defaultPermission));
   };
 
   return (

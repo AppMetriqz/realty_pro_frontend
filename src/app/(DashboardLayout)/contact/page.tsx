@@ -2,9 +2,8 @@
 import PageContainer from '@/app/(DashboardLayout)/components/container/PageContainer';
 import React from 'react';
 import HeaderPage from '../components/shared/HeaderPage';
-import { Box, CircularProgress, Grid, Typography } from '@mui/material';
+import { Box, CircularProgress, Grid } from '@mui/material';
 import _ from 'lodash';
-import SearchInput from '@/common/components/UI/searchInput/SearchInput';
 import TableShared, {
   ColumnProps,
 } from '@/common/components/UI/table/TableShared';
@@ -16,9 +15,11 @@ import { DialogCreateUpdateContact } from './components/DialogCreateUpdateContac
 import { Filters } from './components/Filters';
 import HeaderSearch from '@/common/components/UI/headerSearch/HeaderSearch';
 import usePermission from '@/common/hook/usePermission';
+import { apiAuth } from '@/api';
 
 const Contact = () => {
-  const { permissions } = usePermission();
+  const currentUser = apiAuth.useCurrentUser();
+  const { permissions } = usePermission(currentUser);
   const usePageProps = useContactPage();
   const headCells: Array<ColumnProps<ContactData>> = [
     {

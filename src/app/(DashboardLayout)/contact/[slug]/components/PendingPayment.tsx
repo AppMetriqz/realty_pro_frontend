@@ -3,6 +3,7 @@ import { Box, Button, Divider, Typography } from '@mui/material';
 import PaymentInformationChip, { ChipType } from './PaymentInformationChip';
 import { GetContactPaymentPlanDto } from '@/common/dto';
 import usePermission from '@/common/hook/usePermission';
+import { apiAuth } from '@/api';
 
 type PendingPaymentProps = {
   pendingPaymentList: ChipType[];
@@ -23,7 +24,8 @@ const PendingPayment: FC<PendingPaymentProps> = ({
   onClickCreateResale,
   onClickMoveToFinancing,
 }) => {
-  const { permissions } = usePermission();
+  const currentUser = apiAuth.useCurrentUser();
+  const { permissions } = usePermission(currentUser);
   return (
     <>
       <Divider sx={{ width: '250px', marginY: '35px' }} />

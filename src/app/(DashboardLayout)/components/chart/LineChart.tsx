@@ -1,17 +1,23 @@
 import React from 'react';
-import HighchartsReact from "highcharts-react-official";
-import Highcharts from "highcharts";
+import HighchartsReact from 'highcharts-react-official';
+import Highcharts from 'highcharts';
+import highchartsAccessibility from 'highcharts/modules/accessibility';
 
 interface FiltersProps {
-    usePageProps: any
+  usePageProps: any;
 }
 
-export const LineChart = ({usePageProps}: FiltersProps) => {
+export const LineChart = ({ usePageProps }: FiltersProps) => {
+  if (typeof window !== `undefined`) {
+    highchartsAccessibility(Highcharts);
+  }
 
-    return (
-        <HighchartsReact
-            highcharts={Highcharts}
-            options={usePageProps.lineOptions}
-        />
-    );
+  const options = {
+    ...usePageProps.lineOptions,
+    accessibility: {
+      enabled: true, // Enable accessibility features
+    },
+  };
+
+  return <HighchartsReact highcharts={Highcharts} options={options} />;
 };

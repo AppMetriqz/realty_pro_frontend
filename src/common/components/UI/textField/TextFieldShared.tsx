@@ -1,14 +1,12 @@
-import React, { FC } from 'react';
+import React, { FC, forwardRef } from 'react';
 import { styled } from '@mui/material/styles';
-import { Typography, TextField, TextFieldProps } from '@mui/material';
+import { Typography, TextField } from '@mui/material';
 import { Colors } from '@/common/constants/general';
 import { Controller } from 'react-hook-form';
 import { UseFormReturn } from 'react-hook-form';
 import { getHelperText } from '@/common/utils/formHook';
 import _ from 'lodash';
 import { AliasesCSSProperties } from '@mui/system';
-
-const primaryColor = Colors.primary;
 
 export interface TextFieldSharedControllerProps {
   name: string;
@@ -20,10 +18,14 @@ export interface TextFieldSharedControllerProps {
   labelStyle?: AliasesCSSProperties;
   onBlur?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
 }
+// Define the props type if needed
+type TextFieldProps = React.ComponentProps<typeof TextField>;
 
-export const TextFieldSharedLogin = styled((props: any) => (
-  <TextField {...props} />
-))(({ theme }) => ({
+export const TextFieldSharedLogin = styled(
+  forwardRef<HTMLDivElement, TextFieldProps>((props, ref) => (
+    <TextField ref={ref} {...props} />
+  ))
+)(({ theme }) => ({
   '.MuiOutlinedInput-notchedOutline': {
     borderColor: '#fff',
   },

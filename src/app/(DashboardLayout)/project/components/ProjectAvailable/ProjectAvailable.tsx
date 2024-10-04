@@ -39,11 +39,13 @@ import { UseProjectPageProps } from '../../[slug]/usePage';
 import DoDisturbOffIcon from '@mui/icons-material/DoDisturbOff';
 import { DialogCancelSell } from '../DialogCancelSell';
 import usePermission from '@/common/hook/usePermission';
+import { apiAuth } from '@/api';
 
 const ProjectAvailable: FC<{
   useProjectPageProps: UseProjectPageProps;
 }> = ({ useProjectPageProps }) => {
-  const { permissions } = usePermission();
+  const currentUser = apiAuth.useCurrentUser();
+  const { permissions } = usePermission(currentUser);
   const usePageProps = usePage();
   const isPlot =
     useProjectPageProps.findProject.data &&

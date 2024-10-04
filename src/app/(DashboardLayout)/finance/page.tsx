@@ -14,10 +14,12 @@ import { TableChart } from '@/app/(DashboardLayout)/components/chart/TableChart'
 import usePermission from '@/common/hook/usePermission';
 import { useRouter } from 'next/navigation';
 import routers from '@/common/constants/routes';
+import { apiAuth } from '@/api';
 
 const Finance = () => {
   const navigate = useRouter();
-  const { permissions, isLoading } = usePermission();
+  const currentUser = apiAuth.useCurrentUser();
+  const { permissions, isLoading } = usePermission(currentUser);
   const usePageProps: UsePageProps = usePage();
 
   useEffect(() => {

@@ -9,13 +9,13 @@ import React, {
   useEffect,
   Dispatch,
   SetStateAction,
+  useMemo,
 } from 'react';
 import _ from 'lodash';
 import { PermissionType } from '@/common/types/UserType';
 import { GetUserDto } from '@/common/dto';
 import { setPermissionValue } from '@/common/utils/setObjectHelper';
 import { ROL } from '@/common/constants';
-import Cookies from 'js-cookie';
 
 export const defaultPermission = {
   dashboard: {
@@ -56,32 +56,44 @@ export const CurrentUserContext = createContext<CurrentUserContextType>({
 export const CurrentUserProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const currentUser = apiAuth.useCurrentUser(!!Cookies.get('token'));
+  const [isLoadingPermission, setIsLoadingPermission] = useState(false);
+  const currentUser = apiAuth.useCurrentUser();
   const [permissions, setPermissions] =
     useState<PermissionType>(defaultPermission);
 
   useEffect(() => {
-    if (currentUser && currentUser.data && currentUser.isAuth) {
+    setIsLoadingPermission(true);
+    if (
+      currentUser &&
+      currentUser.isSuccess &&
+      currentUser.data &&
+      currentUser.isAuth
+    ) {
       if (currentUser.data.role_id === ROL.SUPER_ADMIN) {
-        setPermissions(setPermissionValue(defaultPermission, true));
+        const superAdminPermissions = setPermissionValue(defaultPermission);
+        setPermissions(superAdminPermissions);
       }
       if (currentUser.data.role_id === ROL.ADMIN) {
-        setPermissions(
-          setPermissionValue(defaultPermission, true, undefined, [
-            'user.canEdit',
-          ])
+        const adminPermissions = setPermissionValue(
+          defaultPermission,
+          undefined,
+          ['user.canEdit']
         );
+        setPermissions(adminPermissions);
       }
       if (currentUser.data.role_id === ROL.EXECUTOR) {
-        setPermissions(
-          setPermissionValue(defaultPermission, true, undefined, [
-            'finance.canView',
-          ])
+        const executorPermissions = setPermissionValue(
+          defaultPermission,
+          undefined,
+          ['finance.canView', 'project.canEdit']
         );
+        setPermissions(executorPermissions);
       }
       if (currentUser.data.role_id === ROL.VISITOR) {
-        setPermissions(
-          setPermissionValue(defaultPermission, true, undefined, [
+        const visitorPermissions = setPermissionValue(
+          defaultPermission,
+          undefined,
+          [
             'dashboard.canAssignSales',
             'dashboard.canAssignPaymentPlan',
             'project.canAdd',
@@ -98,21 +110,26 @@ export const CurrentUserProvider: FC<{ children: ReactNode }> = ({
             'setting.canAdd',
             'setting.canEdit',
             'setting.canDelete',
-          ])
+          ]
         );
+        setPermissions(visitorPermissions);
       }
     }
+    setIsLoadingPermission(false);
   }, [currentUser]);
 
+  const values = useMemo(() => {
+    return {
+      isLoading:
+        currentUser.isLoading || currentUser.isFetching || isLoadingPermission,
+      authUser: currentUser.data,
+      permissions,
+      setPermissions,
+    };
+  }, [permissions, currentUser]);
+
   return (
-    <CurrentUserContext.Provider
-      value={{
-        isLoading: currentUser.isLoading || currentUser.isRefetching,
-        authUser: currentUser.data,
-        permissions,
-        setPermissions,
-      }}
-    >
+    <CurrentUserContext.Provider value={values}>
       {children}
     </CurrentUserContext.Provider>
   );

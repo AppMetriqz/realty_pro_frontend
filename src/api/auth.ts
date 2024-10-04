@@ -10,6 +10,7 @@ import {
 
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
+import routes from '@/common/constants/routes';
 
 const path = 'auth';
 
@@ -22,13 +23,13 @@ export const useSignIn = () => {
       axiosInstance.post(`${path}/login`, { email, password }),
     onSuccess: (data: any) => {
       Cookies.set('token', data.token);
-      router.push('/');
+      router.push(routes.dashboard);
       queryClient.invalidateQueries({ queryKey: ['currentUser'] });
     },
   });
 };
 
-export const useCurrentUser = (isEnabled: boolean) => {
+export const useCurrentUser = () => {
   const router = useRouter();
   const user = useQuery<GetUserDto, Error>({
     queryKey: ['currentUser'],
@@ -37,7 +38,7 @@ export const useCurrentUser = (isEnabled: boolean) => {
     refetchOnMount: true,
     gcTime: 0,
     staleTime: 0,
-    enabled: isEnabled,
+    enabled: !!Cookies.get('token'),
   });
 
   let data: UseQueryResult<GetUserDto, Error> & { isAuth: boolean } = {
@@ -53,7 +54,7 @@ export const useCurrentUser = (isEnabled: boolean) => {
   if (user.data && user.data?.user_id) {
     data = { ...user, isAuth: true };
   }
-
+  console.log({ data });
   return data;
 };
 

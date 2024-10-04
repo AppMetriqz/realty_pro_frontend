@@ -30,6 +30,7 @@ import { DateTime } from 'luxon';
 import Link from 'next/link';
 import { SaleStages } from '@/common/constants';
 import usePermission from '@/common/hook/usePermission';
+import { apiAuth } from '@/api';
 
 const mapSellToSellTable = (sell: GetSellDto): SellTableData => {
   return {
@@ -63,7 +64,8 @@ export interface SellTableData {
 }
 
 const ProjectSells = () => {
-  const { permissions } = usePermission();
+  const currentUser = apiAuth.useCurrentUser();
+  const { permissions } = usePermission(currentUser);
   const usePageProps = usePage();
 
   const headCells: Array<ColumnProps<SellTableData>> = [

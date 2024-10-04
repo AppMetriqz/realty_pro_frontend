@@ -13,10 +13,12 @@ import SearchInput from '@/common/components/UI/searchInput/SearchInput';
 import usePermission from '@/common/hook/usePermission';
 import routers from '@/common/constants/routes';
 import { useRouter } from 'next/navigation';
+import { apiAuth } from '@/api';
 
 const Project = () => {
   const navigate = useRouter();
-  const { permissions } = usePermission();
+  const currentUser = apiAuth.useCurrentUser();
+  const { permissions } = usePermission(currentUser);
   const usePageProps = usePage();
 
   useEffect(() => {
