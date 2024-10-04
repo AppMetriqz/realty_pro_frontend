@@ -25,6 +25,7 @@ const Project = () => {
     if (!permissions.project.canView) {
       navigate.push(routers.dashboard);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [permissions.project.canView]);
 
   return (

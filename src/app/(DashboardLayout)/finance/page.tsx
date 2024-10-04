@@ -26,6 +26,7 @@ const Finance = () => {
     if (!permissions.finance.canView) {
       navigate.push(routers.dashboard);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [permissions.finance.canView]);
 
   return (
