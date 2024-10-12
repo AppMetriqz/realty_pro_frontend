@@ -69,7 +69,7 @@ const Header = ({ toggleMobileSidebar }: ItemType) => {
                 <span style={{ fontWeight: 700 }}>
                   {currentUser.data?.first_name}
                 </span>
-                ! Realty Dominicana
+                !
               </Typography>
             </Stack>
           </Stack>
