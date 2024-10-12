@@ -10,7 +10,7 @@ type Props = {
 const PageContainer = ({ title, description, children }: Props) => (
   <HelmetProvider>
     <Helmet>
-      <title>{title} - Realty Prop</title>
+      <title>{title} - Realty Pro</title>
       <meta name="description" content={description} />
     </Helmet>
     {children}
