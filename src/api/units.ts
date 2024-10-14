@@ -64,6 +64,7 @@ export const useCreate = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`${units}FindAll`] });
       queryClient.invalidateQueries({ queryKey: [projects] });
+      queryClient.invalidateQueries({ queryKey: [units] });
       queryClient.invalidateQueries({ queryKey: [`${projects}-summary`] });
     },
   });

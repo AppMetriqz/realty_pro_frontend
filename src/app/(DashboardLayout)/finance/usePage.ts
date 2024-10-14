@@ -66,6 +66,7 @@ export default function usePage(project_id?: number) {
   });
   const finances = apiFinances.useFindAll({
     projectIds: _.join(_.map(selectedProjects, 'project_id'), ','),
+    currencyType: currency,
   });
 
   React.useEffect(() => {
