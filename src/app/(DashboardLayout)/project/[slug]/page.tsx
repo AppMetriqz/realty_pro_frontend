@@ -56,7 +56,11 @@ const ProjectResumen = () => {
     {
       label: 'Finanzas',
       id: 'finance',
-      component: <ProjectFinance />,
+      component: (
+        <ProjectFinance
+          currency={usePageProps.findProject.data?.currency_type}
+        />
+      ),
     },
     {
       label: 'Disponibilidad',

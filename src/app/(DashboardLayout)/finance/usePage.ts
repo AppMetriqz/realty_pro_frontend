@@ -39,7 +39,10 @@ export interface UsePageProps {
   lineBarOptions: LineBarOptionsDto;
 }
 
-export default function usePage(project_id?: number) {
+export default function usePage(
+  project_id?: number,
+  currencySummary?: keyof typeof CurrencyTypeDto
+) {
   const [selectedProjects, setSelectedProjects] = useState<ProjectDto[]>([]);
   const [selectedProject, setSelectedProject] = useState<ProjectDto | null>(
     null
@@ -70,11 +73,12 @@ export default function usePage(project_id?: number) {
   });
 
   React.useEffect(() => {
-    if (project_id) {
+    if (project_id && currencySummary) {
       let project = { project_id } as ProjectDto;
       setSelectedProjects(
         _.uniqBy(_.concat(selectedProjects, [project]), 'project_id')
       );
+      setCurrency(currencySummary);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [project_id]);

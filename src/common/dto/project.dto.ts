@@ -1,11 +1,11 @@
-import { PropertyTypeDto } from './api.dto';
+import { CurrencyTypeDto, PropertyTypeDto } from './api.dto';
 
 export interface ProjectDto {
   project_id?: number;
   name: string;
   description: string;
   type: keyof typeof PropertyTypeDto;
-  currency_type: string;
+  currency_type: keyof typeof CurrencyTypeDto;
   levels_qty?: string;
   country_code: string;
   state: string;
